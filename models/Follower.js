@@ -18,9 +18,4 @@ const FollowerModel = sequelize.define("tblFollower",{
     }
 ) 
 
-queryInterface.addConstraint('tblFollower', ['userSID', 'followerID'], {
-    primaryKey: true,
-    name: 'FollowsPK'
-  });
-
 module.exports = FollowerModel;
