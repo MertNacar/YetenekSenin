@@ -10,26 +10,30 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
 
-
-
-app.get('/', (req, res) => {   
-
-    models.VideoModel.findAll({
-        include: [
-            
-            {
-                model: models.TalentModel,
-                required: true
-            },
-            {
-                model: models.CommentModel,
-                required: true
+app.get('/', async (req, res) => { 
+    let date = new Date() 
+   try{
+       let gelen = await models.FollowerModel.findOne({
+        where: { followID: 1}
+        })
+        console.log(gelen)
+        if(gelen.length == 0){
+            throw new Error("Hata")
+        }else {
+            res.json({err : false,
+                FollowID: gelen.followID,
+                UserID: gelen.fuserID,
+                FollowerID: gelen.fFollowerID})
             }
-        ]
-    })
-    .then( (data) => {
-        res.json(data)
-    })
+            gelen.fuserID = 3;
+            gelen.fFollowerID = 5;
+            gelen.createdAt = date.getFullYear(),date.getMonth(),date.getDate()
+            gelen.createdAt = date.getFullYear(),date.getMonth(),date.getDate()
+            gelen.save()
+        }
+        catch{
+            res.json({err : true})
+        }
 })
 
 module.exports = app;
