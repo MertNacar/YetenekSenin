@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 
 app.get('/', async (req, res) => { 
-    
    try{
        let gelen = await models.FollowerModel.findOne({
         where: { followID: 2}
@@ -20,11 +19,11 @@ app.get('/', async (req, res) => {
         if(gelen.length == 0){
             throw new Error("Hata")
         }else {
-            gelen.fuserID = 4;
-            gelen.fFollowerID = 3;
-            gelen.createdAt = '2017-04-21 22:45:44.76'
-            gelen.createdAt = '2017-04-21 22:45:44.76'
-            gelen.save()
+            gelen.fuserID = 3;
+            gelen.fFollowerID = 6;
+            gelen.save().catch( err => {
+                console.log(err.message);
+            })
             res.json({err : false,
                 FollowID: gelen.followID,
                 UserID: gelen.fuserID,
@@ -36,6 +35,6 @@ app.get('/', async (req, res) => {
         catch{
             res.json({err : true})
         }
-})
+    })
 
 module.exports = app;
