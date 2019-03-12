@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-export default class HomeScreen extends Component {
+export default class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View>
-        <Text> HomeScreen </Text>
+        <Text> Search </Text>
       </View>
     );
   }

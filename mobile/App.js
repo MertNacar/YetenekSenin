@@ -1,39 +1,43 @@
 import React  from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import { Platform, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import { HomeScreen, ProfileScreen,SettingsScreen } from './src/model/';
+import { HomeScreen, ProfileScreen,SettingsScreen, SearchScreen } from './src/pages/';
 import Icon from 'react-native-vector-icons/Ionicons';
 
  
 const Navigator = createBottomTabNavigator({
   Home: { screen: HomeScreen ,
   navigationOptions:{
-    tabBarLabel:'Home',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-beer" color={tintColor} size={24} />
+      <Icon name="md-home" color={tintColor} size={24} />
     )
   }},
   Profile: { screen: ProfileScreen ,
     navigationOptions:{
-      tabBarLabel:'Profile',
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="md-bookmarks" color={tintColor} size={24} />
+        <Icon name="md-contacts" color={tintColor} size={24} />
       )
     }},
+    Search: { screen: SearchScreen ,
+      navigationOptions:{
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="md-search" color={tintColor} size={24} />
+        )
+      }},
   Settings: { screen: SettingsScreen ,
     navigationOptions:{
-      tabBarLabel:'Settings',
       tabBarIcon: ( {tintColor} ) => (
-        <Icon name="md-bus" color={tintColor} size={24} />
+        <Icon name="md-settings" color={tintColor} size={24} />
       )
-    }}
+    }} 
   },{
     initialRouteName: 'Home',
-    order: ['Home','Profile','Settings'],
+    order: ['Home','Search','Profile','Settings'],
       navigationOptions:{
         tabBarVisible: true
       },
       tabBarOptions:{
+        showLabel:false,
         activeTintColor:'red',
         inactiveTintColor:'gray'
       }
