@@ -15,7 +15,7 @@ const Navigator = createBottomTabNavigator({
   Profile: { screen: ProfileScreen ,
     navigationOptions:{
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="md-contacts" color={tintColor} size={24} />
+        <Icon name="md-contact" color={tintColor} size={24} />
       )
     }},
     Search: { screen: SearchScreen ,
@@ -23,16 +23,10 @@ const Navigator = createBottomTabNavigator({
         tabBarIcon: ({ tintColor }) => (
           <Icon name="md-search" color={tintColor} size={24} />
         )
-      }},
-  Settings: { screen: SettingsScreen ,
-    navigationOptions:{
-      tabBarIcon: ( {tintColor} ) => (
-        <Icon name="md-settings" color={tintColor} size={24} />
-      )
-    }} 
+      }}
   },{
     initialRouteName: 'Home',
-    order: ['Home','Search','Profile','Settings'],
+    order: ['Home','Search','Profile'],
       navigationOptions:{
         tabBarVisible: true
       },
