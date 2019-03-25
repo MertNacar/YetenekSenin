@@ -1,2 +1,2 @@
 # YetenekSenin
-React / Express / Node / MongoDB
+React / Express / Node /React Native
