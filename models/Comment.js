@@ -1,5 +1,6 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
+const UserModel = require('./User');
 
 const CommentModel = sequelize.define("tblComment",{
     CommentID : {
@@ -29,5 +30,14 @@ const CommentModel = sequelize.define("tblComment",{
         freezeTableName: true
     }
 ) 
+
+CommentModel.hasMany(UserModel, {
+    foreignKey: "fUserID"
+})
+
+
+UserModel.belongsTo(CommentModel, {
+    foreignKey: "fUserID"
+})
 
 module.exports = CommentModel;

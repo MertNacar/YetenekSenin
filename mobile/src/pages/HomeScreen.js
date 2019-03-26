@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
+import CardList from '../components/Card/CardList';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -8,14 +9,10 @@ export default class HomeScreen extends Component {
     };
   }
 
+
   render() {
     return (
-      <View>
-        <Text style={styles.container}> HomeScreen </Text>
-        <Text style={styles.welcome}>Text</Text>
-        <Text style={styles.instructions}>Text 2</Text>
-        
-      </View>
+      <CardList />
     );
   }
 }

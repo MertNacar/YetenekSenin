@@ -5,7 +5,7 @@ const UserModel = require('./User');
 const VideoModel = require('./Video');
 const FollowerModel = require('./Follower');
 const SubTalentModel = require('./SubTalent');
-const LevelModel = require('./Level');
+
 
 module.exports = {
     TalentModel,
@@ -14,6 +14,5 @@ module.exports = {
     UserModel,
     VideoModel,
     FollowerModel,
-    SubTalentModel,
-    LevelModel
+    SubTalentModel
 }

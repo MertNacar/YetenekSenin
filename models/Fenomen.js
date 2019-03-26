@@ -1,6 +1,6 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
-const LevelModel = require('./Level');
+
 
 const FenomenModel = sequelize.define("tblFenomen",{
     FenomenID : {
@@ -8,6 +8,17 @@ const FenomenModel = sequelize.define("tblFenomen",{
         type: Sequelize.INTEGER,
         autoIncrement: true,
     },
+   
+    FenomenBar : {
+        allowNull:false,
+        type: Sequelize.INTEGER,
+    
+    },
+    FenomenDescription : {
+        allowNull:false,
+        type: Sequelize.STRING,
+    
+    }
 
 },
     {
@@ -16,8 +27,5 @@ const FenomenModel = sequelize.define("tblFenomen",{
     }
 ) 
 
-FenomenModel.belongsTo(LevelModel,{
-    foreignKey: "fLevels"
-})
 
 module.exports = FenomenModel;

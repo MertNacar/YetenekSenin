@@ -12,29 +12,26 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 app.get('/', async (req, res) => { 
    try{
-       let gelen = await models.FollowerModel.findOne({
-        where: { followID: 2}
+        let gelen = await models.VideoModel.findAll({
+        attributes: ['videoDescription', 'videoTitle', 'videoWatchCount', 'createdAt'],
+        include : [{
+            required: true,
+            model: models.UserModel,
+            attributes:['username']
+        }]
         })
         console.log(gelen)
         if(gelen.length == 0){
             throw new Error("Hata")
-        }else {
-            gelen.fuserID = 3;
-            gelen.fFollowerID = 6;
-            gelen.save().catch( err => {
-                console.log(err.message);
-            })
+        }else {                  
             res.json({err : false,
-                FollowID: gelen.followID,
-                UserID: gelen.fuserID,
-                FollowerID: gelen.fFollowerID})
-               
-            }
-            
+                gelen
+               })      
+            }     
         }
         catch{
             res.json({err : true})
         }
-    })
+    }) 
 
 module.exports = app;

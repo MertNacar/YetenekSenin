@@ -1,6 +1,7 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
 const UserModel = require('./User');
+
 const FollowerModel = sequelize.define("tblFollower",{
       followID:{
           primaryKey:true,
@@ -19,7 +20,6 @@ const FollowerModel = sequelize.define("tblFollower",{
 },
     {
         indexes: [
-            // Create a unique index on email
             {  unique:true,          
               fields: ['fuserID','fFollowerID'],
               name: 'FollowsPK'

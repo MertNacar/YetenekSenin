@@ -2,25 +2,27 @@ const sequelize = require('./index');
 const Sequelize = require('sequelize');
 const CommentModel = require('./Comment');
 const TalentModel = require('./Talent');
+const UserModel = require('./User');
 
-const VideoModel = sequelize.define("tblVideo",{
-    videoID : {
-        primaryKey : true,
+
+const VideoModel = sequelize.define("tblVideo", {
+    videoID: {
+        primaryKey: true,
         type: Sequelize.INTEGER,
         autoIncrement: true,
     },
 
-    videoDescription : {
+    videoDescription: {
         type: Sequelize.STRING,
         allowNull: false
     },
 
-    videoTitle : {
+    videoTitle: {
         type: Sequelize.STRING,
         allowNull: false
     },
 
-    videoWatchCount : Sequelize.INTEGER,
+    videoWatchCount: Sequelize.INTEGER,
 
     createdAt: {
         type: Sequelize.DATE,
@@ -35,25 +37,33 @@ const VideoModel = sequelize.define("tblVideo",{
     {
         freezeTableName: true
     }
-) 
+)
 
-    TalentModel.hasMany(VideoModel, {
-        foreignKey: "fVTalentID"
-    })
+UserModel.hasMany(VideoModel, {
+    foreignKey: "fUserID"
+})
+
+VideoModel.belongsTo(UserModel, {
+    foreignKey: "fUserID"
+})
 
 
-    VideoModel.belongsTo(TalentModel, {
-        foreignKey: "fVTalentID"
-    })
+TalentModel.hasMany(VideoModel, {
+    foreignKey: "fVTalentID"
+})
+
+VideoModel.belongsTo(TalentModel, {
+    foreignKey: "fVTalentID"
+})
 
 
-    CommentModel.hasMany(VideoModel, {
-        foreignKey: "fVCommentID"
-    })
-    
-    
-    VideoModel.belongsTo(CommentModel, {
-        foreignKey: "fVCommentID"
-    })
+VideoModel.hasMany(CommentModel, {
+    foreignKey: "fVCommentID"
+})
+
+CommentModel.belongsTo(VideoModel, {
+    foreignKey: "fVCommentID"
+})
+
 
 module.exports = VideoModel;

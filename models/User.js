@@ -1,9 +1,8 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
-const TalentModel = require('./Talent');
-const CommentModel = require('./Comment');
+const SubTalentModel = require('./SubTalent');
 const FenomenModel = require('./Fenomen');
-const VideoModel = require('./Video');
+
 
 const UserModel = sequelize.define("tblUser",{
     userID : {
@@ -69,24 +68,17 @@ const UserModel = sequelize.define("tblUser",{
 ) 
 
 
-TalentModel.hasMany(UserModel, {
-    foreignKey: "fUTalentID"
+SubTalentModel.hasMany(UserModel, {
+    foreignKey: "fSubTalentID"
 })
 
 
-UserModel.belongsTo(TalentModel, {
-    foreignKey: "fUTalentID"
+UserModel.belongsTo(SubTalentModel, {
+    foreignKey: "fSubTalentID"
 })
 
 
-CommentModel.hasMany(UserModel, {
-    foreignKey: "fUCommentID"
-})
 
-
-UserModel.belongsTo(CommentModel, {
-    foreignKey: "fUCommentID"
-})
 
 FenomenModel.hasMany(UserModel, {
     foreignKey: "fUFenomenID"
@@ -98,13 +90,7 @@ UserModel.belongsTo(FenomenModel, {
 })
 
 
-VideoModel.hasMany(UserModel, {
-    foreignKey: "fUVideoID"
-})
 
 
-UserModel.belongsTo(VideoModel, {
-    foreignKey: "fUVideoID"
-})
 
 module.exports = UserModel;

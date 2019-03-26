@@ -1,6 +1,6 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
-
+const TalentModel = require('./Talent');
 
 const SubTalentModel = sequelize.define("tblSubTalent",{
     subTalentID : {
@@ -16,6 +16,14 @@ const SubTalentModel = sequelize.define("tblSubTalent",{
         timestamps: false
     }
 ) 
+TalentModel.hasMany(SubTalentModel, {
+    foreignKey: "fSubTalent"
+})
+
+
+SubTalentModel.belongsTo(TalentModel, {
+    foreignKey: "fSubTalent"
+})
 
 
 

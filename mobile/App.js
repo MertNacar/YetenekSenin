@@ -1,7 +1,7 @@
 import React  from 'react';
-import { Platform, StyleSheet, Text, View} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import { HomeScreen, ProfileScreen,SettingsScreen, SearchScreen } from './src/pages/';
+import { HomeScreen, ProfileScreen, SearchScreen } from './src/pages/';
 import Icon from 'react-native-vector-icons/Ionicons';
 
  

@@ -1,6 +1,6 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
-const SubTalentModel = require('./SubTalent');
+
 
 const TalentModel = sequelize.define("tblTalent",{
     talentID : {
@@ -8,7 +8,7 @@ const TalentModel = sequelize.define("tblTalent",{
         type: Sequelize.INTEGER,
         autoIncrement: true,
     },
-    fSubTalent : Sequelize.INTEGER
+    talentName : Sequelize.STRING
 },
     {
         freezeTableName: true,
@@ -16,14 +16,6 @@ const TalentModel = sequelize.define("tblTalent",{
     }
 ) 
 
-SubTalentModel.hasMany(TalentModel, {
-    foreignKey: "fSubTalent"
-})
-
-
-TalentModel.belongsTo(SubTalentModel, {
-    foreignKey: "fSubTalent"
-})
 
 
 module.exports = TalentModel;
