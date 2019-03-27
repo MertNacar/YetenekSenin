@@ -3,35 +3,40 @@ import { View, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import Card from "./Card";
 
 
+
+
 export default class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [{err : null}],
-      
+      items: [],
+      err: false,
+      loading:true
     };
   }
-
-  async componentDidMount() {
+  
+   async componentDidMount() {
+  
     try {
-      const url = 'http://localhost:8080/';
+      const url = 'http://192.168.0.30:8080/'; 
       const res = await fetch(url);
       const data = await res.json();
-      console.log(data)
-      if (data.err == true) throw new Error("Hata")
       
-       else {
-        this.setState({items: data , err : data.err})
+      if (data.err == true) throw new Error("Hata")
+
+      else {
+        this.setState({ items: data.gelen, loading:false })
       }
 
     } catch {
-      this.setState({ err: true })
+      this.setState({ err: true , loading:false})
+     
     }
-
   }
 
+
   render() {
-    if (this.state.items.length == 0 || !this.state.err) {
+    if (this.state.items.length == 0 || this.state.loading || this.state.err) {
       return (
         <View style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color="#0000ff" />

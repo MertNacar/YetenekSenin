@@ -13,20 +13,28 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.get('/', async (req, res) => { 
    try{
         let gelen = await models.VideoModel.findAll({
-        attributes: ['videoDescription', 'videoTitle', 'videoWatchCount', 'createdAt'],
+        attributes: ['videoPath','videoDescription', 'videoTitle', 'videoWatchCount', 'createdAt'],
         include : [{
             required: true,
             model: models.UserModel,
             attributes:['username']
-        }]
+        },{
+            required: true,
+            model: models.TalentModel,
+            attributes:['talentName'],
+        },{
+            required: true,
+            model: models.SubTalentModel,
+            attributes:['subTalentName']
+        }
+    ]
         })
         console.log(gelen)
         if(gelen.length == 0){
             throw new Error("Hata")
         }else {                  
-            res.json({err : false,
-                gelen
-               })      
+            res.json({err:false,
+                gelen})      
             }     
         }
         catch{

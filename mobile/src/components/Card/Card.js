@@ -19,27 +19,27 @@ export default class Card extends Component {
       <View style={styles.container}>
 
         <View style={styles.row}>
-          <Text style={styles.childUp}>Video Title</Text>
-          <Text style={styles.childUpRight}>Video Türü</Text>
+          <Text style={styles.childUp}>{this.props.item.videoTitle}</Text>
+          <Text style={styles.childUpRight}>{this.props.item.tblUser.tblSubTalent.subTalentName}</Text>
         </View>
 
         <TouchableOpacity style={styles.image} onLongPress={this.ClickImage}>
           <Image
             style={styles.image}
-            source={{ uri: 'https://di-uploads-pod12.dealerinspire.com/universitydodgeram/uploads/2017/10/University-Dodge-Challenger-AWD-Charger-AWD.jpg' }} />
+            source={{ uri:this.props.item.videoPath}} />
         </TouchableOpacity>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>ProfileName</Text>
+          <Text style={styles.childDown}>{this.props.item.tblUser.username}</Text>
           <Button title="Takip et" buttonStyle={styles.button} type="clear" />
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>DescriptionssDescriptionDescriptionDescriptionDescriptionDescription</Text>
+          <Text style={styles.childDown}>{this.props.item.videoDescription}</Text>
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>İzlenme Sayısı</Text>
+          <Text style={styles.childDown}>{this.props.item.videoWatchCount}</Text>
         </View>
 
 

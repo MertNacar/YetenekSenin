@@ -2,6 +2,7 @@ const sequelize = require('./index');
 const Sequelize = require('sequelize');
 const CommentModel = require('./Comment');
 const TalentModel = require('./Talent');
+const SubTalentModel = require('./SubTalent');
 const UserModel = require('./User');
 
 
@@ -54,6 +55,14 @@ TalentModel.hasMany(VideoModel, {
 
 VideoModel.belongsTo(TalentModel, {
     foreignKey: "fVTalentID"
+})
+
+SubTalentModel.hasMany(VideoModel, {
+    foreignKey: "fVSubTalentID"
+})
+
+VideoModel.belongsTo(SubTalentModel, {
+    foreignKey: "fVSubTalentID"
 })
 
 

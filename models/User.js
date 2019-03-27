@@ -1,6 +1,7 @@
 const sequelize = require('./index');
 const Sequelize = require('sequelize');
 const SubTalentModel = require('./SubTalent');
+const TalentModel = require('./Talent');
 const FenomenModel = require('./Fenomen');
 
 
@@ -75,6 +76,15 @@ SubTalentModel.hasMany(UserModel, {
 
 UserModel.belongsTo(SubTalentModel, {
     foreignKey: "fSubTalentID"
+})
+
+TalentModel.hasMany(UserModel, {
+    foreignKey: "fTalentID"
+})
+
+
+UserModel.belongsTo(TalentModel, {
+    foreignKey: "fTalentID"
 })
 
 

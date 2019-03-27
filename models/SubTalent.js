@@ -17,12 +17,12 @@ const SubTalentModel = sequelize.define("tblSubTalent",{
     }
 ) 
 TalentModel.hasMany(SubTalentModel, {
-    foreignKey: "fSubTalent"
+    foreignKey: "fTalentID"
 })
 
 
 SubTalentModel.belongsTo(TalentModel, {
-    foreignKey: "fSubTalent"
+    foreignKey: "fTalentID"
 })
 
 
