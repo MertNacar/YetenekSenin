@@ -9,6 +9,28 @@ const models = require('./models/models');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
+app.post('/login',async(req,res)=>{
+   var username=req.body.username;
+   var password=req.body.password;
+    try{
+      let gelen=await models.UserModel.findAll({
+        attributes:['username','userPassword'],
+        where:{
+            username: username,
+            userPassword: password
+          }
+      })
+     if(gelen){
+         res.json({err:false})
+     }
+     else {
+        throw new Error("Hata")
+     }
+  } catch{
+    res.json({err : true})
+}
+})
+
 
 app.get('/', async (req, res) => { 
    try{
