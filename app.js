@@ -29,7 +29,7 @@ app.get('/', async (req, res) => {
         }
     ]
         })
-        console.log(gelen)
+        
         if(gelen.length == 0){
             throw new Error("Hata")
         }else {                  

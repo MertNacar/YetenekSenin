@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 
 export default class Card extends Component {
@@ -15,12 +15,16 @@ export default class Card extends Component {
 
 
   render() {
+    /*let nowDay = new Date().getFullYear();
+    let createdDate = this.props.item.createdAt;
+    let finalDate = Math.abs(now - createdDate);
+    */
     return (
       <View style={styles.container}>
 
         <View style={styles.row}>
           <Text style={styles.childUp}>{this.props.item.videoTitle}</Text>
-          <Text style={styles.childUpRight}>{this.props.item.tblUser.tblSubTalent.subTalentName}</Text>
+          <Text style={styles.childUp}>{this.props.item.tblSubTalent.subTalentName}</Text>
         </View>
 
         <TouchableOpacity style={styles.image} onLongPress={this.ClickImage}>
@@ -31,60 +35,60 @@ export default class Card extends Component {
 
         <View style={styles.row}>
           <Text style={styles.childDown}>{this.props.item.tblUser.username}</Text>
-          <Button title="Takip et" buttonStyle={styles.button} type="clear" />
+          <Text style={styles.childDown}>{this.props.item.videoWatchCount}</Text>
         </View>
 
         <View style={styles.row}>
           <Text style={styles.childDown}>{this.props.item.videoDescription}</Text>
+          <Button title="Takip et" buttonStyle={styles.button} type="clear" />
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>{this.props.item.videoWatchCount}</Text>
+          <Text style={styles.childDown}>{this.props.item.createdAt}</Text>
         </View>
-
 
       </View>
     );
   }
 }
 
+let fullHeight = Dimensions.get('window').height
+
 const styles = StyleSheet.create({
   container: {
-    marginTop:10,
-    marginBottom:10,
-    height: 380
+    marginTop: fullHeight / 64,
+    marginBottom: fullHeight / 64,
+    height: fullHeight / 1.7,
+    //flex : 1
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    margin:15
+    margin: fullHeight / 42
   },
 
   image: {
-    height: 220,
+    height: fullHeight / 3,
     alignSelf: 'stretch',
   },
+
   childUp: {
     fontFamily: 'sans-serif-medium',
     flex: 1,
-    height: 20,
+    height: fullHeight / 32,
   },
-  childUpRight: {
-    fontFamily: 'sans-serif-medium',
-    flex: 1,
-    height: 20,
-  },
+
   childDown: {
     fontFamily: 'sans-serif-medium',
     flex: 1,
-    height: 25,
-    paddingBottom:10,
-    justifyContent: 'center',
+    height: fullHeight / 22,
+    paddingBottom: fullHeight / 64,
+    alignItems: 'flex-end',
   },
   button:{
     flex: 1,
-    height: 30,
-    paddingBottom:10,
+    height: fullHeight / 21,
+    paddingBottom: fullHeight / 64,
   }
  
 
