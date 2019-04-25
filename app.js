@@ -20,7 +20,7 @@ app.post('/login',async(req,res)=>{
             userPassword: password
           }
       })
-     if(gelen){
+     if(gelen.length > 0){
          res.json({err:false})
      }
      else {
