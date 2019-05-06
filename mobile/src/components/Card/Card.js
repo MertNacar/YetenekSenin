@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
-
+import Video from 'react-native-video';
 export default class Card extends Component {
   constructor(props) {
     super(props);
@@ -28,8 +28,9 @@ export default class Card extends Component {
         </View>
 
         <TouchableOpacity style={styles.image} onLongPress={this.ClickImage}>
-          <Image
+          <Video
             style={styles.image}
+            repeat={true}
             source={{ uri:this.props.item.videoPath}} />
         </TouchableOpacity>
 

@@ -33,9 +33,12 @@ app.post('/login',async(req,res)=>{
 
 
 app.get('/', async (req, res) => { 
-   try{
+   let page = req.query.page
+    try{
         let gelen = await models.VideoModel.findAll({
         attributes: ['videoPath','videoDescription', 'videoTitle', 'videoWatchCount', 'createdAt'],
+        offset:3 * page,
+        limit:3,
         include : [{
             required: true,
             model: models.UserModel,
@@ -52,12 +55,8 @@ app.get('/', async (req, res) => {
     ]
         })
         
-        if(gelen.length == 0){
-            throw new Error("Hata")
-        }else {                  
-            res.json({err:false,
-                gelen})      
-            }     
+        res.json({err:false,gelen})      
+                
         }
         catch{
             res.json({err : true})
