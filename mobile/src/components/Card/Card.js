@@ -2,10 +2,22 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 import Video from 'react-native-video';
+import moment from 'moment';
+
+
 export default class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      items : {
+        videoTitle: this.props.item.videoTitle,
+        subTalentName: this.props.item.tblSubTalent.subTalentName,
+        videoPath: this.props.item.videoPath,
+        username: this.props.item.tblUser.username,
+        videoWatchCount: this.props.item.videoWatchCount,
+        videoDescription: this.props.item.videoDescription,
+        createdAt: this.props.item.createdAt
+      } 
     };
   }
 
@@ -14,38 +26,37 @@ export default class Card extends Component {
   }
 
 
+
   render() {
-    /*let nowDay = new Date().getFullYear();
-    let createdDate = this.props.item.createdAt;
-    let finalDate = Math.abs(now - createdDate);
-    */
+    item = this.state.items
+    let time = moment(item.createdAt).fromNow();
     return (
       <View style={styles.container}>
 
         <View style={styles.row}>
-          <Text style={styles.childUp}>{this.props.item.videoTitle}</Text>
-          <Text style={styles.childUp}>{this.props.item.tblSubTalent.subTalentName}</Text>
+          <Text style={styles.childUp}>{item.videoTitle}</Text>
+          <Text style={styles.childUp}>{item.subTalentName}</Text>
         </View>
 
         <TouchableOpacity style={styles.image} onLongPress={this.ClickImage}>
           <Video
             style={styles.image}
             repeat={true}
-            source={{ uri:this.props.item.videoPath}} />
+            source={{ uri:item.videoPath}} />
         </TouchableOpacity>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>{this.props.item.tblUser.username}</Text>
-          <Text style={styles.childDown}>{this.props.item.videoWatchCount}</Text>
+          <Text style={styles.childDown}>{item.username}</Text>
+          <Text style={styles.childDown}>{item.videoWatchCount}</Text>
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>{this.props.item.videoDescription}</Text>
+          <Text style={styles.childDown}>{item.videoDescription}</Text>
           <Button title="Takip et" buttonStyle={styles.button} type="clear" />
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.childDown}>{this.props.item.createdAt}</Text>
+          <Text style={styles.childDown}>{time}</Text>
         </View>
 
       </View>

@@ -11,7 +11,8 @@ export default class CardList extends Component {
       items: [],
       err: false,
       loading:true,
-      page:0
+      page:0,
+      threshold: 0.5
     };
   }
   
@@ -52,6 +53,7 @@ export default class CardList extends Component {
         </View> : null
     )
   }
+
   render() {
     if (this.state.items.length == 0 || this.state.loading || this.state.err) {
       return (
@@ -66,7 +68,7 @@ export default class CardList extends Component {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <Card item={item}/>}
         onEndReached={this.handleLoadMore}
-        onEndReachedThreshold={0.5} 
+        onEndReachedThreshold={this.state.threshold} 
         ListFooterComponent={this.renderFooter}
       />
     );
