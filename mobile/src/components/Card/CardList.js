@@ -9,6 +9,7 @@ export default class CardList extends Component {
     super(props);
     this.state = {
       items: [],
+      itemLength:0,
       err: false,
       loading:true,
       page:0,
@@ -29,7 +30,7 @@ export default class CardList extends Component {
       if (data.err == true) throw new Error("Hata")
 
       else {
-        this.setState({ items:[...this.state.items, ...data.gelen], loading:false })
+        this.setState({ items:[...this.state.items, ...data.gelen], loading:false, itemLength: data.gelenLen })
       }
 
     } catch {
@@ -39,11 +40,17 @@ export default class CardList extends Component {
   }
 
   handleLoadMore = () => {
-    this.setState(
-      {page: this.state.page + 1 },
-      this.getData
-    )
-  }
+    if(this.state.itemLength > 0){
+        this.setState(
+          {page: this.state.page + 1 },
+          this.getData
+          )
+      } else {
+        this.setState({
+          threshold : null
+        })
+      }
+    }
 
   renderFooter = () => {
     return(

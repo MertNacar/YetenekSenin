@@ -54,8 +54,8 @@ app.get('/', async (req, res) => {
         }
     ]
         })
-        
-        res.json({err:false,gelen})      
+        let gelenLen = gelen.length
+        res.json({err:false,gelen,gelenLen})      
                 
         }
         catch{
