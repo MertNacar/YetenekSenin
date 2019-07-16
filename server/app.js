@@ -7,9 +7,9 @@ const fs   = require('fs'); //read file
 const jwt  = require('jsonwebtoken'); //create token
 const options = require("./src/Tokenize/options")
 const { hashPassword, verifyPassword } = require("./src/Hashing/hash"); //hashing password 
-const PRIVATE_KEY  = fs.readFileSync('./src/Tokenize/private.key', 'utf8');
-const PUBLIC_KEY  = fs.readFileSync('./src/Tokenize/public.key', 'utf8');
-const Op = Sequelize.Op;// OR LIKE AND ....
+const PRIVATE_KEY  = fs.readFileSync('./src/Tokenize/private.key', 'utf8'); // read private key file
+const PUBLIC_KEY  = fs.readFileSync('./src/Tokenize/public.key', 'utf8'); // read public key file
+const Op = Sequelize.Op;// OR LIKE AND operator ....
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -104,8 +104,8 @@ app.post("/signup", async (req, res) => {
     if (validate !== null) {
       throw new Error("Email veya kullanıcı adı kullanıyor.");
     } else {
-      let token = jwt.sign({Username : data.username}, PRIVATE_KEY, options.signOptions(data.username));
-      let hash = await hashPassword(req.body.password);
+      var token = jwt.sign({ username: data.username }, PRIVATE_KEY, options.signOptions());
+      let hash = hashPassword(req.body.password);
       data.password = hash;
       await models.UserModel.create(data);
       res.json({ err: false, token });
@@ -117,14 +117,16 @@ app.post("/signup", async (req, res) => {
 // ------------  TODO  ------------------
 //login with token without form or any click auto login
 app.post("/login/immediately", async (req, res) => {
-  /*let token = "a";
+  let token = options.tokennn;
   try{
     if(token){
-      token 
+      let validate = jwt.verify(token,PUBLIC_KEY,options.verifyOptions()) 
+      if(validate) res.json({err:false, autoLogin: true})
+      else throw new Error("kayıtlı kullanıcı yok")
     }
   }catch{
     res.json({err:true, message: err.message})
-  }*/
+  }
 
 })
 
