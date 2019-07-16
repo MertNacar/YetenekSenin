@@ -28,8 +28,8 @@ const UserModel = sequelize.define("tblUser",{
         allowNull: false
     },
 
-    userPassword : {
-        type: Sequelize.STRING.BINARY,
+    password : {
+        type: Sequelize.STRING,
         allowNull: false
     },
 
