@@ -62,4 +62,4 @@ config
 * giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama 
 * FRONTEND kısmında searc ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
 
-[:+1:](./tenor.gif)
+[:+1:](tenor.gif)
