@@ -3,13 +3,13 @@ const app = express();
 const bodyParser = require("body-parser");
 const Sequelize = require("sequelize");
 const models = require("./models/models");
-const fs   = require('fs'); //read file
-const jwt  = require('jsonwebtoken'); //create token
-const options = require("./src/Tokenize/options")
-const { hashPassword, verifyPassword } = require("./src/Hashing/hash"); //hashing password 
-const PRIVATE_KEY  = fs.readFileSync('./src/Tokenize/private.key', 'utf8'); // read private key file
-const PUBLIC_KEY  = fs.readFileSync('./src/Tokenize/public.key', 'utf8'); // read public key file
-const Op = Sequelize.Op;// OR LIKE AND operator ....
+const fs = require("fs"); //read file
+const jwt = require("jsonwebtoken"); //create token
+const options = require("./src/Tokenize/options");
+const { hashPassword, verifyPassword } = require("./src/Hashing/hash"); //hashing password
+const PRIVATE_KEY = fs.readFileSync("./src/Tokenize/private.key", "utf8"); // read private key file
+const PUBLIC_KEY = fs.readFileSync("./src/Tokenize/public.key", "utf8"); // read public key file
+const Op = Sequelize.Op; // OR LIKE AND operator ....
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -80,11 +80,7 @@ app.post("/signup", async (req, res) => {
   try {
     let data = req.body;
     let validate = await models.UserModel.findOne({
-      attributes: [
-        "userID",
-        "username",
-        "email"
-      ],
+      attributes: ["userID", "username", "email"],
       where: {
         [Op.or]: [
           {
@@ -104,8 +100,12 @@ app.post("/signup", async (req, res) => {
     if (validate !== null) {
       throw new Error("Email veya kullanıcı adı kullanıyor.");
     } else {
-      var token = jwt.sign({ username: data.username }, PRIVATE_KEY, options.signOptions());
-      let hash = hashPassword(req.body.password);
+      var token = jwt.sign(
+        { username: data.username },
+        PRIVATE_KEY,
+        options.signOptions()
+      );
+      let hash = hashPassword(data.password);
       data.password = hash;
       await models.UserModel.create(data);
       res.json({ err: false, token });
@@ -117,36 +117,38 @@ app.post("/signup", async (req, res) => {
 // ------------  TODO  ------------------
 //login with token without form or any click auto login
 app.post("/login/immediately", async (req, res) => {
-  let token = options.tokennn;
-  try{
-    if(token){
-      let validate = jwt.verify(token,PUBLIC_KEY,options.verifyOptions()) 
-      if(validate) res.json({err:false, autoLogin: true})
-      else throw new Error("kayıtlı kullanıcı yok")
+  let token = req.body.token;
+  console.log(token)
+  try {
+    if (token) {
+      let validate = jwt.verify(token, PUBLIC_KEY, options.verifyOptions());
+      if (validate.iss == "YetenekSenin") res.json({ err: false, autoLogin: true });
+      else throw new Error("kayıtlı kullanıcı yok");
     }
-  }catch{
-    res.json({err:true, message: err.message})
+  } catch(err) {
+    res.json({ err: true, message: err.message });
   }
+});
 
-})
-
-//login validate with form 
+//login validate with form
 app.post("/login", async (req, res) => {
-
   let { username, password } = req.body;
   let hashedPassword = hashPassword(password);
-  
   try {
     let data = await models.UserModel.findOne({
       attributes: ["username", "password"],
       where: {
-        username,
-        password: hashedPassword
+        username
       }
     });
     if (data.length === 1) {
-      let token = jwt.sign({Username : data.username}, PRIVATE_KEY, options.signOptions(data.username));
-      res.json({ err: false, token });
+      let confirm = verifyPassword(data.password, hashedPassword);
+      let token = jwt.sign(
+        { Username: data.username },
+        PRIVATE_KEY,
+        options.signOptions(data.username)
+      );
+      res.json({ status: confirm, token });
     } else {
       throw new Error(
         "Hatalı kullanıcı adı veya şifre lütfen tekrar deneyiniz."

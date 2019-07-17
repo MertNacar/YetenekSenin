@@ -15,9 +15,6 @@ export default class CardList extends Component {
       page:0,
       threshold: 0.5
     };
-  }
-  
-   async componentDidMount() {
     this.getData();
   }
 
@@ -82,15 +79,4 @@ export default class CardList extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  }
-})
 
