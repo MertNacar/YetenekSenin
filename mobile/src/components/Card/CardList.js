@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { View, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import Card from "./Card";
-
-
+import config from "../../../config/config";
+import * as Http from "../../../utils/httpHelper";
 
 export default class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      itemLength:0,
+      itemLength: 0,
       err: false,
-      loading:true,
-      page:0,
+      loading: true,
+      page: 0,
       threshold: 0.5
     };
     this.getData();
@@ -20,63 +20,71 @@ export default class CardList extends Component {
 
   getData = async () => {
     try {
-      const url = 'http://192.168.0.30:8080/?page=' + this.state.page; 
-      const res = await fetch(url);
-      const data = await res.json();
-      
-      if (data.err == true) throw new Error("Hata")
+      let { items, page } = this.state;
+      let data = await Http.get(`/?page=${page}`);
 
+      if (data.err === true) throw new Error("Hata");
       else {
-        this.setState({ items:[...this.state.items, ...data.gelen], loading:false, itemLength: data.gelenLen })
+        this.setState({
+          items: [...items, ...data.gelen],
+          loading: false,
+          itemLength: data.gelenLen
+        });
       }
-
     } catch {
-      this.setState({ err: true , loading:false})
-     
+      this.setState({ err: true, loading: false });
     }
-  }
+  };
 
   handleLoadMore = () => {
-    if(this.state.itemLength > 0){
-        this.setState(
-          {page: this.state.page + 1 },
-          this.getData
-          )
-      } else {
-        this.setState({
-          threshold : null
-        })
-      }
+    let { itemLength, page } = this.state;
+    if (itemLength > 0) {
+      this.setState({ page: page + 1 }, this.getData);
+    } else {
+      this.setState({
+        threshold: null
+      });
     }
+  };
 
   renderFooter = () => {
-    return(
-      this.state.loading ?
+    let { loading } = this.state;
+    return loading ? (
       <View style={styles.container}>
-          <ActivityIndicator size="small" color="#0000ff" />
-        </View> : null
-    )
-  }
+        <ActivityIndicator size="small" color="#0000ff" />
+      </View>
+    ) : null;
+  };
 
   render() {
-    if (this.state.items.length == 0 || this.state.loading || this.state.err) {
+    let { loading, items, err, threshold } = this.state;
+    if (items.length == 0 || loading || err) {
       return (
         <View style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      )
+      );
     }
     return (
       <FlatList
-        data={this.state.items}
+        data={items}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Card item={item}/>}
+        renderItem={({ item }) => <Card item={item} />}
         onEndReached={this.handleLoadMore}
-        onEndReachedThreshold={this.state.threshold} 
+        onEndReachedThreshold={threshold}
         ListFooterComponent={this.renderFooter}
       />
     );
   }
 }
-
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  }
+});

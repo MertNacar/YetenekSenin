@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
+import styles from "../styles/styles"
 
 export default class SearchScreen extends Component {
   constructor(props) {
@@ -8,17 +9,9 @@ export default class SearchScreen extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.containerSearch}>
         <Text>Search</Text>
       </View>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "red",
-    borderWidth: 1
-  }
-});

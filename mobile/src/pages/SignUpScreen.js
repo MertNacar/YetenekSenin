@@ -1,60 +1,46 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import { Button } from "react-native-elements";
+import { Text, View, Button } from "react-native";
+import InputHandler from "../components/Input/InputHandler";
+import { storeDataStorage } from "../components/AsyncStorage/index";
+import * as Http from "../../utils/httpHelper";
 
 export default class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthday: "",
-      firstname: "",
-      surname: "",
+      data: {
+        username: "ten10",
+        password: "sssssssssssss",
+        email: "aaa@h",
+        birthday: "2012-02-21 18:10:00.000",
+        firstname: "mertmert",
+        surname: "ncaar"
+      },
       errMessage: "",
       err: false
     };
   }
 
-  storeData = async token => {
-    try {
-      await AsyncStorage.setItem("tokenJWT", token);
-    } catch (e) {
-      this.setState({
-        tokenErr: e.messeage
-      });
-    }
-  };
-
   post = async () => {
     try {
-      let response = await fetch("http://192.168.0.30:8080/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: this.state.username,
-          password: this.state.password,
-          firstname: this.state.firstname,
-          surname: this.state.surname,
-          birthday: this.state.birthday,
-          email: this.state.email
-        })
-      });
+      let body = this.state.data;
 
-      let data = await response.json();
+      let data = await Http.post("/signup", body);
 
-      if (!data || data.err) {
-        throw new Error("Email veya kullanıcı adınızı değiştiriniz.");
+      if (data.err) {
+        throw new Error(data.message);
       } else {
-        this.setState({
-          err: false
-        });
-        this.storeData(data.token);
+        let store = await storeDataStorage(data.token);
+
+        if (store.err) {
+          this.setState({ err: true });
+          throw new Error(store.message);
+        } else {
+          this.setState({
+            autoLogin: true,
+            loading: false
+          });
+        }
       }
     } catch (err) {
       this.setState({ err: true, errMessage: err.message });
@@ -62,39 +48,33 @@ export default class SignUpScreen extends Component {
   };
 
   render() {
-    if (err) {
+    if (false) {
       <View>
         <Text> {this.state.errMessage} </Text>
         <Text> SIGN UP </Text>
-        <TextInput
-          placeholder="Ad"
-          onChangeText={firstname => this.setState({ firstname })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Ad"
+          textChange={firstname => this.setState({ firstname })}
         />
-        <TextInput
-          placeholder="Soyad"
-          onChangeText={surname => this.setState({ surname })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Soyad"
+          textChange={surname => this.setState({ surname })}
         />
-        <TextInput
-          placeholder="Kullanıcı Adı"
-          onChangeText={username => this.setState({ username })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Kullanıcı Adı"
+          textChange={username => this.setState({ username })}
         />
-        <TextInput
-          placeholder="Sifre"
-          onChangeText={password => this.setState({ password })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Sifre"
+          textChange={password => this.setState({ password })}
         />
-        <TextInput
-          placeholder="email"
-          onChangeText={email => this.setState({ email })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Email"
+          textChange={email => this.setState({ email })}
         />
-        <TextInput
-          placeholder="birthday"
-          onChangeText={birthday => this.setState({ birthday })}
-          underlineColorAndroid="transparent"
+        <InputHandler
+          textHolder="Birthday"
+          textChange={birthday => this.setState({ birthday })}
         />
 
         <Button title="Entry" onPress={this.post()} />
@@ -103,38 +83,12 @@ export default class SignUpScreen extends Component {
       return (
         <View>
           <Text> SIGN UP </Text>
-          <TextInput
-            placeholder="Ad"
-            onChangeText={firstname => this.setState({ firstname })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="Soyad"
-            onChangeText={surname => this.setState({ surname })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="Kullanıcı Adı"
-            onChangeText={username => this.setState({ username })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="Sifre"
-            onChangeText={password => this.setState({ password })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="email"
-            onChangeText={email => this.setState({ email })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="birthday"
-            onChangeText={birthday => this.setState({ birthday })}
-            underlineColorAndroid="transparent"
-          />
-
-          <Button title="Entry" onPress={this.post()} />
+          <Text> SIGN UP </Text>
+          <Text> SIGN UP </Text>
+          <Text> SIGN UP </Text>
+          <Text> SIGN UP </Text>
+          <Text> SIGN UP </Text>
+          <Button onPress={this.post} title="Learn More" />
         </View>
       );
     }

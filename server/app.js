@@ -10,12 +10,14 @@ const { hashPassword, verifyPassword } = require("./src/Hashing/hash"); //hashin
 const PRIVATE_KEY = fs.readFileSync("./src/Tokenize/private.key", "utf8"); // read private key file
 const PUBLIC_KEY = fs.readFileSync("./src/Tokenize/public.key", "utf8"); // read public key file
 const Op = Sequelize.Op; // OR LIKE AND operator ....
+const config = require("config");
+const apiV = config.api;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //get all videos for homepage
-app.get("/", async (req, res) => {
+app.get(`${apiV}/`, async (req, res) => {
   let page = req.query.page;
   try {
     let gelen = await models.VideoModel.findAll({
@@ -46,8 +48,7 @@ app.get("/", async (req, res) => {
         }
       ]
     });
-    let gelenLen = gelen.length;
-    res.json({ err: false, gelen, gelenLen });
+    res.json({ err: false, gelen, gelenLen: gelen.length });
   } catch {
     res.json({ err: true });
   }
@@ -55,7 +56,7 @@ app.get("/", async (req, res) => {
 
 //FRONTEND -- TODO --
 //search username in search page
-app.get("/search/:user", async (req, res) => {
+app.get(`${apiV}/search/:user`, async (req, res) => {
   let username = req.params.user;
   try {
     let data = await models.UserModel.findAll({
@@ -76,9 +77,10 @@ app.get("/search/:user", async (req, res) => {
 });
 
 //SIGNUP
-app.post("/signup", async (req, res) => {
+app.post(`${apiV}/signup`, async (req, res) => {
   try {
-    let data = req.body;
+    let data = req.body.data;
+    console.log(data);
     let validate = await models.UserModel.findOne({
       attributes: ["userID", "username", "email"],
       where: {
@@ -105,7 +107,7 @@ app.post("/signup", async (req, res) => {
         PRIVATE_KEY,
         options.signOptions()
       );
-      let hash = hashPassword(data.password);
+      let hash = await hashPassword(data.password);
       data.password = hash;
       await models.UserModel.create(data);
       res.json({ err: false, token });
@@ -116,22 +118,22 @@ app.post("/signup", async (req, res) => {
 });
 // ------------  TODO  ------------------
 //login with token without form or any click auto login
-app.post("/login/immediately", async (req, res) => {
-  let token = req.body.token;
-  console.log(token)
+app.post(`${apiV}/login/immediately`, async (req, res) => {
+  let token = req.body.data.token;
   try {
     if (token) {
       let validate = jwt.verify(token, PUBLIC_KEY, options.verifyOptions());
-      if (validate.iss == "YetenekSenin") res.json({ err: false, autoLogin: true });
+      if (validate.iss == "YetenekSenin")
+        res.json({ err: false, autoLogin: true });
       else throw new Error("kayıtlı kullanıcı yok");
     }
-  } catch(err) {
+  } catch (err) {
     res.json({ err: true, message: err.message });
   }
 });
 
 //login validate with form
-app.post("/login", async (req, res) => {
+app.post(`${apiV}/login`, async (req, res) => {
   let { username, password } = req.body;
   let hashedPassword = hashPassword(password);
   try {
@@ -148,7 +150,7 @@ app.post("/login", async (req, res) => {
         PRIVATE_KEY,
         options.signOptions(data.username)
       );
-      res.json({ status: confirm, token });
+      res.json({ err: !confirm, token });
     } else {
       throw new Error(
         "Hatalı kullanıcı adı veya şifre lütfen tekrar deneyiniz."
@@ -161,7 +163,7 @@ app.post("/login", async (req, res) => {
 
 //FRONTEND -- TODO --
 //get profile's info
-app.get("/profile", async (req, res) => {
+app.get(`${apiV}/profile`, async (req, res) => {
   let { username, password } = req.body;
   try {
     await models.UserModel.findOne({

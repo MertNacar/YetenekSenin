@@ -1,20 +1,21 @@
 import React, { Component } from "react";
+import { View, Text, Button, TextInput, ActivityIndicator } from "react-native";
+import InputHandler from "../components/Input/InputHandler";
 import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  TextInput,
-  ActivityIndicator
-} from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+  getDataStorage,
+  storeDataStorage
+} from "../components/AsyncStorage/index";
+import styles from "../styles/styles";
+import * as Http from "../../utils/httpHelper";
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
+      data: {
+        username: "",
+        password: ""
+      },
       token: "",
       autoLogin: false,
       loading: true,
@@ -22,50 +23,15 @@ export default class LoginScreen extends Component {
     };
   }
 
-  getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("tokenJWT");
-      if (value !== null) {
-        this.setState({
-          token: value
-        });
-      }
-    } catch (e) {
-      this.setState({
-        loading: false,
-        err: e.message
-      });
-    }
-  };
-
-  storeData = async token => {
-    try {
-      await AsyncStorage.setItem("tokenJWT", token);
-    } catch (e) {
-      this.setState({
-        tokenErr: e.messeage
-      });
-    }
-  };
-
   async componentDidMount() {
-    await this.getData()
+    let getData = await getDataStorage();
+    if (getData.err) return;
     try {
-      if (true) {
-        let res = await fetch("http://192.168.1.24:8000/login/immediately", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            token: this.state.token
-          })
+      if (getData.value) {
+        let data = await Http.post("/login/immediately", {
+          token: getData.value
         });
-        
-        let data = await res.json();
-
-        if (data.err == true) throw new Error(data.message);
+        if (data.err === true) throw new Error(data.message);
         else {
           this.setState({
             autoLogin: true,
@@ -81,33 +47,24 @@ export default class LoginScreen extends Component {
   }
 
   post = async () => {
+    let body = this.state.data;
     try {
-      let response = await fetch("http://192.168.0.30:8080/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: this.state.username,
-          password: this.state.password
-        })
-      });
+      let data = await Http.post("/login", body);
 
-      let data = await response.json();
-
-      if (data.err && !data.status) {
-        throw new Error("Hata");
+      if (!data.status) {
+        throw new Error(data.message);
       } else {
-        this.setState(
-          {
-            err: false,
-            token: data.token
-          },
-          () => {
-            this.storeData(data.token);
-          }
-        );
+        let store = await storeDataStorage(data.token);
+
+        if (store.err) {
+          this.setState({ err: true });
+          throw new Error(store.message);
+        } else {
+          this.setState({
+            autoLogin: true,
+            loading: false
+          });
+        }
       }
     } catch {
       this.setState({ err: true });
@@ -118,70 +75,48 @@ export default class LoginScreen extends Component {
     let { autoLogin, err, loading } = this.state;
     if (loading) {
       return (
-        <View style={[styles.container, styles.horizontal]}>
+        <View style={[styles.containerLogin, styles.horizontal]}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
     } else if (!loading && autoLogin) {
-      //YÖNLENDİRME
       return (
         <View>
-          <Text>YÖNLENDİRİLDİNİZ</Text>
+          <Text>YONLENDIRILDIN</Text>
         </View>
       );
     } else if (err) {
       return (
-        <View style={styles.container}>
+        <View style={styles.containerLogin}>
           <Text>Log In</Text>
-          <Text>Kullanıcı Adı şifre yanlıştır.</Text>
-          <TextInput
-            placeholder="Kullanıcı Adı"
-            onChangeText={username => this.setState({ username })}
-            underlineColorAndroid="transparent"
+          <InputHandler
+            textHolder="Kullanıcı Adı"
+            textChange={username => this.setState({ username })}
           />
-          <TextInput
-            placeholder="Sifre"
-            onChangeText={password => this.setState({ password })}
-            underlineColorAndroid="transparent"
+          <InputHandler
+            textHolder="Sifre"
+            textChange={password => this.setState({ password })}
           />
+
           <Button title="Entry" onPress={this.post()} />
         </View>
       );
     } else {
       return (
-        <View style={styles.container}>
+        <View style={styles.containerLogin}>
           <Text>Log In</Text>
+          <InputHandler
+            textHolder="Kullanıcı Adı"
+            textChange={username => this.setState({ username })}
+          />
+          <InputHandler
+            textHolder="Sifre"
+            textChange={password => this.setState({ password })}
+          />
 
-          <TextInput
-            placeholder="Kullanıcı Adı"
-            onChangeText={username => this.setState({ username })}
-            underlineColorAndroid="transparent"
-          />
-          <TextInput
-            placeholder="Sifre"
-            onChangeText={password => this.setState({ password })}
-            underlineColorAndroid="transparent"
-          />
           <Button title="Entry" onPress={this.post()} />
         </View>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between"
-  },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});
