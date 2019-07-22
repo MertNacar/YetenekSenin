@@ -4,18 +4,18 @@ var aud = "http://yeteneksenin.com.tr";
 
 let signOptions = () => {
   return {
-    iss: iss,
-    sub: sub,
-    aud: aud,
+    issuer: iss,
+    subject: sub,
+    audience: aud,
     algorithm: "RS256"
   };
 };
 
 let verifyOptions = () => {
   return {
-    iss: iss,
-    sub: sub,
-    aud: aud,
+    issuer: iss,
+    subject: sub,
+    audience: aud,
     algorithm: ["RS256"]
   };
 };

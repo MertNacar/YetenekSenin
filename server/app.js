@@ -11,13 +11,12 @@ const PRIVATE_KEY = fs.readFileSync("./src/Tokenize/private.key", "utf8"); // re
 const PUBLIC_KEY = fs.readFileSync("./src/Tokenize/public.key", "utf8"); // read public key file
 const Op = Sequelize.Op; // OR LIKE AND operator ....
 const config = require("config");
-const apiV = config.api;
-
+const apiV = config.server.api;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //get all videos for homepage
-app.get(`${apiV}/`, async (req, res) => {
+app.get(`/${apiV}/`, async (req, res) => {
   let page = req.query.page;
   try {
     let gelen = await models.VideoModel.findAll({
@@ -56,7 +55,7 @@ app.get(`${apiV}/`, async (req, res) => {
 
 //FRONTEND -- TODO --
 //search username in search page
-app.get(`${apiV}/search/:user`, async (req, res) => {
+app.get(`/${apiV}/search/:user`, async (req, res) => {
   let username = req.params.user;
   try {
     let data = await models.UserModel.findAll({
@@ -77,7 +76,7 @@ app.get(`${apiV}/search/:user`, async (req, res) => {
 });
 
 //SIGNUP
-app.post(`${apiV}/signup`, async (req, res) => {
+app.post(`/${apiV}/signup`, async (req, res) => {
   try {
     let data = req.body.data;
     console.log(data);
@@ -118,7 +117,7 @@ app.post(`${apiV}/signup`, async (req, res) => {
 });
 // ------------  TODO  ------------------
 //login with token without form or any click auto login
-app.post(`${apiV}/login/immediately`, async (req, res) => {
+app.post(`/${apiV}/login/immediately`, async (req, res) => {
   let token = req.body.data.token;
   try {
     if (token) {
@@ -163,7 +162,7 @@ app.post(`${apiV}/login`, async (req, res) => {
 
 //FRONTEND -- TODO --
 //get profile's info
-app.get(`${apiV}/profile`, async (req, res) => {
+app.get(`/${apiV}/profile`, async (req, res) => {
   let { username, password } = req.body;
   try {
     await models.UserModel.findOne({

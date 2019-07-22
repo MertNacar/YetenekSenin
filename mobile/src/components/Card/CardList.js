@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import Card from "./Card";
-import config from "../../../config/config";
 import * as Http from "../../../utils/httpHelper";
 
 export default class CardList extends Component {

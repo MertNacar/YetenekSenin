@@ -7,23 +7,22 @@ export const getDataStorage = async () => {
     if (value !== null) {
       return { value, err: false };
     } else {
-      return {err: true}
+      return { err: true };
     }
   } catch (e) {
     return {
-      err: true,
-      message: e.message
+      err: true
     };
   }
 };
 
 export const storeDataStorage = async token => {
   try {
-    await AsyncStorage.setItem("tokenJWT", token);
+    let data = await AsyncStorage.setItem("tokenJWT", token);
+    return data;
   } catch (e) {
     return {
-      err: true,
-      message: e.message
+      err: true
     };
   }
 };

@@ -1,6 +1,6 @@
-import { StyleSheet,Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
-let fullHeight = Dimensions.get('window').height
+let fullHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
