@@ -62,7 +62,11 @@ npm run android
 
 ### mobile config dosyası içine config dosyası, onun içinede config.js oluşturulsun. ###
 
- ### config.js içerik / bilgileri değiştirmeyi unutmayın. :+1:
+* mobile
+  * config
+    * config.js
+    
+ ### config.js içerik / URL bilgisini değiştirmeyi unutmayın. :+1:
 ```
 export default {
   URL: "http://192.168.1.27:8000",
