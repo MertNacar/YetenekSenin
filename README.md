@@ -1,18 +1,14 @@
 # YetenekSenin
 ## React / Express / Node /React Native
 
-### başlatmak için hem server hemde client dosyalarının içine gidip sırasıyla yapılması yeterlidir.
+## Server
+### root üzerinden server
 ```
 cd .\server\
 npm i
 npm start 
 
-cd .\mobile\
-npm i
-npm run android 
-
 ```
-
 ### server dosyasının içine config dosya, bu config dosyasının içinede default.json açılsın
 * server
   * config
@@ -54,10 +50,30 @@ node_modules
 config
 
 ```
+## Mobile
 
+### root üzerinden server
+```
+cd .\mobile\
+npm i
+npm run android 
 
+```
+
+### mobile config dosyası içine config dosyası, onun içinede config.js oluşturulsun. ###
+
+ ### config.js içerik / bilgileri değiştirmeyi unutmayın. :+1:
+```
+export default {
+  URL: "http://192.168.1.27:8000",
+  API: "v1"
+};
+```
 ## TODO LİST
 
-* her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama
-* giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama 
-* FRONTEND kısmında search ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
+* Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama
+* Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama 
+* Frontend kısmında search ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
+* Video Ekleme sayfası için mobil tasarım ve API istekleri 
+* Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
+* Ayarlar kısmı, tasarımı ve çıkış işlemi
