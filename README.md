@@ -56,6 +56,7 @@ config
 ```
 cd .\mobile\
 npm i
+npm run gradle
 npm run android 
 
 ```
@@ -83,3 +84,4 @@ export default {
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve çıkış işlemi
 * Tüm inputlar için RegExp yapılacak
+* Username ve Email inputları için API ile anında kontrol sağlanacak
