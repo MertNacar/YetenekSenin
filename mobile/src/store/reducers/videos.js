@@ -1,12 +1,18 @@
+import actions from '../actions/actionTypes'
+
 const initialState = {
-  token: ""
+  videosTitle:["hey","deneme","redux"]
 };
 
-const reducer = (state = initialState, action) => {
+const videoReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.ADD_VIDEO:
+      return [...state,action.payload]
+      case actions.DELETE_VIDEO: 
+      return [...state]
     default:
       return state;
   }
 };
 
-export default reducer;
+export default videoReducer;

@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { View, Text, Button } from "react-native";
-import InputHandler from "../../src/components/Input/InputHandler";
+import { View, Text, ImageBackground } from "react-native";
+import InputHandler from "../../src/components/InputHandler/InputHandler";
 import { storeDataStorage } from "../../src/AsyncStorage/index";
 import { MainTabs } from "../AllScreens";
 import styles from "../../src/styles/styles";
 import * as Http from "../../utils/httpHelper";
 import { Navigation } from "react-native-navigation";
-
+import HeadingText from "../../src/components/HeadingText/headingText";
+import MainText from "../../src/components/MainText/MainText";
+import backgroundImage from "../../src/assets/image.jpg";
+import CustomButton from "../../src/components/CustomButton/CustomButton";
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -44,9 +47,6 @@ export default class LoginScreen extends Component {
     Navigation.push(this.props.componentId, {
       component: {
         name: "yeteneksenin.screens.SignUpScreen",
-        passProps: {
-          text: "Pushed screen"
-        },
         options: {
           topBar: {
             visible: true,
@@ -62,24 +62,32 @@ export default class LoginScreen extends Component {
     let { err } = this.state;
     if (err === null || err) {
       return (
-        <View style={styles.containerLogin}>
-          <View style={{ display: err ? "flex" : "none" }}>
-            <Text>Hatalı giriş yaptınız lütfen tekrar deneyiniz.</Text>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.containerLogin}>
+            <View style={{ display: err ? "flex" : "none" }}>
+              <Text>Hatalı giriş yaptınız lütfen tekrar deneyiniz.</Text>
+            </View>
+            <MainText>
+              <HeadingText>Log In</HeadingText>
+            </MainText>
+            <View style={styles.formLogin}>
+              <InputHandler
+                textHolder="Kullanıcı Adı"
+                textChange={username => this.setState({ username })}
+              />
+              <InputHandler
+                textHolder="Sifre"
+                textChange={password => this.setState({ password })}
+              />
+            </View>
+            <CustomButton onPress={this.post}> Log In</CustomButton>
+
+            <CustomButton onPress={this.goSignup}> Sıgn Up </CustomButton>
           </View>
-          <Text>Log In</Text>
-          <InputHandler
-            textHolder="Kullanıcı Adı"
-            textChange={username => this.setState({ username })}
-          />
-          <InputHandler
-            textHolder="Sifre"
-            textChange={password => this.setState({ password })}
-          />
-
-          <Button title="Entry" onPress={this.post} />
-
-          <Button title="Kayıt Ol" onPress={this.goSignup} />
-        </View>
+        </ImageBackground>
       );
     }
   }
