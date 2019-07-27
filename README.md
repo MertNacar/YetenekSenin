@@ -23,7 +23,13 @@ npm start
  ```
 {
   "server": {
-    "port": 8000
+    "http": {
+      "port": 8000
+    },
+    "https": {
+      "port": 7000
+    },
+    "api": "v1"
   },
   "database": {
     "dbName": "YetenekSenin",
