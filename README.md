@@ -1,13 +1,18 @@
 # YetenekSenin
 ## React / Express / Node /React Native
 
+Android Studionun tamamıyla güncel olduğundan emin olun.
+
+### Projeyi locale almak için ;
+```
+git clone https://github.com/MertNacar/YetenekSenin.git
+```
 ## Server
 ### root üzerinden server
 ```
 cd .\server\
 npm i
 npm start 
-
 ```
 ### server dosyasının içine config dosya, bu config dosyasının içinede default.json açılsın
 * server
@@ -18,7 +23,13 @@ npm start
  ```
 {
   "server": {
-    "port": 8000
+    "http": {
+      "port": 8000
+    },
+    "https": {
+      "port": 7000
+    },
+    "api": "v1"
   },
   "database": {
     "dbName": "YetenekSenin",
@@ -45,19 +56,17 @@ npm start
 ### .gitignore içerik
 
 ```
-
 node_modules
 config
-
 ```
 ## Mobile
 
-### root üzerinden server
+### root üzerinden mobile
 ```
 cd .\mobile\
 npm i
+npm run gradle
 npm run android 
-
 ```
 
 ### mobile config dosyası içine config dosyası, onun içinede config.js oluşturulsun. ###
@@ -83,3 +92,5 @@ export default {
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve çıkış işlemi
 * Tüm inputlar için RegExp yapılacak
+* Username ve Email inputları için API ile anında kontrol sağlanacak
+* Signup kismina Datepicker eklenecek
