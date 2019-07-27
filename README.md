@@ -84,13 +84,13 @@ export default {
 ```
 ## TODO LİST
 
-* Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama
+* ~~Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama~~ Tokenin header ile gönderilmesi
 * Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama 
 * Frontend kısmında search ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
 * Fronted anasayfa için tasarım ve pagination kontrolu
 * Video Ekleme sayfası için mobil tasarım ve API istekleri 
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve çıkış işlemi
-* Tüm inputlar için RegExp yapılacak
-* Username ve Email inputları için API ile anında kontrol sağlanacak
+* ~~Tüm inputlar için RegExp yapılacak~~ Password regExp birdaha kontrol et
+* ~~Username ve Email inputları için API ile anında kontrol sağlanacak~~ / Client tarafı kaldı
 * Signup kismina Datepicker eklenecek
