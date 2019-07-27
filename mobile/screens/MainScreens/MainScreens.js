@@ -23,7 +23,9 @@ const MainTabs = () => {
           options: {
             bottomTabs: {
               visible: true,
-              drawBehind: false
+              drawBehind: false,
+              animate: false,
+              titleDisplayMode: "alwaysHide"
             }
           },
           children: [
@@ -37,7 +39,10 @@ const MainTabs = () => {
                   }
                 ],
                 options: {
+                  topBar: { visible: false, drawBehind: true },
                   bottomTab: {
+                    animate: false,
+                    selectedIconColor: "red",
                     icon: sources[0]
                   }
                 }
@@ -47,7 +52,10 @@ const MainTabs = () => {
               component: {
                 name: "yeteneksenin.screens.SearchScreen",
                 options: {
+                  topBar: { visible: false, drawBehind: true },
                   bottomTab: {
+                    animate: false,
+                    selectedIconColor: "red",
                     icon: sources[1]
                   }
                 }
@@ -57,7 +65,10 @@ const MainTabs = () => {
               component: {
                 name: "yeteneksenin.screens.AddVideoScreen",
                 options: {
+                  topBar: { visible: false, drawBehind: true },
                   bottomTab: {
+                    animate: false,
+                    selectedIconColor: "red",
                     icon: sources[2]
                   }
                 }
@@ -67,7 +78,10 @@ const MainTabs = () => {
               component: {
                 name: "yeteneksenin.screens.ProfileScreen",
                 options: {
+                  topBar: { visible: false, drawBehind: true },
                   bottomTab: {
+                    animate: false,
+                    selectedIconColor: "red",
                     icon: sources[3]
                   }
                 }
@@ -86,7 +100,22 @@ const AuthTabs = () => {
       stack: {
         options: {
           topBar: {
-            visible: false
+            /*height: 40, // TopBar height in dp
+            backButton: {
+              color: "white"
+            },
+            background: {
+              color: "black"
+            },
+            elevation: 1.5, // TopBar elevation in dp
+            title: {
+              text: "Yetenek Senin",
+              color: "white",
+              height: 30, // TitleBar height in dp
+              alignment: "center" // Center title
+            }*/
+            visible: false,
+            drawBehind: true
           }
         },
         children: [
@@ -95,7 +124,7 @@ const AuthTabs = () => {
               name: "yeteneksenin.screens.LoginScreen",
               options: {
                 topBar: {
-                  title: "LOGIN"
+                  title: "Yetenek Senin"
                 }
               }
             }
@@ -110,6 +139,12 @@ const InitTab = () => {
   Navigation.setRoot({
     root: {
       stack: {
+        options: {
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        },
         children: [
           {
             component: {
@@ -119,7 +154,7 @@ const InitTab = () => {
         ],
         options: {
           topBar: {
-            title:"Logging"
+            title: "Logging"
           }
         }
       }

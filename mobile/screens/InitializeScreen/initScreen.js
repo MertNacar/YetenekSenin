@@ -18,17 +18,15 @@ export default class initScreen extends Component {
     try {
       let getData = await getDataStorage();
       if (getData.err) AuthTabs();
-      if (getData.value) {
+      else {
         let data = await Http.post("/login/immediately", {
           token: getData.value
         });
-        if (data.err === true) AuthTabs();
+        if (data.err) AuthTabs();
         else MainTabs();
-      } else {
-        AuthTabs();
       }
     } catch {
-      return;
+      AuthTabs();
     }
   }
 }

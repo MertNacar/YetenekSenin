@@ -4,9 +4,9 @@ import styles from "../../styles/styles";
 
 const CustomButton = props => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity activeOpacity={0.4} disabled={props.disabled} onPress={props.onPress}>
       <View style={[styles.button, props.style]}>
-        <Text> {props.children} </Text>
+        <Text style={styles.mainText}> {props.children} </Text>
       </View>
     </TouchableOpacity>
   );

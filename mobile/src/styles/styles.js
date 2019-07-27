@@ -4,18 +4,38 @@ let fullHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+
+  SignUpform: {
+    flex: 4,
+    justifyContent: "space-evenly",
+
+    width: "75%"
+  },
+  LoginForm: {
+    flex: 3,
+    justifyContent: "space-evenly",
+    width: "75%"
+  },
+  errMessage:{
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  flex2: {
+    flex: 2,
     justifyContent: "center",
     alignItems: "center"
   },
-  formLogin: {
-    width: "80%"
-  },
   inputHandler: {
     width: "100%",
-    textAlign:"center",
+    textAlign: "center",
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#eee",
+    borderWidth: 2,
+    borderRadius: 7,
+    borderColor: "#29aaf4",
     padding: 5,
     margin: 8
   },
@@ -24,39 +44,35 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold"
   },
-  mainText: {
-    color: "black",
+  LinkView: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  LinkText: {
+    textAlign: "center",
+    color: "blue",
     backgroundColor: "transparent"
   },
+  mainText: {
+    color: "black",
+    backgroundColor: "transparent",
+    textAlign: "center"
+  },
+
   backgroundImage: {
-    width: "100%",
     flex: 1
   },
 
-button:{
-  padding:10,
-  margin: 5,
-  borderRadius: 5,
-  borderWidth:1,
-  borderColor:"black",
-  backgroundColor:"#29aaf4"
-},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  button: {
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "black",
+    backgroundColor: "#29aaf4"
+  },
+  //////////////////////////
   containerSearch: {
     justifyContent: "center",
     alignItems: "center",

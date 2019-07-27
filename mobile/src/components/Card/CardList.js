@@ -20,7 +20,7 @@ export default class CardList extends Component {
   getData = async () => {
     try {
       let { items, page } = this.state;
-      let data = await Http.get(`/?page=${page}`);
+      let data = await Http.get(`/home?page=${page}`);
 
       if (data.err === true) throw new Error("Hata");
       else {

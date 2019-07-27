@@ -5,6 +5,7 @@ import styles from "../../styles/styles";
 const InputHandler = props => {
   return (
     <TextInput
+      secureTextEntry={props.secureTextEntry}
       style={[styles.inputHandler, props.style]}
       placeholder={props.placeholder}
       onChangeText={props.onChangeText}

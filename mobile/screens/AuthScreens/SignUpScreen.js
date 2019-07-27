@@ -8,6 +8,15 @@ import MainText from "../../src/components/MainText/MainText";
 import { MainTabs } from "../AllScreens";
 import backgroundImage from "../../src/assets/image.jpg";
 import styles from "../../src/styles/styles";
+import CustomButton from "../../src/components/CustomButton/CustomButton";
+
+import {
+  emailRegex,
+  passwordRegex,
+  usernameRegex,
+  nameRegex,
+  validateRegex
+} from "../../RegExp/regex";
 
 export default class SignUpScreen extends Component {
   constructor(props) {
@@ -21,70 +30,130 @@ export default class SignUpScreen extends Component {
         email: "",
         birthday: "2012-02-21 18:10:00.000"
       },
-      errMessage: "",
-      err: true
+      colors: {
+        firstnameColor: "#29aaf4",
+        surnameColor: "#29aaf4",
+        usernameColor: "#29aaf4",
+        passwordColor: "#29aaf4",
+        emailColor: "#29aaf4"
+      },
+      err: null
     };
   }
 
+  InputHandler = (typeRegex, input, inputName, inputColor) => {
+    let validate = validateRegex(typeRegex, input);
+    if (validate) {
+      this.setState({
+        data: { ...this.state.data, [inputName]: input },
+        colors: { ...this.state.colors, [inputColor]: "green" }
+      });
+    } else
+      this.setState({ colors: { ...this.state.colors, [inputColor]: "red" } });
+  };
+
   post = async () => {
     try {
-      let body = this.state.data
+      let body = this.state.data;
       let data = await Http.post("/signup", body);
-      if (data === null || data.err) throw new Error(data.message);
+      if (data === null || data.err) throw new Error();
       else {
         await storeDataStorage(data.token);
         return MainTabs();
       }
     } catch (err) {
-      this.setState({ err: true, errMessage: err.message });
+      this.setState({ err: true });
     }
   };
 
   render() {
-    let { err } = this.state;
-    let { errMessage } = err === true ? this.state : "";
-    if (err === null || err) {
-      return (
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.backgroundImage}
-        >
-          <View>
-            <MainText style={{ color: "red", textAlign: "center" }}>
-              {errMessage}
-            </MainText>
-            <MainText style={{ textAlign: "center" }}>
+    let { err, colors } = this.state;
+    let validate =
+      colors.usernameColor === "green" &&
+      colors.passwordColor === "green" &&
+      colors.firstnameColor === "green" &&
+      colors.surnameColor === "green" &&
+      colors.emailColor === "green";
+    let isClickable = validate ? true : false;
+    let opacity = validate ? 1.0 : 0.2;
+    return (
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+        <View style={styles.containerLogin}>
+          <View style={styles.flex2}>
+            <MainText>
               <HeadingText>SIGN UP</HeadingText>
             </MainText>
-            <InputHandler
-              placeholder="Ad"
-              onChangeText={firstname => this.setState({ data : {...this.state.data, firstname} })}
-            />
-            <InputHandler
-              placeholder="Soyad"
-              onChangeText={surname => this.setState({ data : {...this.state.data, surname} })}
-            />
-            <InputHandler
-              placeholder="Kullanıcı Adı"
-              onChangeText={username => this.setState({ data : {...this.state.data, username} })}
-            />
-            <InputHandler
-              placeholder="Sifre"
-              onChangeText={password => this.setState({ data : {...this.state.data, password} })}
-            />
-            <InputHandler
-              placeholder="Email"
-              onChangeText={email => this.setState({ data : {...this.state.data, email} })}
-            />
-            <InputHandler
-              placeholder="Birthday"
-              onChangeText={birthday => this.setState({ data : {...this.state.data, birthday} })}
-            />
-
-            <Button title="Entry" onPress={this.post} />
           </View>
-        </ImageBackground>
-      );
-    }
+          <View style={[styles.errMessage, { display: err ? "flex" : "none" }]}>
+            <MainText style={{ color: "red" }}>
+              Kayıt olamadınız lütfen tekrar deneyiniz.
+            </MainText>
+          </View>
+
+          <View style={styles.SignUpform}>
+            <InputHandler
+              style={{ borderColor: this.state.colors.firstnameColor }}
+              placeholder="Ad"
+              onChangeText={firstname =>
+                this.InputHandler(
+                  nameRegex,
+                  firstname,
+                  "firstname",
+                  "firstnameColor"
+                )
+              }
+            />
+            <InputHandler
+              style={{ borderColor: this.state.colors.surnameColor }}
+              placeholder="Soyad"
+              onChangeText={surname =>
+                this.InputHandler(nameRegex, surname, "surname", "surnameColor")
+              }
+            />
+            <InputHandler
+              style={{ borderColor: this.state.colors.usernameColor }}
+              placeholder="Kullanıcı Adı"
+              onChangeText={username =>
+                this.InputHandler(
+                  usernameRegex,
+                  username,
+                  "username",
+                  "usernameColor"
+                )
+              }
+            />
+            <InputHandler
+              style={{ borderColor: this.state.colors.passwordColor }}
+              secureTextEntry={true}
+              placeholder="Sifre"
+              onChangeText={password =>
+                this.InputHandler(
+                  passwordRegex,
+                  password,
+                  "password",
+                  "passwordColor"
+                )
+              }
+            />
+            <InputHandler
+              style={{ borderColor: this.state.colors.emailColor }}
+              placeholder="Email"
+              onChangeText={email =>
+                this.InputHandler(emailRegex, email, "email", "emailColor")
+              }
+            />
+          </View>
+          <View style={styles.flex2}>
+            <CustomButton
+              style={{ opacity }}
+              disabled={!isClickable}
+              onPress={this.post}
+            >
+              Sign Up
+            </CustomButton>
+          </View>
+        </View>
+      </ImageBackground>
+    );
   }
 }
