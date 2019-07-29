@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Button } from "react-native-elements";
 import Video from "react-native-video";
 import moment from "moment";
 import styles from "../../styles/styles";
-
+import Icon from "react-native-vector-icons/Ionicons";
+import MainText from "../MainText/MainText" 
 export default class Card extends Component {
   constructor(props) {
     super(props);
@@ -21,47 +21,52 @@ export default class Card extends Component {
     };
   }
 
-  ClickImage() {
-    //
-  }
-
   render() {
     item = this.state.items;
     let time = moment(item.createdAt).fromNow();
     return (
       <View style={styles.containerCard}>
-        <View style={styles.rowCard}>
-          <Text style={styles.childUp}>{item.videoTitle}</Text>
-          <Text style={styles.childUp}>{item.subTalentName}</Text>
+        <View style={styles.rowCardHeader}>
+          <View style={styles.VideoTitle}>
+            <View style={styles.positionLeft}>
+              <Icon name="md-contact" size={22} />
+            </View>
+            <MainText style={styles.positionLeft}>{item.username}</MainText>
+          </View>
+          <View style={styles.subTalent}>
+            <View style={styles.positionRight}>
+              <Icon name="md-football" size={25} />
+            </View>
+            <View style={styles.positionRight}>
+              <Icon name="md-alert" size={25} />
+            </View>
+          </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.imageCard}
-          onLongPress={this.ClickImage}
-        >
+  
           <Video
-            style={styles.imageCard}
-            repeat={true}
             source={{ uri: item.videoPath }}
+            repeat={true}
+            style={styles.rowCardBody}
+            resizeMode="cover"
           />
-        </TouchableOpacity>
 
-        <View style={styles.rowCard}>
-          <Text style={styles.childDown}>{item.username}</Text>
-          <Text style={styles.childDown}>{item.videoWatchCount}</Text>
+        <View style={styles.rowCardFooter}>
+          <View style={styles.cardIcons}>
+            <Icon name="md-star-outline" size={26} />
+            <Icon name="ios-text" size={26} />
+            <Icon name="md-person-add" size={26} />
+          </View>
+
+          <View style={styles.watching}>
+            <View style={styles.positionRight}>
+              <Icon name="md-eye" size={22} />
+            </View>
+            <Text style={styles.positionRight}>{item.videoWatchCount}</Text>
+          </View>
         </View>
 
-        <View style={styles.rowCard}>
-          <Text style={styles.childDown}>{item.videoDescription}</Text>
-          <Button
-            title="Takip et"
-            buttonStyle={styles.buttonCard}
-            type="clear"
-          />
-        </View>
-
-        <View style={styles.rowCard}>
-          <Text style={styles.childDown}>{time}</Text>
+        <View style={styles.rowCardFooterTime}>
+          <MainText>{time}</MainText>
         </View>
       </View>
     );

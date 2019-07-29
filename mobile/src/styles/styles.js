@@ -1,6 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-let fullHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
@@ -8,10 +7,15 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
 
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
   SignUpform: {
     flex: 4,
     justifyContent: "space-evenly",
-
     width: "75%"
   },
   LoginForm: {
@@ -19,10 +23,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "75%"
   },
-  errMessage:{
-    flex:1,
-    justifyContent:"center",
-    alignItems:"center",
+  errMessage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   flex2: {
     flex: 2,
@@ -72,57 +76,67 @@ const styles = StyleSheet.create({
     borderColor: "black",
     backgroundColor: "#29aaf4"
   },
-  //////////////////////////
-  containerSearch: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "red",
-    borderWidth: 1
-  },
-  inputContainer: {
+
+  containerCard: {
     flex: 1,
-    flexDirection: "column",
+    marginBottom: 20
+  },
+
+  rowCardHeader: {
+    marginTop: 10,
+    flex: 2,
+    flexDirection: "row"
+  },
+
+  VideoTitle: {
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  positionLeft: {
+    paddingLeft: 5
+  },
+  positionRight: {
+    paddingRight: 5
+  },
+  subTalent: {
+    flex: 4,
+    flexDirection: "row",
+    justifyContent: "flex-end"
+  },
+
+  rowCardBody: {
+    marginTop: 10,
+    aspectRatio: 2,
+    width: "100%"
+  },
+  rowCardFooter: {
+    marginTop: 10,
+    paddingLeft: 5,
+    flex: 2,
+    flexDirection: "row"
+  },
+
+  rowCardFooterTime: {
+    paddingLeft: 5,
+    flex: 2
+  },
+
+  cardIcons: {
+    flex: 2,
+    flexDirection: "row",
     justifyContent: "space-between"
   },
-  horizontal: {
+  watching: {
+    flex: 8,
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
+    justifyContent: "flex-end",
+    alignItems: "center"
   },
-  containerCard: {
-    marginTop: fullHeight / 64,
-    marginBottom: fullHeight / 64,
-    height: fullHeight / 1.7
-    //flex : 1
-  },
-  rowCard: {
-    flex: 1,
-    flexDirection: "row",
-    margin: fullHeight / 42
-  },
-
-  imageCard: {
-    height: fullHeight / 3,
-    alignSelf: "stretch"
-  },
-
-  childUp: {
-    fontFamily: "sans-serif-medium",
-    flex: 1,
-    height: fullHeight / 32
-  },
-
-  childDown: {
-    fontFamily: "sans-serif-medium",
-    flex: 1,
-    height: fullHeight / 22,
-    paddingBottom: fullHeight / 64,
-    alignItems: "flex-end"
-  },
-  buttonCard: {
-    flex: 1,
-    height: fullHeight / 21,
-    paddingBottom: fullHeight / 64
+  cardTime: {
+    flex: 2,
+    justifyContent: "flex-start"
   }
 });
 

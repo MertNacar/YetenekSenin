@@ -8,7 +8,7 @@ import { MainTabs, AuthTabs } from "../AllScreens";
 export default class initScreen extends Component {
   render() {
     return (
-      <View style={[styles.containerLogin, styles.horizontal]}>
+      <View style={styles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );

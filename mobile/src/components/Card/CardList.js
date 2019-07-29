@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { View, ActivityIndicator, FlatList } from "react-native";
 import Card from "./Card";
+import styles from '../../styles/styles'
 import * as Http from "../../../utils/httpHelper";
 import { getDataStorage } from "../../AsyncStorage";
 
@@ -73,7 +74,7 @@ export default class CardList extends Component {
     let { loading, items, err, threshold } = this.state;
     if (items.length == 0 || loading || err) {
       return (
-        <View style={[styles.container, styles.horizontal]}>
+        <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
@@ -90,14 +91,4 @@ export default class CardList extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});
+
