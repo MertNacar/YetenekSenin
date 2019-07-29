@@ -1,12 +1,14 @@
 # YetenekSenin
 ## React / Express / Node /React Native
 
+İşletim sisteminizin dili İngilizce olsun.
 Android Studionun tamamıyla güncel olduğundan emin olun.
 
 ### Projeyi locale almak için ;
 ```
 git clone https://github.com/MertNacar/YetenekSenin.git
 ```
+
 ## Server
 ### root üzerinden server
 ```
@@ -14,6 +16,7 @@ cd .\server\
 npm i
 npm start 
 ```
+
 ### server dosyasının içine config dosya, bu config dosyasının içinede default.json açılsın
 * server
   * config
@@ -59,6 +62,7 @@ npm start
 node_modules
 config
 ```
+
 ## Mobile
 
 ### root üzerinden mobile
@@ -82,12 +86,13 @@ export default {
   API: "v1"
 };
 ```
+
 ## TODO LİST
 
-* ~~Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama~~ Tokenin header ile gönderilmesi
-* Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama 
+* ~~Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama / Tokenin header ile gönderilmesi~~
+* ~~Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama~~
 * Frontend kısmında search ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
-* Fronted anasayfa için tasarım ve pagination kontrolu
+* Fronted anasayfa için tasarım ve varolan pagination kontrolu
 * Video Ekleme sayfası için mobil tasarım ve API istekleri 
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve çıkış işlemi
