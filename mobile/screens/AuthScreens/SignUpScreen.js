@@ -55,7 +55,7 @@ export default class SignUpScreen extends Component {
   post = async () => {
     try {
       let body = this.state.data;
-      let data = await Http.post("/signup", body);
+      let data = await Http.postWithoutToken("/signup/", body);
       if (data === null || data.err) throw new Error();
       else {
         await storeDataStorage(data.token);

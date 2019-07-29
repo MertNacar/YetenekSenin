@@ -2,12 +2,9 @@ const {
   Sequelize,
   Op,
   jwt,
-  PRIVATE_KEY,
-  PUBLIC_KEY,
   apiV,
   hashPassword,
   verifyPassword,
-  options,
   models
 } = require("./imports");
 
@@ -15,7 +12,7 @@ var express = require("express");
 var router = express.Router();
 
 //validate for inputs
-router.post(`/validate/username`, async () => {
+router.post("/username", async () => {
   let { username } = req.body.data;
   try {
     let data = await models.UserModel.findOne({
@@ -31,7 +28,7 @@ router.post(`/validate/username`, async () => {
 });
 
 //validate for inputs
-router.post(`/validate/email`, async () => {
+router.post("/email", async () => {
   let { email } = req.body.data;
   try {
     let data = await models.UserModel.findOne({

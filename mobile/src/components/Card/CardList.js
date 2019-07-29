@@ -2,25 +2,39 @@ import React, { Component } from "react";
 import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import Card from "./Card";
 import * as Http from "../../../utils/httpHelper";
+import { getDataStorage } from "../../AsyncStorage";
 
 export default class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
+      token: "",
       itemLength: 0,
       err: false,
       loading: true,
       page: 0,
       threshold: 0.5
     };
-    this.getData();
+  }
+
+  async componentDidMount() {
+    let token = await getDataStorage();
+    this.setState(
+      {
+        token: token.value
+      },
+      () => {
+        this.getData();
+      }
+    );
   }
 
   getData = async () => {
     try {
-      let { items, page } = this.state;
-      let data = await Http.get(`/home?page=${page}`);
+      let { items, page, token } = this.state;
+
+      let data = await Http.get(`/home/?page=${page}`, token);
 
       if (data.err === true) throw new Error("Hata");
       else {

@@ -2,12 +2,9 @@ const {
   Sequelize,
   Op,
   jwt,
-  PRIVATE_KEY,
-  PUBLIC_KEY,
   apiV,
   hashPassword,
   verifyPassword,
-  options,
   models
 } = require("./imports");
 
@@ -15,10 +12,9 @@ var express = require("express");
 var router = express.Router();
 
 //SIGNUP
-router.post(`/signup`, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let data = req.body.data;
-    console.log(data);
     let validate = await models.UserModel.findOne({
       attributes: ["userID", "username", "email"],
       where: {
@@ -40,11 +36,7 @@ router.post(`/signup`, async (req, res) => {
     if (validate !== null) {
       throw new Error();
     } else {
-      var token = jwt.sign(
-        { username: data.username },
-        PRIVATE_KEY,
-        options.signOptions()
-      );
+      var token = jwt.createToken(data.username);
       let hash = await hashPassword(data.password);
       data.password = hash;
       await models.UserModel.create(data);

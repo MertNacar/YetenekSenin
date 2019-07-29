@@ -2,7 +2,7 @@ var iss = "YetenekSenin";
 var sub = "yeteneksenin@yetk.com.tr";
 var aud = "http://yeteneksenin.com.tr";
 
-let signOptions = () => {
+const signOptions = () => {
   return {
     issuer: iss,
     subject: sub,
@@ -11,7 +11,7 @@ let signOptions = () => {
   };
 };
 
-let verifyOptions = () => {
+const verifyOptions = () => {
   return {
     issuer: iss,
     subject: sub,

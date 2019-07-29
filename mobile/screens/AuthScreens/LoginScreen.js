@@ -36,7 +36,7 @@ export default class LoginScreen extends Component {
   post = async () => {
     let body = this.state.data;
     try {
-      let data = await Http.post("/login", body);
+      let data = await Http.postWithoutToken("/login/", body);
       if (data.err) {
         throw new Error();
       } else {

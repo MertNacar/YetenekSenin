@@ -2,12 +2,9 @@ const {
   Sequelize,
   Op,
   jwt,
-  PRIVATE_KEY,
-  PUBLIC_KEY,
   apiV,
   hashPassword,
   verifyPassword,
-  options,
   models
 } = require("./imports");
 
