@@ -1,7 +1,7 @@
 # YetenekSenin
 ## React / Express / Node /React Native
 
-İşletim sisteminizin dili İngilizce olsun.
+İşletim sisteminizin dili İngilizce olsun.  
 Android Studionun tamamıyla güncel olduğundan emin olun.
 
 ### Projeyi locale almak için ;
