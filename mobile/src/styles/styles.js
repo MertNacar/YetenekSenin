@@ -88,16 +88,18 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
 
-  VideoTitle: {
+  UserBar: {
     flex: 2,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center"
   },
   positionLeft: {
+    textAlign: "left",
     paddingLeft: 5
   },
   positionRight: {
+    textAlign:"right",
     paddingRight: 5
   },
   subTalent: {
@@ -119,8 +121,8 @@ const styles = StyleSheet.create({
   },
 
   rowCardFooterTime: {
-    paddingLeft: 5,
-    flex: 2
+    flex: 2,
+    justifyContent: "flex-start"
   },
 
   cardIcons: {

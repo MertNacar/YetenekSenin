@@ -2,7 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  apiV,
   hashPassword,
   verifyPassword,
   models

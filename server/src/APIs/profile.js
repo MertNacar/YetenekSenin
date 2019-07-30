@@ -2,7 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  apiV,
   hashPassword,
   verifyPassword,
   models
@@ -14,7 +13,7 @@ var router = express.Router();
 //FRONTEND -- TODO --
 //get profile's info
 router.get("/", async (req, res) => {
-  let { username, password } = req.body.data;
+  let { username } = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
   try {
@@ -24,6 +23,7 @@ router.get("/", async (req, res) => {
           "firstname",
           "surname",
           "username",
+          "email",
           "phone",
           "aboutMe",
           "city",
@@ -31,10 +31,8 @@ router.get("/", async (req, res) => {
           "profilePhoto",
           "socialMedia"
         ],
-
         where: {
           username,
-          password: password
         },
         include: [
           {
@@ -73,5 +71,72 @@ router.get("/", async (req, res) => {
     res.json({ err: true });
   }
 });
+// TO DOOOOOOOOOO PASSWORD UPDATE
+router.put("/update/all", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      let user = await models.UserModel.findOne({
+        attributes: [
+          "password",       
+        ],
+        where: {
+          username: data.oldUsername
+        }
+      });
+      
+      await user.update({
+        firstname: data.firstname,
+        surname: data.surname,
+        username: data.username,
+        email: data.email,
+        phone: data.phone,
+        aboutMe: data.aboutMe,
+        city: data.city,
+        birthday: data.birthday,
+        profilePhoto: data.profilePhoto,
+        socialMedia: data.socialMedia
+      });
+      res.json({ err: false });
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+router.put("/update/password", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      let user = await models.UserModel.findOne({
+        where: {
+          username: data.oldUsername
+        }
+      });
+      let old = await hashPassword(data.oldPassword)
+     // let new = await verifyPassword(data.)
+      await user.update({
+        firstname: data.firstname,
+        surname: data.surname,
+        username: data.username,
+        email: data.email,
+        phone: data.phone,
+        aboutMe: data.aboutMe,
+        city: data.city,
+        birthday: data.birthday,
+        profilePhoto: data.profilePhoto,
+        socialMedia: data.socialMedia
+      });
+      res.json({ err: false });
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
 
 module.exports = router;

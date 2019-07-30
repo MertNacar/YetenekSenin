@@ -2,7 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  apiV,
   hashPassword,
   verifyPassword,
   models
@@ -12,7 +11,7 @@ var express = require("express");
 var router = express.Router();
 
 //validate for inputs
-router.post("/username", async () => {
+router.post("/username", async (req,res) => {
   let { username } = req.body.data;
   try {
     let data = await models.UserModel.findOne({
@@ -20,7 +19,7 @@ router.post("/username", async () => {
         username
       }
     });
-    if (data.length === 1) res.json({ err: true });
+    if (data !== null) res.json({ err: true });
     else res.json({ err: false });
   } catch {
     res.json({ err: true });
@@ -28,7 +27,7 @@ router.post("/username", async () => {
 });
 
 //validate for inputs
-router.post("/email", async () => {
+router.post("/email", async (req,res) => {
   let { email } = req.body.data;
   try {
     let data = await models.UserModel.findOne({
@@ -36,7 +35,7 @@ router.post("/email", async () => {
         email
       }
     });
-    if (data.length === 1) res.json({ err: true });
+    if (data !== null) res.json({ err: true });
     else res.json({ err: false });
   } catch {
     res.json({ err: true });

@@ -27,7 +27,7 @@ export default class Card extends Component {
     return (
       <View style={styles.containerCard}>
         <View style={styles.rowCardHeader}>
-          <View style={styles.VideoTitle}>
+          <View style={styles.UserBar}>
             <View style={styles.positionLeft}>
               <Icon name="md-contact" size={22} />
             </View>
@@ -66,7 +66,7 @@ export default class Card extends Component {
         </View>
 
         <View style={styles.rowCardFooterTime}>
-          <MainText>{time}</MainText>
+          <MainText style={styles.positionLeft}>{time}</MainText>
         </View>
       </View>
     );

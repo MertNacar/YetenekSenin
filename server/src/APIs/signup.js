@@ -2,7 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  apiV,
   hashPassword,
   verifyPassword,
   models
@@ -33,14 +32,14 @@ router.post("/", async (req, res) => {
       }
     });
 
-    if (validate !== null) {
-      throw new Error();
-    } else {
+    if (validate === null) {
       var token = jwt.createToken(data.username);
       let hash = await hashPassword(data.password);
       data.password = hash;
       await models.UserModel.create(data);
       res.json({ err: false, token });
+    } else {
+      throw new Error();
     }
   } catch (err) {
     res.json({ err: true });

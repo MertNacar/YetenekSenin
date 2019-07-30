@@ -2,7 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  apiV,
   hashPassword,
   verifyPassword,
   models
@@ -12,6 +11,7 @@ var express = require("express");
 var router = express.Router();
 
 // ------------  TODO  ------------------
+//Get ınformatiof from user
 //login with token without form or any click auto login
 router.post("/immediately", async (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
         username
       }
     });
-    if (data.username === username) {
+    if (data !== null) {
       let hashedPassword = await hashPassword(password);
       let confirm = await verifyPassword(password, hashedPassword);
       if (confirm) {

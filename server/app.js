@@ -5,7 +5,7 @@ const profile = require("./src/APIs/profile");
 const search = require("./src/APIs/search");
 const settings = require("./src/APIs/settings");
 const signup = require("./src/APIs/signup");
-const validateInput = require("./src/APIs/validateInput");
+const validateInput = require("./src/APIs/validate");
 const video = require("./src/APIs/video");
 
 app.use(`/${apiV}/home`,home)

@@ -26,7 +26,6 @@ const post = async (endpoint, body = {}, token) => {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
-        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -46,7 +45,6 @@ const postWithoutToken = async (endpoint, body = {}) => {
     let res = await fetch(url(endpoint), {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -61,4 +59,24 @@ const postWithoutToken = async (endpoint, body = {}) => {
   }
 };
 
-export { post, get, postWithoutToken };
+const put = async (endpoint, body = {}, token) => {
+  try {
+    let res = await fetch(url(endpoint), {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        data: body
+      })
+    });
+    let data = await res.json();
+    if (!data) throw new Error("Hata");
+    return data;
+  } catch {
+    return data.err;
+  }
+};
+
+export { get, post, postWithoutToken, put };
