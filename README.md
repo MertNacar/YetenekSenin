@@ -92,7 +92,7 @@ export default {
 * ~~Her otomatik giriş için token oluşturup client tarafında AsyncStorage ile depolama / Tokenin header ile gönderilmesi~~
 * ~~Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama~~
 * Frontend kısmında search ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
-* Fronted anasayfa için tasarım ve varolan pagination kontrolu
+* ~~Fronted anasayfa için tasarım ve~~ varolan pagination kontrolu
 * Video Ekleme sayfası için mobil tasarım ve API istekleri 
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve çıkış işlemi
