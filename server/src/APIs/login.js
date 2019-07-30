@@ -11,8 +11,7 @@ var express = require("express");
 var router = express.Router();
 
 // ------------  TODO  ------------------
-//Get ınformatiof from user
-//login with token without form or any click auto login
+//Get ınformation from user
 router.post("/immediately", async (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
@@ -36,8 +35,7 @@ router.post("/", async (req, res) => {
       }
     });
     if (data !== null) {
-      let hashedPassword = await hashPassword(password);
-      let confirm = await verifyPassword(password, hashedPassword);
+      let confirm = await verifyPassword(password, data.password);
       if (confirm) {
         let token = jwt.createToken(data.username);
         res.json({ err: false, token });
