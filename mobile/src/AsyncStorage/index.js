@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 
-export const getDataStorage = async () => {
+export const getTokenStorage = async () => {
   try {
     let value;
     value = await AsyncStorage.getItem("tokenJWT");
@@ -16,9 +16,34 @@ export const getDataStorage = async () => {
   }
 };
 
-export const storeDataStorage = async token => {
+export const storeTokenStorage = async token => {
   try {
     await AsyncStorage.setItem("tokenJWT", token);
+    return { err: false };
+  } catch (e) {
+    return { err: true };
+  }
+};
+
+export const getUserStorage = async () => {
+  try {
+    let value;
+    value = await AsyncStorage.getItem("username");
+    if (value !== null) {
+      return { value, err: false };
+    } else {
+      return { err: true };
+    }
+  } catch (e) {
+    return {
+      err: true
+    };
+  }
+};
+
+export const storeUserStorage = async username => {
+  try {
+    await AsyncStorage.setItem("username", username);
     return { err: false };
   } catch (e) {
     return { err: true };

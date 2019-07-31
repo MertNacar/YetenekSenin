@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { Button } from "react-native-elements";
+import AsyncStorage from "@react-native-community/async-storage";
+import { AuthTabs } from "./MainScreens";
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -10,7 +13,13 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <View>
-        <Text> Profile </Text>
+        <Button
+          title="Cıkıs Yap"
+          onPress={() => {
+            AsyncStorage.clear();
+            AuthTabs();
+          }}
+        />
       </View>
     );
   }

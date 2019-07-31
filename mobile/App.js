@@ -8,16 +8,29 @@ import {
   AddVideoScreen,
   InitTab
 } from "./screens/AllScreens";
-/*import { Provider } from "react-redux";
+import { Navigation } from "react-native-navigation";
+import { Provider } from "react-redux";
 import configureStore from "./src/store/configureStore";
 
-const store = configureStore();*/
-
-import { Navigation } from "react-native-navigation";
-
-Navigation.registerComponent(
+const store = configureStore();
+console.log("store", store.getState());
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.LoginScreen",
-  () => LoginScreen
+  () => LoginScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.HomeScreen",
+  () => HomeScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.InitScreen",
+  () => InitScreen,
+  Provider,
+  store
 );
 Navigation.registerComponent(
   "yeteneksenin.screens.SignUpScreen",
@@ -32,16 +45,8 @@ Navigation.registerComponent(
   () => ProfileScreen
 );
 Navigation.registerComponent(
-  "yeteneksenin.screens.HomeScreen",
-  () => HomeScreen
-);
-Navigation.registerComponent(
   "yeteneksenin.screens.SearchScreen",
   () => SearchScreen
-);
-Navigation.registerComponent(
-  "yeteneksenin.screens.InitScreen",
-  () => InitScreen
 );
 
 InitTab();

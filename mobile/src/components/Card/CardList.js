@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, FlatList } from "react-native";
 import Card from "./Card";
-import styles from '../../styles/styles'
+import styles from "../../styles/styles";
 import * as Http from "../../../utils/httpHelper";
-import { getDataStorage } from "../../AsyncStorage";
+import { getTokenStorage } from "../../AsyncStorage";
 
 export default class CardList extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class CardList extends Component {
   }
 
   async componentDidMount() {
-    let token = await getDataStorage();
+    let token = await getTokenStorage();
     this.setState(
       {
         token: token.value
@@ -91,4 +91,3 @@ export default class CardList extends Component {
     );
   }
 }
-

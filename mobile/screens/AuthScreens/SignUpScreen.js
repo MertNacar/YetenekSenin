@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Button, ImageBackground } from "react-native";
 import InputHandler from "../../src/components/InputHandler/InputHandler";
-import { storeDataStorage } from "../../src/AsyncStorage/index";
+import { storeTokenStorage,storeUserStorage } from "../../src/AsyncStorage/index";
 import * as Http from "../../utils/httpHelper";
 import HeadingText from "../../src/components/HeadingText/headingText";
 import MainText from "../../src/components/MainText/MainText";
@@ -58,8 +58,13 @@ export default class SignUpScreen extends Component {
       let data = await Http.postWithoutToken("/signup/", body);
       if (data === null || data.err) throw new Error();
       else {
-        await storeDataStorage(data.token);
-        return MainTabs();
+        let storeUser = await storeUserStorage(body.username);
+        let storeToken = await storeTokenStorage(data.token);
+        if (storeToken.err || storeUser.err) {
+          throw new Error();
+        } else {
+          MainTabs();
+        }
       }
     } catch (err) {
       this.setState({ err: true });

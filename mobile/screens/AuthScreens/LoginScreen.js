@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { View, Text, ImageBackground } from "react-native";
 import InputHandler from "../../src/components/InputHandler/InputHandler";
-import { storeDataStorage } from "../../src/AsyncStorage/index";
+import {
+  storeTokenStorage,
+  storeUserStorage
+} from "../../src/AsyncStorage/index";
 import { MainTabs } from "../AllScreens";
 import styles from "../../src/styles/styles";
 import * as Http from "../../utils/httpHelper";
@@ -16,8 +19,9 @@ import {
   usernameRegex,
   validateRegex
 } from "../../RegExp/regex";
-
-export default class LoginScreen extends Component {
+import { connect } from "react-redux";
+import { addUser } from "../../src/store/actions/actionCreators";
+class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +44,9 @@ export default class LoginScreen extends Component {
       if (data.err) {
         throw new Error();
       } else {
-        let store = await storeDataStorage(data.token);
-        if (store.err) {
+        let storeUser = await storeUserStorage(body.username);
+        let storeToken = await storeTokenStorage(data.token);
+        if (storeToken.err || storeUser.err) {
           throw new Error();
         } else {
           MainTabs();
@@ -157,3 +162,14 @@ export default class LoginScreen extends Component {
     }
   }
 }
+
+mapDispatchToProps = dispatch => {
+  return {
+    addUser: user => dispatch(addUser(user))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(LoginScreen);
