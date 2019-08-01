@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { TextInput } from "react-native";
-import styles from "../../styles/styles";
+import styles from "./styles";
 
 const InputHandler = props => {
   return (

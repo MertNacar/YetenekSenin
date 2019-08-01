@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator, FlatList } from "react-native";
 import Card from "./Card";
-import styles from "../../styles/styles";
+import styles from "./styles";
 import * as Http from "../../../utils/httpHelper";
 import { getTokenStorage } from "../../AsyncStorage";
 

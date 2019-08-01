@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { getTokenStorage } from "../../src/AsyncStorage/index";
-import styles from "../../src/styles/styles";
+import styles from "./styles";
 import * as Http from "../../utils/httpHelper";
-import { MainTabs, AuthTabs, InitScreen } from "../AllScreens";
+import { MainTabs, AuthTabs } from "../MainTabs";
 import { connect } from "react-redux";
 import { addUser } from "../../src/store/actions/actionCreators";
 

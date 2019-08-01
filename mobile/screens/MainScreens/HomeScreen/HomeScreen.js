@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import CardList from "../../src/components/Card/CardList";
+import CardList from "../../../src/components/Card/CardList";
 import { connect } from "react-redux";
-import MainText from "../../src/components/MainText/MainText";
-import { getTokenStorage, getUserStorage } from "../../src/AsyncStorage";
-import { AuthTabs } from "./MainScreens";
+import MainText from "../../../src/components/MainText/MainText";
+import { getUserStorage } from "../../../src/AsyncStorage";
+import { AuthTabs } from "../../MainTabs";
 import AsyncStorage from "@react-native-community/async-storage";
 
 class HomeScreen extends Component {

@@ -1,26 +1,27 @@
 import React, { Component } from "react";
-import { View, Text, ImageBackground } from "react-native";
-import InputHandler from "../../src/components/InputHandler/InputHandler";
+import { View, ImageBackground } from "react-native";
+import InputHandler from "../../../src/components/InputHandler/InputHandler";
 import {
   storeTokenStorage,
   storeUserStorage
-} from "../../src/AsyncStorage/index";
-import { MainTabs } from "../AllScreens";
-import styles from "../../src/styles/styles";
-import * as Http from "../../utils/httpHelper";
+} from "../../../src/AsyncStorage/index";
+import { MainTabs } from "../../MainTabs";
+import styles from "./styles";
+import * as Http from "../../../utils/httpHelper";
 import { Navigation } from "react-native-navigation";
-import HeadingText from "../../src/components/HeadingText/headingText";
-import MainText from "../../src/components/MainText/MainText";
-import LinkText from "../../src/components/LinkText/LinkText";
-import backgroundImage from "../../src/assets/image.jpg";
-import CustomButton from "../../src/components/CustomButton/CustomButton";
+import HeadingText from "../../../src/components/HeadingText/headingText";
+import MainText from "../../../src/components/MainText/MainText";
+import LinkText from "../../../src/components/LinkText/LinkText";
+import backgroundImage from "../../../src/assets/image.jpg";
+import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import {
   passwordRegex,
   usernameRegex,
   validateRegex
-} from "../../RegExp/regex";
+} from "../../../RegExp/regex";
 import { connect } from "react-redux";
-import { addUser } from "../../src/store/actions/actionCreators";
+import { addUser } from "../../../src/store/actions/actionCreators";
+
 class LoginScreen extends Component {
   constructor(props) {
     super(props);

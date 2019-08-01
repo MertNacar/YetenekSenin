@@ -1,15 +1,15 @@
-import actions from '../actions/actionTypes'
+import actions from "../actions/actionTypes";
 
 const initialState = {
-  videosTitle:["hey"]
+  videosTitle: ["hey"]
 };
 
 const videoReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.ADD_VIDEO:
-      return [...state,action.payload]
-      case actions.DELETE_VIDEO: 
-      return [...state]
+      return [...state, action.payload];
+    case actions.DELETE_VIDEO:
+      return [...state];
     default:
       return state;
   }

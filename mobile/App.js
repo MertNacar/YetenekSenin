@@ -5,9 +5,9 @@ import {
   SearchScreen,
   SignUpScreen,
   InitScreen,
-  AddVideoScreen,
-  InitTab
+  AddVideoScreen
 } from "./screens/AllScreens";
+import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
 import { Provider } from "react-redux";
 import configureStore from "./src/store/configureStore";

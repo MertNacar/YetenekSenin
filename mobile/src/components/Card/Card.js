@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import Video from "react-native-video";
 import moment from "moment";
-import styles from "../../styles/styles";
+import styles from "./styles";
 import Icon from "react-native-vector-icons/Ionicons";
-import MainText from "../MainText/MainText" 
+import MainText from "../MainText/MainText";
 export default class Card extends Component {
   constructor(props) {
     super(props);
@@ -42,13 +42,13 @@ export default class Card extends Component {
             </View>
           </View>
         </View>
-  
-          <Video
-            source={{ uri: item.videoPath }}
-            repeat={true}
-            style={styles.rowCardBody}
-            resizeMode="cover"
-          />
+
+        <Video
+          source={{ uri: item.videoPath }}
+          repeat={true}
+          style={styles.rowCardBody}
+          resizeMode="cover"
+        />
 
         <View style={styles.rowCardFooter}>
           <View style={styles.cardIcons}>

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { Text, View, Button, ImageBackground } from "react-native";
-import InputHandler from "../../src/components/InputHandler/InputHandler";
-import { storeTokenStorage,storeUserStorage } from "../../src/AsyncStorage/index";
-import * as Http from "../../utils/httpHelper";
-import HeadingText from "../../src/components/HeadingText/headingText";
-import MainText from "../../src/components/MainText/MainText";
-import { MainTabs } from "../AllScreens";
-import backgroundImage from "../../src/assets/image.jpg";
-import styles from "../../src/styles/styles";
-import CustomButton from "../../src/components/CustomButton/CustomButton";
+import { View, ImageBackground } from "react-native";
+import InputHandler from "../../../src/components/InputHandler/InputHandler";
+import {
+  storeTokenStorage,
+  storeUserStorage
+} from "../../../src/AsyncStorage/index";
+import * as Http from "../../../utils/httpHelper";
+import HeadingText from "../../../src/components/HeadingText/headingText";
+import MainText from "../../../src/components/MainText/MainText";
+import { MainTabs } from "../../MainTabs";
+import backgroundImage from "../../../src/assets/image.jpg";
+import styles from "./styles";
+import CustomButton from "../../../src/components/CustomButton/CustomButton";
 
 import {
   emailRegex,
@@ -16,7 +19,7 @@ import {
   usernameRegex,
   nameRegex,
   validateRegex
-} from "../../RegExp/regex";
+} from "../../../RegExp/regex";
 
 export default class SignUpScreen extends Component {
   constructor(props) {

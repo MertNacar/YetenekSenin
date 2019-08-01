@@ -1,11 +1,10 @@
-import HomeScreen from "./MainScreens/HomeScreen";
-import ProfileScreen from "./MainScreens/ProfileScreen";
-import SearchScreen from "./MainScreens/SearchScreen";
-import LoginScreen from "./AuthScreens/LoginScreen";
-import SignUpScreen from "./AuthScreens/SignUpScreen";
-import AddVideoScreen from "./MainScreens/AddVideoScreen";
-import { MainTabs, AuthTabs, InitTab } from "./MainScreens/MainScreens";
-import InitScreen from "./InitializeScreen/initScreen";
+import HomeScreen from "./MainScreens/HomeScreen/HomeScreen";
+import ProfileScreen from "./MainScreens/ProfileScreen/ProfileScreen";
+import SearchScreen from "./MainScreens/SearchScreen/SearchScreen";
+import LoginScreen from "./AuthScreens/LoginScreen/LoginScreen";
+import SignUpScreen from "./AuthScreens/SignUpScreen/SignUpScreen";
+import AddVideoScreen from "./MainScreens/AddVideoScreen/AddVideoScreen";
+import InitScreen from "./InitScreen/initScreen";
 
 export {
   HomeScreen,
@@ -14,8 +13,5 @@ export {
   LoginScreen,
   SignUpScreen,
   AddVideoScreen,
-  InitScreen,
-  MainTabs,
-  AuthTabs,
-  InitTab
+  InitScreen
 };
