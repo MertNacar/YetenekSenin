@@ -13,35 +13,51 @@ var router = express.Router();
 //SIGNUP
 router.post("/", async (req, res) => {
   try {
-    let data = req.body.data;
-    let validate = await models.UserModel.findOne({
-      attributes: ["userID", "username", "email"],
+      let user = req.body.data;
+      var token = jwt.createToken(user.username);
+      let hash = await hashPassword(user.password);
+      user.password = hash;
+      let ds= await models.UserModel.create(user);
+      user.token = token
+      user.loginDate = Date(Date.now()).toString()
+      delete user.password
+      res.json({ err: false, user });
+  } catch (err) {
+    res.json({ err: true });
+  }
+});
+
+//validate for inputs
+router.post("/validate/username", async (req,res) => {
+  let username = req.body.data;
+  try {
+    let data = await models.UserModel.findOne({
+      attributes: ["username"],
       where: {
-        [Op.or]: [
-          {
-            username: {
-              [Op.eq]: data.username
-            }
-          },
-          {
-            email: {
-              [Op.eq]: data.email
-            }
-          }
-        ]
+        username
       }
     });
+    if (data === null) res.json({ err: false });
+    else res.json({ err: true });
+  } catch {
+    res.json({ err: true });
+  }
+});
 
-    if (validate === null) {
-      var token = jwt.createToken(data.username);
-      let hash = await hashPassword(data.password);
-      data.password = hash;
-      await models.UserModel.create(data);
-      res.json({ err: false, token });
-    } else {
-      throw new Error();
-    }
-  } catch (err) {
+//validate for inputs
+router.post("/validate/email", async (req,res) => {
+  let email = req.body.data;
+  try {
+    let data = await models.UserModel.findOne({
+      attributes: ["email"],
+      where: {
+        email
+      }
+    });
+    
+    if (data === null) res.json({ err: false });
+    else res.json({ err: true });
+  } catch {
     res.json({ err: true });
   }
 });

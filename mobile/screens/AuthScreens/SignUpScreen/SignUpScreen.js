@@ -12,7 +12,8 @@ import { MainTabs } from "../../MainTabs";
 import backgroundImage from "../../../src/assets/image.jpg";
 import styles from "./styles";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
-
+import { connect } from "react-redux";
+import { addUser } from "../../../src/store/user/userActionCreator";
 import {
   emailRegex,
   passwordRegex,
@@ -21,7 +22,7 @@ import {
   validateRegex
 } from "../../../RegExp/regex";
 
-export default class SignUpScreen extends Component {
+  class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +45,35 @@ export default class SignUpScreen extends Component {
     };
   }
 
+  InputHandlerUsernameEmail = async (
+    typeRegex,
+    input,
+    inputName,
+    inputColor
+  ) => {
+    let validate = validateRegex(typeRegex, input);
+    console.log("hey")
+    try {
+      if (validate) {
+        console.log("hey2")
+        console.log(inputName)
+        let confirm = await Http.postWithoutToken(
+          `/signup/validate/${inputName}`,
+          input
+        );
+        console.log(validate)
+        if (!confirm.err) {
+          this.setState({
+            data: { ...this.state.data, [inputName]: input },
+            colors: { ...this.state.colors, [inputColor]: "green" }
+          });
+        } else throw new Error();
+      } else throw new Error();
+    } catch {
+      this.setState({ colors: { ...this.state.colors, [inputColor]: "red" } });
+    }
+  };
+
   InputHandler = (typeRegex, input, inputName, inputColor) => {
     let validate = validateRegex(typeRegex, input);
     if (validate) {
@@ -59,13 +89,15 @@ export default class SignUpScreen extends Component {
     try {
       let body = this.state.data;
       let data = await Http.postWithoutToken("/signup/", body);
+      console.log("data post",data)
       if (data === null || data.err) throw new Error();
       else {
         let storeUser = await storeUserStorage(body.username);
-        let storeToken = await storeTokenStorage(data.token);
+        let storeToken = await storeTokenStorage(data.user.token);
         if (storeToken.err || storeUser.err) {
           throw new Error();
         } else {
+          this.props.addUser(data.user)
           MainTabs();
         }
       }
@@ -122,7 +154,7 @@ export default class SignUpScreen extends Component {
               style={{ borderColor: this.state.colors.usernameColor }}
               placeholder="Kullanıcı Adı"
               onChangeText={username =>
-                this.InputHandler(
+                this.InputHandlerUsernameEmail(
                   usernameRegex,
                   username,
                   "username",
@@ -147,7 +179,12 @@ export default class SignUpScreen extends Component {
               style={{ borderColor: this.state.colors.emailColor }}
               placeholder="Email"
               onChangeText={email =>
-                this.InputHandler(emailRegex, email, "email", "emailColor")
+                this.InputHandlerUsernameEmail(
+                  emailRegex,
+                  email,
+                  "email",
+                  "emailColor"
+                )
               }
             />
           </View>
@@ -165,3 +202,15 @@ export default class SignUpScreen extends Component {
     );
   }
 }
+
+
+mapDispatchToProps = dispatch => {
+  return {
+    addUser: user => dispatch(addUser(user))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignUpScreen);

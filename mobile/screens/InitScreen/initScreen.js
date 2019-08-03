@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator } from "react-native";
-import { getTokenStorage } from "../../src/AsyncStorage/index";
+import { getTokenStorage, getUserStorage } from "../../src/AsyncStorage/index";
 import styles from "./styles";
 import * as Http from "../../utils/httpHelper";
 import { MainTabs, AuthTabs } from "../MainTabs";
 import { connect } from "react-redux";
-import { addUser } from "../../src/store/actions/actionCreators";
+import { addUser } from "../../src/store/user/userActionCreator";
 
 class initScreen extends Component {
   render() {
@@ -18,13 +18,14 @@ class initScreen extends Component {
 
   async componentDidMount() {
     try {
-      let getData = await getTokenStorage();
-      if (getData.err) AuthTabs();
+      let token = await getTokenStorage();
+      let username = await getUserStorage();
+      if (token.err || username.err) AuthTabs();
       else {
-        let data = await Http.post("/login/immediately/", {}, getData.value);
+        let data = await Http.post("/login/immediately/",username.value , token.value);
         if (data.err) AuthTabs();
         else {
-          //this.props.addUser();
+          this.props.addUser(data.user);
           MainTabs();
         }
       }

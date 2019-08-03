@@ -1,7 +1,7 @@
-import actions from "../actions/actionTypes";
+import actions from "./videoAction";
 
 const initialState = {
-  videosTitle: ["hey"]
+  videosTitle: []
 };
 
 const videoReducer = (state = initialState, action) => {

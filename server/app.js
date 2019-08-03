@@ -5,7 +5,6 @@ const profile = require("./src/APIs/profile");
 const search = require("./src/APIs/search");
 const settings = require("./src/APIs/settings");
 const signup = require("./src/APIs/signup");
-const validateInput = require("./src/APIs/validate");
 const video = require("./src/APIs/video");
 
 app.use(`/${apiV}/home`,home)
@@ -14,7 +13,6 @@ app.use(`/${apiV}/signup`,signup)
 app.use(`/${apiV}/profile`,profile)
 app.use(`/${apiV}/search`,search)
 app.use(`/${apiV}/settings`,settings)
-app.use(`/${apiV}/validate`,validateInput)
 app.use(`/${apiV}/video`,video)
 
 module.exports = app;

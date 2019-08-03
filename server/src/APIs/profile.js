@@ -53,12 +53,7 @@ router.get("/", async (req, res) => {
           },
           {
             required: true,
-            model: models.FenomenModel,
-            attributes: ["FenomenBar"]
-          },
-          {
-            required: true,
-            model: models.FenomenModel,
+            model: models.CommentModel,
             attributes: ["commentDescription", "commentLikeCount"]
           }
         ]

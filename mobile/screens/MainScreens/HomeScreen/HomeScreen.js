@@ -1,38 +1,16 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import CardList from "../../../src/components/Card/CardList";
 import { connect } from "react-redux";
 import MainText from "../../../src/components/MainText/MainText";
-import { getUserStorage } from "../../../src/AsyncStorage";
-import { AuthTabs } from "../../MainTabs";
-import AsyncStorage from "@react-native-community/async-storage";
 
 class HomeScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: ""
-    };
-  }
-  async componentDidMount() {
-    try {
-      let username = await getUserStorage();
-      if (username.err) throw new Error();
-      else {
-        this.setState({
-          username: username.value
-        });
-      }
-    } catch {
-      AsyncStorage.clear();
-      AuthTabs();
-    }
-  }
   render() {
+    let user = this.props.getUser;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <MainText>{this.state.username}</MainText>
+          <MainText>{user.username}</MainText>
         </View>
         <CardList />
       </View>
@@ -42,10 +20,7 @@ class HomeScreen extends Component {
 
 mapStateToProps = state => {
   return {
-    getUser: state.user.username
+    getUser: state.user
   };
 };
-export default connect(
-  mapStateToProps,
-  null
-)(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);

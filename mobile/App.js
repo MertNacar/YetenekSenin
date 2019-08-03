@@ -32,17 +32,21 @@ Navigation.registerComponentWithRedux(
   Provider,
   store
 );
-Navigation.registerComponent(
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.SignUpScreen",
-  () => SignUpScreen
+  () => SignUpScreen,
+  Provider,
+  store
 );
 Navigation.registerComponent(
   "yeteneksenin.screens.AddVideoScreen",
   () => AddVideoScreen
 );
-Navigation.registerComponent(
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.ProfileScreen",
-  () => ProfileScreen
+  () => ProfileScreen,
+  Provider,
+  store
 );
 Navigation.registerComponent(
   "yeteneksenin.screens.SearchScreen",

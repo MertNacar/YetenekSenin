@@ -20,7 +20,7 @@ import {
   validateRegex
 } from "../../../RegExp/regex";
 import { connect } from "react-redux";
-import { addUser } from "../../../src/store/actions/actionCreators";
+import { addUser } from "../../../src/store/user/userActionCreator";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -42,14 +42,15 @@ class LoginScreen extends Component {
     let body = this.state.data;
     try {
       let data = await Http.postWithoutToken("/login/", body);
-      if (data.err) {
-        throw new Error();
-      } else {
+      if (data.err) throw new Error();
+      else {
+        console.log(data)
         let storeUser = await storeUserStorage(body.username);
-        let storeToken = await storeTokenStorage(data.token);
+        let storeToken = await storeTokenStorage(data.user.token);
         if (storeToken.err || storeUser.err) {
           throw new Error();
         } else {
+          this.props.addUser(data.user);
           MainTabs();
         }
       }
