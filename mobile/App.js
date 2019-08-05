@@ -5,7 +5,8 @@ import {
   SearchScreen,
   SignUpScreen,
   InitScreen,
-  AddVideoScreen
+  AddVideoScreen,
+  SideDrawer
 } from "./screens/AllScreens";
 import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
@@ -42,15 +43,21 @@ Navigation.registerComponent(
   "yeteneksenin.screens.AddVideoScreen",
   () => AddVideoScreen
 );
+Navigation.registerComponent(
+  "yeteneksenin.screens.SideDrawer",
+  () => SideDrawer
+);
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.ProfileScreen",
   () => ProfileScreen,
   Provider,
   store
 );
-Navigation.registerComponent(
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.SearchScreen",
-  () => SearchScreen
+  () => SearchScreen,
+  Provider,
+  store
 );
 
 InitTab();

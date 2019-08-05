@@ -12,21 +12,31 @@ var router = express.Router();
 
 //FRONTEND -- TODO --
 //search username in search page
-router.get("/:user", async (req, res) => {
-  let username = req.params.user;
+router.post("/user", async (req, res) => {
+  let username = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
   let validate = jwt.validateToken(token);
   try {
     if (validate) {
-      let data = await models.UserModel.findAll({
+      let users = await models.UserModel.findAll({
+        attributes: [
+          "username", "profilePhoto"
+        ],
         where: {
           username: {
             [Op.like]: `%${username}%`
           }
-        }
+        },
+        include: [
+          {
+            required: true,
+            model: models.TalentModel,
+            attributes: ["talentName"]
+          }
+        ]
       });
-      if (data.length > 0) {
-        res.json({ err: false, data });
+      if (users.length > 0) {
+        res.json({ err: false, users });
       } else {
         throw new Error();
       }

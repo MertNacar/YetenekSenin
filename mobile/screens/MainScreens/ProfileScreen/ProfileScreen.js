@@ -4,8 +4,23 @@ import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthTabs } from "../../MainTabs";
 import MainText from "../../../src/components/MainText/MainText";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
+import { Navigation } from "react-native-navigation";
+
 class ProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+  }
+  navigationButtonPressed(event) {
+    Navigation.mergeOptions(event.componentId, {
+      sideMenu: {
+        right: {
+          visible: true
+        }
+      }
+    });
+  }
   render() {
     let user = this.props.getUser;
     return (

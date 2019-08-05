@@ -89,7 +89,6 @@ import {
     try {
       let body = this.state.data;
       let data = await Http.postWithoutToken("/signup/", body);
-      console.log("data post",data)
       if (data === null || data.err) throw new Error();
       else {
         let storeUser = await storeUserStorage(body.username);

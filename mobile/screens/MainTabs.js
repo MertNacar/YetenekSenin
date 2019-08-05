@@ -1,6 +1,7 @@
 import { Navigation } from "react-native-navigation";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Platform } from "react-native";
+import { Platform, Dimensions } from "react-native";
+let getWidth = Dimensions.get("window").width;
 const MainTabs = () => {
   Promise.all([
     Icon.getImageSource(Platform.OS === "android" ? "md-home" : "ios-home", 30),
@@ -15,79 +16,137 @@ const MainTabs = () => {
     Icon.getImageSource(
       Platform.OS === "android" ? "md-person" : "ios-person",
       30
-    )
+    ),
+    Icon.getImageSource(Platform.OS === "android" ? "md-menu" : "ios-menu", 30)
   ]).then(sources => {
     Navigation.setRoot({
       root: {
-        bottomTabs: {
+        sideMenu: {
           options: {
-            bottomTabs: {
-              visible: true,
-              drawBehind: false,
-              animate: false,
-              titleDisplayMode: "alwaysHide"
+            sideMenu: {
+              right: {
+                width: getWidth * 0.5
+              }
             }
           },
-          children: [
-            {
-              stack: {
-                children: [
-                  {
-                    component: {
-                      name: "yeteneksenin.screens.HomeScreen"
+          center: {
+            bottomTabs: {
+              options: {
+                bottomTabs: {
+                  visible: true,
+                  drawBehind: false,
+                  animate: false,
+                  titleDisplayMode: "alwaysHide"
+                },
+                topBar: {
+                  visible: false,
+                  drawBehind: true
+                }
+              },
+              children: [
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: "yeteneksenin.screens.HomeScreen"
+                        }
+                      }
+                    ],
+                    options: {
+                      bottomTab: {
+                        animate: false,
+                        selectedIconColor: "red",
+                        icon: sources[0]
+                      },
+                      topBar: {
+                        visible: false,
+                        drawBehind: true
+                      }
                     }
                   }
-                ],
-                options: {
-                  topBar: { visible: false, drawBehind: true },
-                  bottomTab: {
-                    animate: false,
-                    selectedIconColor: "red",
-                    icon: sources[0]
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: "yeteneksenin.screens.SearchScreen"
+                        }
+                      }
+                    ],
+                    options: {
+                      bottomTab: {
+                        animate: false,
+                        selectedIconColor: "red",
+                        icon: sources[1]
+                      },
+                      topBar: {
+                        visible: false,
+                        drawBehind: true
+                      }
+                    }
+                  }
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: "yeteneksenin.screens.AddVideoScreen"
+                        }
+                      }
+                    ],
+                    options: {
+                      bottomTab: {
+                        animate: false,
+                        selectedIconColor: "red",
+                        icon: sources[2]
+                      },
+                      topBar: {
+                        visible: false,
+                        drawBehind: true
+                      }
+                    }
+                  }
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          name: "yeteneksenin.screens.ProfileScreen"
+                        }
+                      }
+                    ],
+                    options: {
+                      bottomTab: {
+                        animate: false,
+                        selectedIconColor: "red",
+                        icon: sources[3]
+                      },
+                      topBar: {
+                        visible: true,
+                        //animate:false,
+                        //rightButtonDisabledColor:"red",
+                        rightButtons: [
+                          {
+                            icon: sources[4],
+                            id: "toggleSideMenu"
+                          }
+                        ]
+                      }
+                    }
                   }
                 }
-              }
-            },
-            {
-              component: {
-                name: "yeteneksenin.screens.SearchScreen",
-                options: {
-                  topBar: { visible: false, drawBehind: true },
-                  bottomTab: {
-                    animate: false,
-                    selectedIconColor: "red",
-                    icon: sources[1]
-                  }
-                }
-              }
-            },
-            {
-              component: {
-                name: "yeteneksenin.screens.AddVideoScreen",
-                options: {
-                  topBar: { visible: false, drawBehind: true },
-                  bottomTab: {
-                    animate: false,
-                    selectedIconColor: "red",
-                    icon: sources[2]
-                  }
-                }
-              }
-            },
-            {
-              component: {
-                name: "yeteneksenin.screens.ProfileScreen",
-                options: {
-                  topBar: { visible: false, drawBehind: true },
-                  bottomTab: {
-                    animate: false,
-                    selectedIconColor: "red",
-                    icon: sources[3]
-                  }
-                }
-              }
+              ]
             }
-          ]
+          },
+          right: {
+            component: {
+              name: "yeteneksenin.screens.SideDrawer"
+            }
+          }
         }
       }
     });
@@ -100,20 +159,6 @@ const AuthTabs = () => {
       stack: {
         options: {
           topBar: {
-            /*height: 40, // TopBar height in dp
-            backButton: {
-              color: "white"
-            },
-            background: {
-              color: "black"
-            },
-            elevation: 1.5, // TopBar elevation in dp
-            title: {
-              text: "Yetenek Senin",
-              color: "white",
-              height: 30, // TitleBar height in dp
-              alignment: "center" // Center title
-            }*/
             visible: false,
             drawBehind: true
           }
@@ -121,12 +166,7 @@ const AuthTabs = () => {
         children: [
           {
             component: {
-              name: "yeteneksenin.screens.LoginScreen",
-              options: {
-                topBar: {
-                  title: "Yetenek Senin"
-                }
-              }
+              name: "yeteneksenin.screens.LoginScreen"
             }
           }
         ]
@@ -139,12 +179,6 @@ const InitTab = () => {
   Navigation.setRoot({
     root: {
       stack: {
-        options: {
-          topBar: {
-            visible: false,
-            drawBehind: true
-          }
-        },
         children: [
           {
             component: {
@@ -154,7 +188,8 @@ const InitTab = () => {
         ],
         options: {
           topBar: {
-            title: "Logging"
+            visible: false,
+            drawBehind: true
           }
         }
       }

@@ -4,6 +4,7 @@ import SearchScreen from "./MainScreens/SearchScreen/SearchScreen";
 import LoginScreen from "./AuthScreens/LoginScreen/LoginScreen";
 import SignUpScreen from "./AuthScreens/SignUpScreen/SignUpScreen";
 import AddVideoScreen from "./MainScreens/AddVideoScreen/AddVideoScreen";
+import SideDrawer from "./MainScreens/SideDrawer/SideDrawer";
 import InitScreen from "./InitScreen/initScreen";
 
 export {
@@ -13,5 +14,6 @@ export {
   LoginScreen,
   SignUpScreen,
   AddVideoScreen,
+  SideDrawer,
   InitScreen
 };
