@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Button } from "react-native-elements";
+import { View, Button } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthTabs } from "../../MainTabs";
 import MainText from "../../../src/components/MainText/MainText";
