@@ -7,8 +7,6 @@ export default (SearchCardList = props => {
       data={props.data}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => <SearchCard item={item} />}
-      //onEndReached={this.handleLoadMore}
-      //onEndReachedThreshold={threshold}
     />
   );
 });

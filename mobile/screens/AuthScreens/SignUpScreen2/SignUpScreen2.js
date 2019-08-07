@@ -1,21 +1,17 @@
 import React, { Component } from "react";
-import { View, Platform } from "react-native";
+import { View, Platform, Picker } from "react-native";
 import {
   storeTokenStorage,
   storeUserStorage
 } from "../../../src/AsyncStorage/index";
 import * as Http from "../../../utils/httpHelper";
-import HeadingText from "../../../src/components/HeadingText/headingText";
 import MainText from "../../../src/components/MainText/MainText";
-import { MainTabs } from "../../MainTabs";
 import styles from "./styles";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
 import {
-  nameRegex,
   usernameRegex,
-  passwordRegex,
   emailRegex,
   validateRegex
 } from "../../../RegExp/regex";
@@ -23,40 +19,117 @@ import { COLOR_PRIMARY } from "../../../src/styles/const";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Input } from "react-native-elements";
 import { Navigation } from "react-native-navigation";
-class SignUpScreen extends Component {
+class SignUpScreen2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      talents: [],
+      subTalents: [],
+      pickerEnabled: false,
       data: {
-        firstname: "",
-        surname: ""
-        // birthday: "2012-02-21 18:10:00.000"
+        username: "",
+        email: "",
+        talentName: "",
+        subTalentName: ""
       },
       colors: {
-        firstnameColor: COLOR_PRIMARY,
-        surnameColor: COLOR_PRIMARY
+        subTalentColor: COLOR_PRIMARY,
+        talentColor: COLOR_PRIMARY,
+        usernameColor: COLOR_PRIMARY,
+        emailColor: COLOR_PRIMARY
       }
     };
   }
 
-  InputHandler = (typeRegex, input, inputName, inputColor) => {
+  async componentDidMount() {
+    try {
+      let talents = await Http.getWithoutToken("/signup/talent");
+      if (talents.err) throw new Error();
+      else {
+        this.setState({
+          talents: [...talents.data]
+        });
+      }
+    } catch {
+      return;
+    }
+  }
+
+  InputHandlerUsernameEmail = async (
+    typeRegex,
+    input,
+    inputName,
+    inputColor
+  ) => {
+    let { colors, data } = this.state;
     let validate = validateRegex(typeRegex, input);
-    if (validate) {
+    try {
+      if (validate) {
+        let confirm = await Http.postWithoutToken(
+          `/signup/validate/${inputName}`,
+          input
+        );
+        if (!confirm.err) {
+          this.setState({
+            data: { ...data, [inputName]: input },
+            colors: { ...colors, [inputColor]: "green" }
+          });
+        } else throw new Error();
+      } else throw new Error();
+    } catch {
+      this.setState({ colors: { ...colors, [inputColor]: "red" } });
+    }
+  };
+
+  pickerTalentHandler = async itemValue => {
+    let { colors, data } = this.state;
+    try {
+      if (itemValue !== "Branş Seçiniz") {
+        let subTalents = await Http.postWithoutToken(
+          "/signup/subTalent",
+          itemValue
+        );
+        if (subTalents.err) throw new Error();
+        else {
+          this.setState({
+            colors: { ...colors, talentColor: "green" },
+            data: { ...data, talentName: itemValue },
+            subTalents: [...subTalents.data],
+            pickerEnabled: true
+          });
+        }
+      } else throw new Error();
+    } catch {
       this.setState({
-        data: { ...this.state.data, [inputName]: input },
-        colors: { ...this.state.colors, [inputColor]: "green" }
+        data: { ...data, talentName: "Branş Seçiniz" },
+        colors: { ...colors, talentColor: COLOR_PRIMARY },
+        pickerEnabled: false
       });
-    } else
-      this.setState({ colors: { ...this.state.colors, [inputColor]: "red" } });
+    }
+  };
+
+  pickerSubTalentHandler = itemValue => {
+    let { colors, data } = this.state;
+    if (itemValue !== "Alt Branş Seçiniz") {
+      this.setState({
+        data: { ...data, subTalentName: itemValue },
+        colors: { ...colors, subTalentColor: "green" }
+      });
+    } else {
+      this.setState({
+        data: { ...data, subTalentName: itemValue },
+        colors: { ...colors, subTalentColor: COLOR_PRIMARY }
+      });
+    }
   };
 
   continue = () => {
-    let user = { ...this.props.getUser, ...this.state.data };
+    let user = {...this.props.getUser,...this.state.data}
     this.props.addUser(user);
-    console.log("1", user);
+    console.log("2",user)
     Navigation.push(this.props.componentId, {
       component: {
-        name: "yeteneksenin.screens.SignUpScreen2",
+        name: "yeteneksenin.screens.SignUpScreen3",
         options: {
           topBar: {
             visible: false,
@@ -70,51 +143,99 @@ class SignUpScreen extends Component {
   };
 
   render() {
-    let icon = Platform.OS === "android" ? "md-contact" : "ios-contact";
-    let { colors } = this.state;
+    let { colors, talents, subTalents, pickerEnabled } = this.state;
+    let talentItems = talents.map((item, index) => {
+      return (
+        <Picker.Item
+          key={index}
+          label={item.talentName}
+          value={item.talentName}
+        />
+      );
+    });
+    let subTalentItems = subTalents.map((item, index) => {
+      return (
+        <Picker.Item
+          key={index}
+          label={item.subTalentName}
+          value={item.subTalentName}
+        />
+      );
+    });
+    let iconUser = Platform.OS === "android" ? "md-contact" : "ios-contact";
+    let iconMail = Platform.OS === "android" ? "md-mail" : "ios-mail";
     let validate =
-      colors.firstnameColor === "green" && colors.surnameColor === "green";
+      colors.usernameColor === "green" &&
+      colors.emailColor === "green" &&
+      colors.talentColor === "green" &&
+      colors.subTalentColor === "green";
 
     let isClickable = validate ? true : false;
     let opacity = validate ? 1.0 : 0.2;
     return (
       <View style={styles.containerLogin}>
-        <View style={styles.flex1}>
-          <MainText>
-            <HeadingText>SIGN UP</HeadingText>
-          </MainText>
-        </View>
-
         <View style={styles.SignUpform}>
           <Input
             inputContainerStyle={{
-              borderColor: colors.firstnameColor
+              borderColor: colors.usernameColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
-            leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
+            leftIcon={<Icon name={iconUser} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="İsim"
-            onChangeText={firstname =>
-              this.InputHandler(
-                nameRegex,
-                firstname,
-                "firstname",
-                "firstnameColor"
+            placeholder="Kullanıcı Adı"
+            onChangeText={username =>
+              this.InputHandlerUsernameEmail(
+                usernameRegex,
+                username,
+                "username",
+                "usernameColor"
               )
             }
           />
+          <MainText>* En az 8 karakter içeren bir değer giriniz.</MainText>
           <Input
             inputContainerStyle={{
-              borderColor: colors.surnameColor
+              borderColor: colors.emailColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
-            leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
+            leftIcon={<Icon name={iconMail} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="Soyisim"
-            onChangeText={surname =>
-              this.InputHandler(nameRegex, surname, "surname", "surnameColor")
+            placeholder="E-mail"
+            onChangeText={email =>
+              this.InputHandlerUsernameEmail(
+                emailRegex,
+                email,
+                "email",
+                "emailColor"
+              )
             }
           />
+
+          <View style={{ borderWidth: 2, borderColor: colors.talentColor }}>
+            <Picker
+              selectedValue={this.state.data.talentName}
+              onValueChange={itemValue => this.pickerTalentHandler(itemValue)}
+            >
+              <Picker.Item label="Branş Seçiniz" value="Branş Seçiniz" />
+              {talentItems}
+            </Picker>
+          </View>
+
+          <View style={{ borderWidth: 2, borderColor: colors.subTalentColor }}>
+            <Picker
+              enabled={pickerEnabled}
+              selectedValue={this.state.data.subTalentName}
+              onValueChange={itemValue =>
+                this.pickerSubTalentHandler(itemValue)
+              }
+            >
+              <Picker.Item
+                label="Alt Branş Seçiniz"
+                value="Alt Branş Seçiniz"
+              />
+              {subTalentItems}
+            </Picker>
+          </View>
         </View>
         <View style={styles.flex1}>
           <CustomButton
@@ -145,7 +266,7 @@ mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignUpScreen);
+)(SignUpScreen2);
 
 /*
 <Input

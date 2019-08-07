@@ -20,6 +20,17 @@ const get = async (endpoint, token) => {
   }
 };
 
+const getWithoutToken = async (endpoint) => {
+  try {
+    let res = await fetch(url(endpoint))
+    let data = await res.json();
+    if (!data) throw new Error("Hata");
+    return data;
+  } catch {
+    return data.err;
+  }
+};
+
 const post = async (endpoint, body = {}, token) => {
   try {
     let res = await fetch(url(endpoint), {
@@ -79,4 +90,4 @@ const put = async (endpoint, body = {}, token) => {
   }
 };
 
-export { get, post, postWithoutToken, put };
+export { get, getWithoutToken, post, postWithoutToken, put };

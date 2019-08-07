@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   mainText: {
     color: "black",
     backgroundColor: "transparent",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize:12
   }
 });
 

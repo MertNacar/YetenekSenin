@@ -4,6 +4,8 @@ import {
   HomeScreen,
   SearchScreen,
   SignUpScreen,
+  SignUpScreen2,
+  SignUpScreen3,
   InitScreen,
   AddVideoScreen,
   SideDrawer
@@ -36,6 +38,18 @@ Navigation.registerComponentWithRedux(
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.SignUpScreen",
   () => SignUpScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.SignUpScreen2",
+  () => SignUpScreen2,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.SignUpScreen3",
+  () => SignUpScreen3,
   Provider,
   store
 );

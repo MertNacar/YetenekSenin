@@ -12,107 +12,118 @@ import styles from "./styles";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
-import {
-  nameRegex,
-  usernameRegex,
-  passwordRegex,
-  emailRegex,
-  validateRegex
-} from "../../../RegExp/regex";
+import { passwordRegex, validateRegex } from "../../../RegExp/regex";
 import { COLOR_PRIMARY } from "../../../src/styles/const";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Input } from "react-native-elements";
-import { Navigation } from "react-native-navigation";
-class SignUpScreen extends Component {
+class SignUpScreen3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {
-        firstname: "",
-        surname: ""
-        // birthday: "2012-02-21 18:10:00.000"
+        password: "",
+        confirmPassword: "",
+        birthday: "2012-02-21 18:10:00.000"
       },
       colors: {
-        firstnameColor: COLOR_PRIMARY,
-        surnameColor: COLOR_PRIMARY
-      }
+        passwordColor: COLOR_PRIMARY,
+        confirmPasswordColor: COLOR_PRIMARY
+      },
+      err: null
     };
   }
 
-  InputHandler = (typeRegex, input, inputName, inputColor) => {
-    let validate = validateRegex(typeRegex, input);
-    if (validate) {
-      this.setState({
-        data: { ...this.state.data, [inputName]: input },
-        colors: { ...this.state.colors, [inputColor]: "green" }
-      });
-    } else
-      this.setState({ colors: { ...this.state.colors, [inputColor]: "red" } });
-  };
-
-  continue = () => {
-    let user = { ...this.props.getUser, ...this.state.data };
-    this.props.addUser(user);
-    console.log("1", user);
-    Navigation.push(this.props.componentId, {
-      component: {
-        name: "yeteneksenin.screens.SignUpScreen2",
-        options: {
-          topBar: {
-            visible: false,
-            title: {
-              text: "Yetenek Senin"
-            }
-          }
+  post = async () => {
+    try {
+      let user = { ...this.props.getUser, ...this.state.data };
+      delete user.confirmPassword;
+      console.log("user3", user);
+      let data = await Http.postWithoutToken("/signup/", user);
+      console.log("data", data);
+      if (data === null || data.err) throw new Error();
+      else {
+        let storeUser = await storeUserStorage(data.user.username);
+        let storeToken = await storeTokenStorage(data.user.token);
+        if (storeToken.err || storeUser.err) {
+          throw new Error();
+        } else {
+          this.props.addUser(user);
+          MainTabs();
         }
       }
-    });
+    } catch (err) {
+      this.setState({ err: true });
+    }
+  };
+
+  passwordHandler = input => {
+    let { data, colors } = this.state;
+    let validate = validateRegex(passwordRegex, input);
+    if (validate) {
+      this.setState({
+        data: { ...data, password: input },
+        colors: { ...colors, passwordColor: "green" }
+      });
+    } else this.setState({ colors: { ...colors, passwordColor: "red" } });
+  };
+
+  verifyPassword = input => {
+    let { data, colors } = this.state;
+    if (input === data.password) {
+      this.setState({
+        data: { ...data, confirmPassword: input },
+        colors: { ...colors, confirmPasswordColor: "green" }
+      });
+    } else
+      this.setState({ colors: { ...colors, confirmPasswordColor: "red" } });
   };
 
   render() {
-    let icon = Platform.OS === "android" ? "md-contact" : "ios-contact";
-    let { colors } = this.state;
+    let icon = Platform.OS === "android" ? "md-lock" : "ios-lock";
+    let { err, colors } = this.state;
     let validate =
-      colors.firstnameColor === "green" && colors.surnameColor === "green";
+      colors.passwordColor === "green" &&
+      colors.confirmPasswordColor === "green";
 
     let isClickable = validate ? true : false;
     let opacity = validate ? 1.0 : 0.2;
     return (
       <View style={styles.containerLogin}>
-        <View style={styles.flex1}>
-          <MainText>
-            <HeadingText>SIGN UP</HeadingText>
+        <View style={[styles.errMessage, { display: err ? "flex" : "none" }]}>
+          <MainText style={{ color: "red" }}>
+            Kayıt olamadınız lütfen tekrar deneyiniz.
           </MainText>
         </View>
 
         <View style={styles.SignUpform}>
           <Input
+            secureTextEntry={true}
             inputContainerStyle={{
-              borderColor: colors.firstnameColor
+              borderColor: colors.passwordColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
             leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="İsim"
-            onChangeText={firstname =>
-              this.InputHandler(
-                nameRegex,
-                firstname,
-                "firstname",
-                "firstnameColor"
-              )
-            }
+            placeholder="Şifre"
+            onChangeText={password => this.passwordHandler(password)}
           />
+
+          <MainText>
+            *En az 1 büyük ve küçük harf, 1 sayı ve 1 özel karakterden oluşan
+            değer giriniz.
+          </MainText>
+
           <Input
+            secureTextEntry={true}
             inputContainerStyle={{
-              borderColor: colors.surnameColor
+              borderColor: colors.confirmPasswordColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
             leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="Soyisim"
-            onChangeText={surname =>
-              this.InputHandler(nameRegex, surname, "surname", "surnameColor")
+            placeholder="şifre tekrar"
+            onChangeText={confirmPassword =>
+              this.verifyPassword(confirmPassword)
             }
           />
         </View>
@@ -120,9 +131,9 @@ class SignUpScreen extends Component {
           <CustomButton
             style={{ opacity }}
             disabled={!isClickable}
-            onPress={this.continue}
+            onPress={this.post}
           >
-            Devam et
+            Kaydol
           </CustomButton>
         </View>
       </View>
@@ -145,7 +156,7 @@ mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignUpScreen);
+)(SignUpScreen3);
 
 /*
 <Input

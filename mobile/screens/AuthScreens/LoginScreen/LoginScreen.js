@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, ImageBackground } from "react-native";
-import InputHandler from "../../../src/components/InputHandler/InputHandler";
 import {
   storeTokenStorage,
   storeUserStorage
@@ -12,7 +11,6 @@ import { Navigation } from "react-native-navigation";
 import HeadingText from "../../../src/components/HeadingText/headingText";
 import MainText from "../../../src/components/MainText/MainText";
 import LinkText from "../../../src/components/LinkText/LinkText";
-import backgroundImage from "../../../src/assets/image.jpg";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import {
   passwordRegex,
@@ -21,7 +19,9 @@ import {
 } from "../../../RegExp/regex";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
-
+import { Input } from "react-native-elements";
+import Icon from "react-native-vector-icons/Ionicons";
+import { COLOR_PRIMARY } from "../../../src/styles/const";
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -31,8 +31,8 @@ class LoginScreen extends Component {
         password: ""
       },
       colors: {
-        usernameColor: "#29aaf4",
-        passwordColor: "#29aaf4"
+        usernameColor: COLOR_PRIMARY,
+        passwordColor: COLOR_PRIMARY
       },
       err: null
     };
@@ -44,7 +44,6 @@ class LoginScreen extends Component {
       let data = await Http.postWithoutToken("/login/", body);
       if (data.err) throw new Error();
       else {
-        console.log(data)
         let storeUser = await storeUserStorage(body.username);
         let storeToken = await storeTokenStorage(data.user.token);
         if (storeToken.err || storeUser.err) {
@@ -93,12 +92,8 @@ class LoginScreen extends Component {
     let opacity = validate ? 1.0 : 0.2;
     if (err === null || err) {
       return (
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.backgroundImage}
-        >
           <View style={styles.containerLogin}>
-            <View style={styles.flex2}>
+            <View style={styles.flex1}>
               <MainText>
                 <HeadingText>Log In</HeadingText>
               </MainText>
@@ -113,9 +108,16 @@ class LoginScreen extends Component {
             </View>
 
             <View style={styles.LoginForm}>
-              <InputHandler
-                style={{ borderColor: this.state.colors.usernameColor }}
+              <Input
                 placeholder="Kullanıcı Adı"
+                underlineColorAndroid="transparent"
+                leftIcon={
+                  <Icon name="md-contact" size={24} color={COLOR_PRIMARY} />
+                }
+                inputStyle={{paddingLeft:20,fontSize:16}}
+                inputContainerStyle={{
+                  borderColor: this.state.colors.usernameColor
+                }}
                 onChangeText={username =>
                   this.InputHandler(
                     usernameRegex,
@@ -128,10 +130,17 @@ class LoginScreen extends Component {
               <MainText>
                 *En az 8 karakterden oluşan bir değer giriniz.
               </MainText>
-              <InputHandler
-                style={{ borderColor: this.state.colors.passwordColor }}
+              <Input
                 secureTextEntry={true}
                 placeholder="Sifre"
+                underlineColorAndroid="transparent"
+                inputStyle={{paddingLeft:20,fontSize:16}}
+                leftIcon={
+                  <Icon name="md-lock" size={24} color={COLOR_PRIMARY} />
+                }
+                inputContainerStyle={{
+                  borderColor: this.state.colors.passwordColor
+                }}
                 onChangeText={password =>
                   this.InputHandler(
                     passwordRegex,
@@ -146,7 +155,8 @@ class LoginScreen extends Component {
                 oluşan değer giriniz.
               </MainText>
             </View>
-            <View style={styles.flex2}>
+            
+            <View style={styles.flex1}>
               <CustomButton
                 style={{ opacity }}
                 disabled={!isClickable}
@@ -159,7 +169,6 @@ class LoginScreen extends Component {
               </LinkText>
             </View>
           </View>
-        </ImageBackground>
       );
     }
   }

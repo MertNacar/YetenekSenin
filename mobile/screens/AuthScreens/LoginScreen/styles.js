@@ -4,10 +4,11 @@ const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor:"#D7E1E9"
   },
   LoginForm: {
-    flex: 3,
+    flex: 2,
     justifyContent: "space-evenly",
     width: "75%"
   },
@@ -16,14 +17,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  flex2: {
-    flex: 2,
+  flex1: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
   backgroundImage: {
     flex: 1
   },
+
 });
 
 export default styles;

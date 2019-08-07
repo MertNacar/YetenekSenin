@@ -8,21 +8,10 @@ import MainText from "../MainText/MainText";
 export default class Card extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      items: {
-        videoTitle: this.props.item.videoTitle,
-        subTalentName: this.props.item.tblSubTalent.subTalentName,
-        videoPath: this.props.item.videoPath,
-        username: this.props.item.tblUser.username,
-        videoWatchCount: this.props.item.videoWatchCount,
-        videoDescription: this.props.item.videoDescription,
-        createdAt: this.props.item.createdAt
-      }
-    };
   }
 
   render() {
-    item = this.state.items;
+    item = this.props.item;
     let time = moment(item.createdAt).fromNow();
     return (
       <View style={styles.containerCard}>

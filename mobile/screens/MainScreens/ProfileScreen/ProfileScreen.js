@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { View, Button } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import { AuthTabs } from "../../MainTabs";
 import MainText from "../../../src/components/MainText/MainText";
 import { connect } from "react-redux";
 import { Navigation } from "react-native-navigation";
@@ -22,6 +20,7 @@ class ProfileScreen extends Component {
   }
   render() {
     let user = this.props.getUser;
+    console.log(user)
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
@@ -49,19 +48,12 @@ class ProfileScreen extends Component {
           <MainText>socialMedia : {user.socialMedia}</MainText>
         </View>
         <View style={{ flex: 1 }}>
-          <MainText>Birthday : {user.Birthday}</MainText>
+          <MainText>Birthday : {user.birthday}</MainText>
         </View>
         <View style={{ flex: 1 }}>
           <MainText>loginDate : {user.loginDate}</MainText>
         </View>
-        <View style={{ flex: 1 }}>
-          <Button
-            title="Cıkıs Yap"
-            onPress={() => {
-              AsyncStorage.clear();
-              AuthTabs();
-            }}
-          />
+        <View style={{ flex: 1 }}> 
         </View>
       </View>
     );

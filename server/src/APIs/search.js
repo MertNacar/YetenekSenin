@@ -30,13 +30,13 @@ router.post("/user", async (req, res) => {
         include: [
           {
             required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
+            model: models.SubTalentModel,
+            attributes: ["subTalentName"]
           }
         ]
       });
       if (users.length > 0) {
-        res.json({ err: false, users });
+        res.json({ err: false, users : users });
       } else {
         throw new Error();
       }

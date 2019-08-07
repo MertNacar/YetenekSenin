@@ -9,17 +9,21 @@ const styles = StyleSheet.create({
   },
 
   SignUpform: {
-    flex: 3,
+    flex: 5,
     justifyContent: "space-evenly",
     width: "75%"
   },
-  
+
+  errMessage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
   flex1: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center"
   },
-
   backgroundImage: {
     flex: 1
   },
