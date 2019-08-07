@@ -3,6 +3,7 @@ import { View, Image } from "react-native";
 import MainText from "../MainText/MainText";
 import styles from "./styles";
 import { ListItem } from 'react-native-elements'
+import photo from '../../assets/profile_photo.jpg'
 export default class SearchCard extends Component {
   render() {
     let item = this.props.item
@@ -10,7 +11,7 @@ export default class SearchCard extends Component {
       <ListItem
       title={item.username}
       subtitle={item.tblSubTalent.subTalentName}
-      leftAvatar={{ source: { uri: item.profilePhoto } }}
+      leftAvatar={{ source:  photo/*{ uri:  item.profilePhoto }*/ }}
     />
     );
   }
