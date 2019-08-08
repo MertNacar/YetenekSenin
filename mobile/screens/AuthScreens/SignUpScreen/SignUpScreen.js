@@ -1,28 +1,17 @@
 import React, { Component } from "react";
 import { View, Platform } from "react-native";
-import {
-  storeTokenStorage,
-  storeUserStorage
-} from "../../../src/AsyncStorage/index";
-import * as Http from "../../../utils/httpHelper";
 import HeadingText from "../../../src/components/HeadingText/headingText";
 import MainText from "../../../src/components/MainText/MainText";
-import { MainTabs } from "../../MainTabs";
 import styles from "./styles";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
-import {
-  nameRegex,
-  usernameRegex,
-  passwordRegex,
-  emailRegex,
-  validateRegex
-} from "../../../RegExp/regex";
+import { nameRegex, validateRegex } from "../../../RegExp/regex";
 import { COLOR_PRIMARY } from "../../../src/styles/const";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Input } from "react-native-elements";
 import { Navigation } from "react-native-navigation";
+
 class SignUpScreen extends Component {
   constructor(props) {
     super(props);

@@ -1,9 +1,5 @@
 import React, { Component } from "react";
 import { View, Platform, Picker } from "react-native";
-import {
-  storeTokenStorage,
-  storeUserStorage
-} from "../../../src/AsyncStorage/index";
 import * as Http from "../../../utils/httpHelper";
 import MainText from "../../../src/components/MainText/MainText";
 import styles from "./styles";
@@ -19,6 +15,7 @@ import { COLOR_PRIMARY } from "../../../src/styles/const";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Input } from "react-native-elements";
 import { Navigation } from "react-native-navigation";
+
 class SignUpScreen2 extends Component {
   constructor(props) {
     super(props);
@@ -124,9 +121,9 @@ class SignUpScreen2 extends Component {
   };
 
   continue = () => {
-    let user = {...this.props.getUser,...this.state.data}
+    let user = { ...this.props.getUser, ...this.state.data };
     this.props.addUser(user);
-    console.log("2",user)
+    console.log("2", user);
     Navigation.push(this.props.componentId, {
       component: {
         name: "yeteneksenin.screens.SignUpScreen3",

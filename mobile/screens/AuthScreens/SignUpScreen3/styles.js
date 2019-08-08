@@ -13,7 +13,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "75%"
   },
-
+  horizontal: {
+    flex:5,
+    flexDirection:"row",
+    justifyContent:"center",
+    alignItems: "center"
+  },
+  inputs: {
+    flex:25,
+    justifyContent:"space-evenly",
+    alignItems: "center"
+  },
   errMessage: {
     flex: 1,
     justifyContent: "center",
