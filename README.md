@@ -95,12 +95,14 @@ export default {
 * ~~Fronted anasayfa için tasarım ve~~ varolan pagination kontrolu
 * Video Ekleme sayfası için mobil tasarım ve API istekleri 
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
-* Ayarlar kısmı, tasarımı ve çıkış işlemi
+* Ayarlar kısmı, tasarımı ve ~~çıkış işlemi~~ kullanıcı işlemleri için sayfaların oluşturulması
 * ~~Tüm inputlar için RegExp yapılacak~~ Password regExp birdaha kontrol et
 * ~~Username ve Email inputları için API ile anında kontrol sağlanacak / Client tarafı kaldı~~
-* Signup kismina Datepicker eklenecek
+* ~~Signup kismina Datepicker eklenecek~~
 * Profile içinde sideMenu tasarımı veri gönderimleri sağlanması
 * Search ekranında gelen userların profillerine gitmek için API isteği ve tasarımı 
-* Database mentor eklentisi ve clientta menter etiketi verilmesi
+* Search Ekranında boşkenki API isteğinin düzenlenmesi
+* Home ekranı için yıldız verme, kullanıcıyı takip etme, şikayet pop-up'ı, comment tasarımı, yetenek simgelerin filtrelenmesi ve hepsinin API istekleri 
+* Database mentor eklentisi ve clientta mentor etiketi verilmesi
 * Uygulama içi mesajlasma olusturulması
 
