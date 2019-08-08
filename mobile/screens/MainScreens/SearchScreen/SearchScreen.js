@@ -52,7 +52,7 @@ class SearchScreen extends Component {
             placeholder="Yetenekli Bul"
             onChangeText={value => this.search(value)}
             value={value}
-            lightTheme={true}
+            //lightTheme={true}
           />
         <View style={{ flex: 24 }}>{display}</View>
       </View>

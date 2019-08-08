@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   let validete = jwt.validateToken(token);
   try {
     if (validete) {
-      await models.UserModel.findOne({
+      let data = await models.UserModel.findOne({
         attributes: [
           "firstname",
           "surname",
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
           "socialMedia"
         ],
         where: {
-          username,
+          username
         },
         include: [
           {
@@ -66,6 +66,62 @@ router.get("/", async (req, res) => {
     res.json({ err: true });
   }
 });
+
+router.get("/show", async (req, res) => {
+  let username = req.query.user;
+  let token = req.headers.authorization.split(" ")[1];
+  let validete = jwt.validateToken(token);
+  try {
+    if (validete) {
+      let user = await models.UserModel.findOne({
+        attributes: [
+          "firstname",
+          "surname",
+          "username",
+          "email",
+          "phone",
+          "aboutMe",
+          "city",
+          "birthday",
+          "profilePhoto",
+          "socialMedia"
+        ],
+        where: {
+          username
+        },
+        include: [
+          /*{
+            required: true,
+            model: models.VideoModel,
+            attributes: [
+              "videoPath",
+              "videoDescription",
+              "videoTitle",
+              "videoWatchCount",
+              "createdAt"
+            ]
+          },*/
+          {
+            required: true,
+            model: models.TalentModel,
+            attributes: ["talentName"]
+          },
+          /*{
+            required: true,
+            model: models.CommentModel,
+            attributes: ["commentDescription", "commentLikeCount"]
+          }*/
+        ]
+      });
+      res.json({ err: false, user });
+    } else {
+      throw new Error();
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
 // TO DOOOOOOOOOO PASSWORD UPDATE
 router.put("/update/all", async (req, res) => {
   let data = req.body.data;
@@ -74,14 +130,12 @@ router.put("/update/all", async (req, res) => {
   try {
     if (validate) {
       let user = await models.UserModel.findOne({
-        attributes: [
-          "password",       
-        ],
+        attributes: ["password"],
         where: {
           username: data.oldUsername
         }
       });
-      
+
       await user.update({
         firstname: data.firstname,
         surname: data.surname,
@@ -112,8 +166,8 @@ router.put("/update/password", async (req, res) => {
           username: data.oldUsername
         }
       });
-      let old = await hashPassword(data.oldPassword)
-     // let new = await verifyPassword(data.)
+      let old = await hashPassword(data.oldPassword);
+      // let new = await verifyPassword(data.)
       await user.update({
         firstname: data.firstname,
         surname: data.surname,
@@ -132,6 +186,5 @@ router.put("/update/password", async (req, res) => {
     res.json({ err: true });
   }
 });
-
 
 module.exports = router;

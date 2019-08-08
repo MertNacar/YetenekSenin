@@ -13,9 +13,8 @@ import {
 import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
 import { Provider } from "react-redux";
-import configureStore from "./src/store/configureStore";
+import store from "./src/store/configureStore";
 
-const store = configureStore();
 console.log("store", store.getState());
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.LoginScreen",
