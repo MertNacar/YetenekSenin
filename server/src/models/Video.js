@@ -23,6 +23,11 @@ const VideoModel = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false
     },
+    
+    videoPath: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
 
     videoWatchCount: Sequelize.INTEGER,
 

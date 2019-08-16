@@ -15,9 +15,9 @@ var router = express.Router();
 router.post("/immediately", async (req, res) => {
   let username = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
-  let validete = jwt.validateToken(token);
+  let validate = jwt.validateToken(token);
   try {
-    if (validete) {
+    if (validate) {
       let data = await models.UserModel.findOne({
         attributes: [
           "firstname",

@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     var token = jwt.createToken(user.username);
     let hash = await hashPassword(user.password);
     user.password = hash;
-    let ds = await models.UserModel.create(user);
+    await models.UserModel.create(user);
     user.token = token;
     user.loginDate = Date(Date.now()).toString();
     delete user.password;
