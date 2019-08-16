@@ -93,7 +93,7 @@ export default {
 * ~~Giriş yapıldıktan sonra her API isteği için token ile kontrol sağlama~~
 * Frontend kısmında ~~search~~ ve profile ekranlarının tasarımı ve veri gönderimi ayarlanması
 * ~~Fronted anasayfa için tasarım ve~~ varolan pagination kontrolu
-* Video Ekleme sayfası için mobil tasarım ve API istekleri 
+* Video Ekleme sayfası için mobil tasarım ve API istekleri / databasede ilişkili yükleme için bak 
 * Kullanıcı silme güncelleme ve diğer işlemler için Apı istekleri
 * Ayarlar kısmı, tasarımı ve ~~çıkış işlemi~~ kullanıcı işlemleri için sayfaların oluşturulması
 * ~~Tüm inputlar için RegExp yapılacak~~ Password regExp birdaha kontrol et
@@ -105,4 +105,4 @@ export default {
 * Home ekranı için yıldız verme, kullanıcıyı takip etme, şikayet pop-up'ı, comment tasarımı, yetenek simgelerin filtrelenmesi ve hepsinin API istekleri 
 * Database mentor eklentisi ve clientta mentor etiketi verilmesi
 * Uygulama içi mesajlasma olusturulması
-
+* Username için indexleme
