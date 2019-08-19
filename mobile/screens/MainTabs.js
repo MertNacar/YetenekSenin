@@ -126,6 +126,10 @@ const MainTabs = () => {
                         icon: sources[3]
                       },
                       topBar: {
+                        elevation: 0,
+                        background:{
+                          color : ""
+                        },
                         visible: true,
                         //animate:false,
                         //rightButtonDisabledColor:"red",

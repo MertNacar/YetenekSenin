@@ -10,21 +10,49 @@ const {
 var express = require("express");
 var router = express.Router();
 
-// ilişkili create işlemi bakılacak
+//video ekleme
 router.post("/add", async (req, res) => {
-  let video = req.body;
-  console.log(video)
-  /*let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);*/
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
   try {
-    //if (validate) {
-    let cre = await models.VideoModel.create(video);
-    console.log("cre",cre)
-    let a = await models.VideoModel.findAll()
-    res.json({ err: false, video: a });
-    //}
+    if (validate) {
+      let talents = await models.TalentModel.findOne({
+        attributes: ["talentID"],
+        where: {
+          talentName: data.talentName
+        },
+        include: [
+          {
+            required: true,
+            model: models.SubTalentModel,
+            attributes: ["subTalentID"],
+            where: { subTalentName: data.subTalentName }
+          }
+        ]
+      });
+
+      let user = await models.UserModel.findOne({
+        attributes: ["userID"],
+        where: {
+          username: data.username
+        }
+      });
+
+      let fVTalentID = talents.talentID;
+      let fVSubTalentID = talents.tblSubTalents[0].subTalentID;
+      let result = {
+        ...data.video,
+        fVTalentID,
+        fVSubTalentID,
+        fUserID: user.userID
+      };
+
+      await models.VideoModel.create(result);
+      res.json({ err: false });
+    }
   } catch (err) {
-    res.json({ err: true, mess: err.message });
+    res.json({ err: true });
   }
 });
 

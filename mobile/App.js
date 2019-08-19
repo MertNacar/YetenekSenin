@@ -52,9 +52,11 @@ Navigation.registerComponentWithRedux(
   Provider,
   store
 );
-Navigation.registerComponent(
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.AddVideoScreen",
-  () => AddVideoScreen
+  () => AddVideoScreen,
+  Provider,
+  store
 );
 Navigation.registerComponent(
   "yeteneksenin.screens.SideDrawer",
