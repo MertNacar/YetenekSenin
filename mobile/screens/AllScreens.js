@@ -8,10 +8,13 @@ import SignUpScreen3 from "./AuthScreens/SignUpScreen3/SignUpScreen3";
 import AddVideoScreen from "./MainScreens/AddVideoScreen/AddVideoScreen";
 import SideDrawer from "./MainScreens/SideDrawer/SideDrawer";
 import InitScreen from "./InitScreen/initScreen";
+import ViewProfileScreen from "./MainScreens/ViewProfileScreen/ViewProfileScreen";
+import UpdateInformationScreen from "./MainScreens/UpdateInformationScreen/UpdateInformationScreen";
 
 export {
   HomeScreen,
   ProfileScreen,
+  ViewProfileScreen,
   SearchScreen,
   LoginScreen,
   SignUpScreen,
@@ -19,5 +22,6 @@ export {
   SignUpScreen3,
   AddVideoScreen,
   SideDrawer,
+  UpdateInformationScreen,
   InitScreen
 };

@@ -7,9 +7,10 @@ import { SearchBar } from "react-native-elements";
 import * as Http from "../../../utils/httpHelper";
 import { connect } from "react-redux";
 import MainText from "../../../src/components/MainText/MainText";
+import { Navigation } from "react-native-navigation";
 class SearchScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       value: null,
       loading: null,
@@ -44,7 +45,7 @@ class SearchScreen extends Component {
     let display = err ? (
       <MainText>Aradığınız kişiyi bulamadık.</MainText>
     ) : (
-      <SearchCardList data={users} />
+      <SearchCardList data={users} {...this.props} />
     );
     return (
       <View style={{ flex: 1 }}>

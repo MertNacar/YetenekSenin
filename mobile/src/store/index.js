@@ -1,4 +1,4 @@
 import videoReducer from "./video/videoReducer";
 import userReducer from "./user/userReducer";
-
-export { userReducer, videoReducer };
+import userViewReducer from "./userView/userViewReducer";
+export { userReducer, videoReducer, userViewReducer };

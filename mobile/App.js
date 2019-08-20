@@ -1,6 +1,7 @@
 import {
   LoginScreen,
   ProfileScreen,
+  ViewProfileScreen,
   HomeScreen,
   SearchScreen,
   SignUpScreen,
@@ -8,7 +9,8 @@ import {
   SignUpScreen3,
   InitScreen,
   AddVideoScreen,
-  SideDrawer
+  SideDrawer,
+  UpdateInformationScreen
 } from "./screens/AllScreens";
 import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
@@ -58,9 +60,23 @@ Navigation.registerComponentWithRedux(
   Provider,
   store
 );
-Navigation.registerComponent(
+Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.SideDrawer",
-  () => SideDrawer
+  () => SideDrawer,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.UpdateInformationScreen",
+  () => UpdateInformationScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.ViewProfileScreen",
+  () => ViewProfileScreen,
+  Provider,
+  store
 );
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.ProfileScreen",

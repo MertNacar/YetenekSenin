@@ -72,6 +72,7 @@ class LoginScreen extends Component {
   goSignup = () => {
     Navigation.push(this.props.componentId, {
       component: {
+        id:"SignUpScreen",
         name: "yeteneksenin.screens.SignUpScreen",
         options: {
           topBar: {

@@ -87,6 +87,7 @@ export default class CardList extends Component {
         onEndReached={this.handleLoadMore}
         onEndReachedThreshold={threshold}
         ListFooterComponent={this.renderFooter}
+        showsVerticalScrollIndicator={false}
       />
     );
   }

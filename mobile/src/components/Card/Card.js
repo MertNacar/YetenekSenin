@@ -1,18 +1,16 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { View, Text } from "react-native";
 import Video from "react-native-video";
 import moment from "moment";
 import styles from "./styles";
 import Icon from "react-native-vector-icons/Ionicons";
 import MainText from "../MainText/MainText";
-export default class Card extends Component {
+export default class Card extends PureComponent {
   constructor(props) {
     super(props);
   }
-
   render() {
     item = this.props.item;
-    console.log("username", item);
     let time = moment(item.createdAt).fromNow();
     return (
       <View style={styles.containerCard}>

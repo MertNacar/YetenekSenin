@@ -49,6 +49,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
+                          id:"HomeScreen",
                           name: "yeteneksenin.screens.HomeScreen"
                         }
                       }
@@ -71,6 +72,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
+                          id:"SearchScreen",
                           name: "yeteneksenin.screens.SearchScreen"
                         }
                       }
@@ -93,6 +95,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
+                          id:"AddVideoScreen",
                           name: "yeteneksenin.screens.AddVideoScreen"
                         }
                       }
@@ -115,6 +118,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
+                          id:"ProfileScreen",
                           name: "yeteneksenin.screens.ProfileScreen"
                         }
                       }
@@ -148,6 +152,7 @@ const MainTabs = () => {
           },
           right: {
             component: {
+              id:"SideDrawer",
               name: "yeteneksenin.screens.SideDrawer"
             }
           }
@@ -170,6 +175,7 @@ const AuthTabs = () => {
         children: [
           {
             component: {
+              id:"LoginScreen",
               name: "yeteneksenin.screens.LoginScreen"
             }
           }
@@ -186,6 +192,7 @@ const InitTab = () => {
         children: [
           {
             component: {
+              id:"InitScreen",
               name: "yeteneksenin.screens.InitScreen"
             }
           }

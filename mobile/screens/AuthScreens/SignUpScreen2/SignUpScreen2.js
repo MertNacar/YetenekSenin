@@ -123,9 +123,9 @@ class SignUpScreen2 extends Component {
   continue = () => {
     let user = { ...this.props.getUser, ...this.state.data };
     this.props.addUser(user);
-    console.log("2", user);
     Navigation.push(this.props.componentId, {
       component: {
+        id:"SignUpScreen3",
         name: "yeteneksenin.screens.SignUpScreen3",
         options: {
           topBar: {
