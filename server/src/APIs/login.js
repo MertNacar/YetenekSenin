@@ -20,6 +20,7 @@ router.post("/immediately", async (req, res) => {
     if (validate) {
       let data = await models.UserModel.findOne({
         attributes: [
+          "userID",
           "firstname",
           "surname",
           "username",
@@ -68,6 +69,7 @@ router.post("/", async (req, res) => {
   try {
     let data = await models.UserModel.findOne({
       attributes: [
+        "userID",
         "firstname",
         "surname",
         "username",

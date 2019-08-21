@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
     if (validate) {
       let gelen = await models.VideoModel.findAll({
         attributes: [
+          "videoID",
           "videoPath",
           "videoDescription",
           "videoTitle",
@@ -30,7 +31,7 @@ router.get("/", async (req, res) => {
           {
             required: true,
             model: models.UserModel,
-            attributes: ["username"]
+            attributes: ["userID", "username"]
           },
           {
             required: true,
@@ -45,6 +46,69 @@ router.get("/", async (req, res) => {
         ]
       });
       res.json({ err: false, gelen, gelenLen: gelen.length });
+    } else {
+      throw new Error();
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+router.post("/follow", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      //follow işlemleri
+    } else {
+      throw new Error();
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+router.delete("/unfollow", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      //olan follow geri alma delete
+    } else {
+      throw new Error();
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+router.post("/giveStar", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      //VİDEO İÇİN STAR UPDATE arttırma için
+      let video = await models.VideoModel.findOne({
+        where:{videoID: data.videoID}
+      })
+    } else {
+      throw new Error();
+    }
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+router.put("/takeStar", async (req, res) => {
+  let data = req.body.data;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      //VİDEO İÇİN STAR update azaltmak için
     } else {
       throw new Error();
     }

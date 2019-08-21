@@ -18,6 +18,13 @@ router.post("/", async (req, res) => {
     let hash = await hashPassword(user.password);
     user.password = hash;
     await models.UserModel.create(user);
+    let data = await models.UserModel.findOne({
+      attributes: ["userID"],
+      where: {
+        username: user.username
+      }
+    });
+    user.userID = data.userID;
     user.token = token;
     user.loginDate = Date(Date.now()).toString();
     delete user.password;
@@ -76,18 +83,19 @@ router.get("/talent", async (req, res) => {
 });
 
 router.post("/subTalent", async (req, res) => {
-  let talentName = req.body.data
+  let talentName = req.body.data;
   try {
     let data = await models.SubTalentModel.findAll({
       attributes: ["subTalentName"],
-      include : [{
-        required: true,
-        model: models.TalentModel,
-        attributes: [],
-        where:{
-          talentName
+      include: [
+        {
+          required: true,
+          model: models.TalentModel,
+          attributes: [],
+          where: {
+            talentName
+          }
         }
-      },
       ]
     });
     if (data.length > 0) res.json({ err: false, data });
