@@ -11,7 +11,7 @@ var express = require("express");
 var router = express.Router();
 
 router.get("/", async (req, res) => {
-  let page = req.query.page;
+  let data = req.query;
   let token = req.headers.authorization.split(" ")[1];
   let validate = jwt.validateToken(token);
   try {
@@ -23,15 +23,34 @@ router.get("/", async (req, res) => {
           "videoDescription",
           "videoTitle",
           "videoWatchCount",
+          "videoStarCount",
           "createdAt"
         ],
-        offset: 3 * page,
+        offset: 3 * data.page,
         limit: 3,
         include: [
           {
             required: true,
+            model: models.StarVideoModel,
+            attributes: ["isLike"],
+            where: {
+              userID: data.userID
+            }
+          },
+          {
+            required: true,
             model: models.UserModel,
-            attributes: ["userID", "username"]
+            attributes: ["username"],
+            include: [
+              {
+                required: true,
+                model: models.FollowerModel,
+                attributes: [],
+                where: {
+                  userID: data.userID
+                }
+              }
+            ]
           },
           {
             required: true,
@@ -49,8 +68,8 @@ router.get("/", async (req, res) => {
     } else {
       throw new Error();
     }
-  } catch {
-    res.json({ err: true });
+  } catch (err) {
+    res.json({ err: true, err: err.message });
   }
 });
 
@@ -92,8 +111,8 @@ router.post("/giveStar", async (req, res) => {
     if (validate) {
       //VİDEO İÇİN STAR UPDATE arttırma için
       let video = await models.VideoModel.findOne({
-        where:{videoID: data.videoID}
-      })
+        where: { videoID: data.videoID }
+      });
     } else {
       throw new Error();
     }

@@ -5,6 +5,6 @@ export default options = {
     //customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
     storageOptions: {
       skipBackup: true,
-      path: "images"
+      path: "videos"
     }
   };
