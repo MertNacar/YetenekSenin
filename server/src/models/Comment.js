@@ -16,17 +16,7 @@ const CommentModel = sequelize.define(
       allowNull: false
     },
 
-    commentLikeCount: Sequelize.INTEGER,
-
-    createdAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    },
-
-    updatedAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    }
+    commentLikeCount: Sequelize.INTEGER
   },
   {
     freezeTableName: true

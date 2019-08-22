@@ -1,17 +1,18 @@
 const sequelize = require("./index");
 const Sequelize = require("sequelize");
 const UserModel = require("./User");
+const VideoModel = require("./Video");
 
-const FollowerModel = sequelize.define(
-  "tblFollower",
+const StarVideoModel = sequelize.define(
+  "tblStarVideo",
 
   {
-    followID: {
+    starVideoID: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    isFollow: {
+    isLike: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     }
@@ -19,9 +20,9 @@ const FollowerModel = sequelize.define(
   {
     indexes: [
       {
-        name: "FollowsPK",
+        name: "StarsPK",
         unique: true,
-        fields: ["userID", "followerID"]
+        fields: ["userID", "videoID"]
       }
     ],
 
@@ -29,20 +30,20 @@ const FollowerModel = sequelize.define(
   }
 );
 
-FollowerModel.hasMany(UserModel, {
+StarVideoModel.hasMany(UserModel, {
   foreignKey: "userID"
 });
 
-UserModel.hasMany(FollowerModel, {
+UserModel.hasMany(StarVideoModel, {
   foreignKey: "userID"
 });
 
-FollowerModel.hasMany(UserModel, {
-  foreignKey: "followerID"
+VideoModel.hasMany(StarVideoModel, {
+  foreignKey: "videoID"
 });
 
-UserModel.hasMany(FollowerModel, {
-  foreignKey: "followerID"
+StarVideoModel.hasMany(VideoModel, {
+  foreignKey: "videoID"
 });
 
-module.exports = FollowerModel;
+module.exports = StarVideoModel;

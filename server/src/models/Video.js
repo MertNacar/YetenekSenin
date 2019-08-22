@@ -23,23 +23,14 @@ const VideoModel = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false
     },
-    
+
     videoPath: {
       type: Sequelize.STRING,
       allowNull: false
     },
 
-    videoWatchCount: Sequelize.INTEGER,
-
-    createdAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    },
-
-    updatedAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    }
+    videoWatchCount: { type: Sequelize.INTEGER, defaultValue: 0 },
+    videoStarCount: { type: Sequelize.INTEGER, defaultValue: 0 }
   },
   {
     freezeTableName: true
