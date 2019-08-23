@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Button, Image } from "react-native";
+import { View, Button, Image, StyleSheet,TouchableOpacity } from "react-native";
 import MainText from "../../../src/components/MainText/MainText";
 import { connect } from "react-redux";
+import { Input } from "react-native-elements";
 import { Navigation } from "react-native-navigation";
-import styles from "./styles";
 import profilePhoto from "../../../src/assets/profile_photo.jpg";
 import Icon from "react-native-vector-icons/FontAwesome5";
 class ProfileScreen extends Component {
@@ -24,55 +24,41 @@ class ProfileScreen extends Component {
     let user = this.props.getUser;
     return (
       <View style={styles.container}>
-        <View style={styles.profileHeader}>
-          <View style={styles.photoSection}>
-            <Image style={styles.image} source={profilePhoto} />
-          </View>
-          <View style={styles.talentSection}>
-            <MainText>
-              <Icon name="user-alt" size={22} /> {user.username}
-            </MainText>
-
-            <MainText>
-              <Icon name="star" size={22} /> {user.firstname}
-            </MainText>
-
-            <MainText>
-              <Icon name="eye" size={22} /> {user.firstname}
-            </MainText>
-
-            <MainText>
-              <Icon name="futbol" size={22} /> {user.firstname}
-            </MainText>
-          </View>
-        </View>
-
-        <View style={styles.profileBody}>
-          <MainText>
-            <Icon name="id-card-alt" size={22} /> {user.firstname}{" "}
-            {user.surname}
-          </MainText>
-          <MainText>
-            <Icon name="city" size={22} /> {user.city}
-          </MainText>
-          <MainText>
-            <Icon name="mobile" size={22} /> {user.phone}
-          </MainText>
-          <MainText>
-            <Icon name="birthday-cake" size={22} /> {user.birthday}
-          </MainText>
-          <MainText>
-            <Icon name="info" size={22} /> {user.aboutMe}
-          </MainText>
-        </View>
-
-        <View style={styles.profileFooter}>
-          <MainText>VİDEOLARIN</MainText>
-          <MainText>BULUNDUGU GRID VIEW YER ALACAK</MainText>
-          <MainText>INSTAGRAMDAKİ GİBİ</MainText>
-          <MainText>IZGARA GORUNUM YADA ALT ALTA GORUNUM</MainText>
-          <MainText>VERILECEK</MainText>
-        </View>
+        <View style={styles.header}></View>
+        <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+        <View style={styles.body}>
+        
+        <Input
+        inputStyle={styles.buttonContainer}
+        > {user.firstname} </Input>
+        
+        <Input 
+          inputStyle={styles.buttonContainer}
+        > {user.surname} </Input>
+        <Input
+        inputStyle={styles.buttonContainer}
+ 
+        > {user.username} </Input>
+        <Input
+        inputStyle={styles.buttonContainer}
+         > 
+        
+         {user.phone} </Input>
+        <Input
+        inputStyle={styles.buttonContainer}
+        > {user.aboutMe} </Input>
+        <Input
+        inputStyle={styles.buttonContainer}
+        
+        > {user.city} </Input>
+        
+        
+        <Input
+          inputStyle={styles.buttonContainer}
+          > {user.email} 
+         </Input>     
+         </View>
+         
       </View>
     );
   }
@@ -84,6 +70,63 @@ mapStateToProps = state => {
   };
 };
 export default connect(mapStateToProps)(ProfileScreen);
+const styles = StyleSheet.create({
+  header:{
+    backgroundColor: "#00BFFF",
+    height:150,
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom:10,
+    alignSelf:'center',
+    position: 'absolute',
+    marginTop:80
+  },
+  name:{
+    fontSize:22,
+    color:"#FFFFFF",
+    fontWeight:'600',
+  },
+  body:{
+    marginTop:60,
+  },
+  bodyContent: {
+    flex: 1,
+    alignItems: 'center',
+    padding:30,
+  },
+  name:{
+    fontSize:28,
+    color: "#696969",
+    fontWeight: "600"
+  },
+  info:{
+    fontSize:16,
+    color: "#00BFFF",
+    marginTop:10
+  },
+  description:{
+    fontSize:16,
+    color: "#696969",
+    marginTop:10,
+    textAlign: 'center'
+  },
+  buttonContainer: {
+    marginTop:5,
+    height:25,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:10,
+    width:150,
+    borderRadius:20,
+    backgroundColor: "#00BFFF",
+  },
+});
 
 /*
 <View style={{ flex: 1 }}>
@@ -119,3 +162,4 @@ export default connect(mapStateToProps)(ProfileScreen);
         <View style={{ flex: 1 }}> 
         </View>
         */
+       

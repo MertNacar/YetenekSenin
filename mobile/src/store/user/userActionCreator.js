@@ -5,5 +5,11 @@ const addUser = user => {
     payload: user
   };
 };
+const editUser = user => {
+  return {
+    type: actions.EDIT_USER,
+    payload: user
+  };
+};
 
-export { addUser };
+export { addUser,editUser };
