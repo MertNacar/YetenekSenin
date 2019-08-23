@@ -1,11 +1,12 @@
 const sequelize = require("./index");
 const Sequelize = require("sequelize");
 const UserModel = require("./User");
+const VideoModel = require("./Video");
 
 const CommentModel = sequelize.define(
   "tblComment",
   {
-    CommentID: {
+    commentID: {
       primaryKey: true,
       type: Sequelize.INTEGER,
       autoIncrement: true
@@ -23,12 +24,20 @@ const CommentModel = sequelize.define(
   }
 );
 
-CommentModel.hasMany(UserModel, {
+UserModel.hasMany(CommentModel, {
   foreignKey: "fUserID"
 });
 
-UserModel.belongsTo(CommentModel, {
+CommentModel.belongsTo(UserModel, {
   foreignKey: "fUserID"
+});
+
+VideoModel.hasMany(CommentModel, {
+  foreignKey: "fVideoID"
+});
+
+CommentModel.belongsTo(VideoModel, {
+  foreignKey: "fVideoID"
 });
 
 module.exports = CommentModel;

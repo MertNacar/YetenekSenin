@@ -13,7 +13,7 @@ const FollowerModel = sequelize.define(
     },
     isFollow: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false
+      defaultValue: true
     }
   },
   {
@@ -29,16 +29,8 @@ const FollowerModel = sequelize.define(
   }
 );
 
-FollowerModel.hasMany(UserModel, {
-  foreignKey: "userID"
-});
-
 UserModel.hasMany(FollowerModel, {
   foreignKey: "userID"
-});
-
-FollowerModel.hasMany(UserModel, {
-  foreignKey: "followerID"
 });
 
 UserModel.hasMany(FollowerModel, {

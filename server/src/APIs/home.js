@@ -2,8 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  hashPassword,
-  verifyPassword,
   models
 } = require("./imports");
 
@@ -45,7 +43,7 @@ router.get("/", async (req, res) => {
               {
                 required: true,
                 model: models.FollowerModel,
-                attributes: [],
+                attributes: ["isFollow"],
                 where: {
                   userID: data.userID
                 }
@@ -73,65 +71,73 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/follow", async (req, res) => {
+// kendini takip etmeme kontrolu saglanmalı {userID followerID ve isFollow} yollanacak
+router.post("/toggleFollow", async (req, res) => {
   let data = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
   let validate = jwt.validateToken(token);
   try {
     if (validate) {
-      //follow işlemleri
-    } else {
-      throw new Error();
-    }
-  } catch {
-    res.json({ err: true });
-  }
-});
-
-router.delete("/unfollow", async (req, res) => {
-  let data = req.body.data;
-  let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);
-  try {
-    if (validate) {
-      //olan follow geri alma delete
-    } else {
-      throw new Error();
-    }
-  } catch {
-    res.json({ err: true });
-  }
-});
-
-router.post("/giveStar", async (req, res) => {
-  let data = req.body.data;
-  let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);
-  try {
-    if (validate) {
-      //VİDEO İÇİN STAR UPDATE arttırma için
-      let video = await models.VideoModel.findOne({
-        where: { videoID: data.videoID }
+      let follow = await models.FollowerModel.findOrCreate({
+        where: { userID: data.userID, followerID: data.followerID }
       });
+      follow[0].isFollow = data.isFollow;
+      follow[0].save();
+      res.json({ err: false });
     } else {
       throw new Error();
     }
-  } catch {
+  } catch (err) {
     res.json({ err: true });
   }
 });
 
-router.put("/takeStar", async (req, res) => {
+// kendini videosunu begenmeme kontrolu saglanmalı {userID videoID ve isLike} yollanacak
+router.post("/toggleStar", async (req, res) => {
   let data = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
   let validate = jwt.validateToken(token);
   try {
     if (validate) {
-      //VİDEO İÇİN STAR update azaltmak için
+      let star = await models.StarVideoModel.findOrBuild({
+        where: { userID: data.userID, videoID: data.videoID }
+      });
+      star[0].isLike = data.isLike;
+      star[0].save();
+      res.json({ err: false });
     } else {
       throw new Error();
     }
-  } catch {
+  } catch (err) {
+    res.json({ err: true });
+  }
+});
+
+// videoya göre yorumların çekilmesi
+router.get("/getComments", async (req, res) => {
+  let data = req.query;
+  let token = req.headers.authorization.split(" ")[1];
+  let validate = jwt.validateToken(token);
+  try {
+    if (validate) {
+      let comments = await models.CommentModel.findAll({
+        attributes: ["commentID", "commentDescription", "commentLikeCount"],
+        include: [
+          {
+            required: true,
+            model: models.VideoModel,
+            attributes: [],
+            where: {
+              videoID: data.videoID
+            }
+          }
+        ]
+      });
+      res.json({ err: false, comments });
+    } else {
+      throw new Error();
+    }
+  } catch (err) {
     res.json({ err: true });
   }
 });

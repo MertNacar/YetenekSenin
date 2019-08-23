@@ -61,12 +61,4 @@ VideoModel.belongsTo(SubTalentModel, {
   foreignKey: "fVSubTalentID"
 });
 
-VideoModel.hasMany(CommentModel, {
-  foreignKey: "fVCommentID"
-});
-
-CommentModel.belongsTo(VideoModel, {
-  foreignKey: "fVCommentID"
-});
-
 module.exports = VideoModel;

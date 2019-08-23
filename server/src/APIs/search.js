@@ -2,8 +2,6 @@ const {
   Sequelize,
   Op,
   jwt,
-  hashPassword,
-  verifyPassword,
   models
 } = require("./imports");
 

@@ -14,7 +14,7 @@ const StarVideoModel = sequelize.define(
     },
     isLike: {
       type: Sequelize.BOOLEAN,
-      defaultValue: false
+      defaultValue: true
     }
   },
   {
@@ -30,19 +30,11 @@ const StarVideoModel = sequelize.define(
   }
 );
 
-StarVideoModel.hasMany(UserModel, {
-  foreignKey: "userID"
-});
-
 UserModel.hasMany(StarVideoModel, {
   foreignKey: "userID"
 });
 
 VideoModel.hasMany(StarVideoModel, {
-  foreignKey: "videoID"
-});
-
-StarVideoModel.hasMany(VideoModel, {
   foreignKey: "videoID"
 });
 
