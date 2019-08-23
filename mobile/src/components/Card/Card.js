@@ -20,27 +20,41 @@ class Card extends PureComponent {
 
   openComplaintMenu = () => {};
 
-  toggleStar = async videoID => {
+  toggleStar = async (videoID, isLike) => {
     let { token, userID } = this.state;
-    let body = { userID, videoID };
-
-    console.log(body);
-    console.log(token);
+    let body = { userID, videoID, isLike };
     try {
-      let star = await Http.post("/home/giveStar", body, token);
-      if(star.err) throw new Error()
+      let star = await Http.post("/home/toggleStar", body, token);
+      if (star.err) throw new Error();
       else {
-        
+        console.log("response", star);
       }
-    } catch {}
+    } catch (err) {
+      console.log("hata", err.message);
+    }
   };
 
   toggleCommentArea = () => {};
-  toggleFollow = userID => {};
+
+  toggleFollow = async (followerID, isFollow) => {
+    let { token, userID } = this.state;
+    let body = { userID, followerID, isFollow };
+    try {
+      let follow = await Http.post("/home/toggleFollow", body, token);
+      if (follow.err) throw new Error();
+      else {
+        console.log("response", follow);
+      }
+    } catch (err) {
+      console.log("hata", err.message);
+    }
+  };
 
   render() {
-    item = this.props.item;
+    let { item } = this.props;
+    let starIcon = item.tblStarVideos[0].isLike ? "md-star" : "md-star-outline"
     let time = moment(item.createdAt).fromNow();
+    console.log("data", item);
     return (
       <Provider store={store}>
         <View style={styles.containerCard}>
@@ -74,16 +88,16 @@ class Card extends PureComponent {
 
           <View style={styles.rowCardFooter}>
             <View style={styles.cardIcons}>
-              <TouchableOpacity onPress={() => this.toggleStar(item.videoID)}>
-                <Icon name="md-star" size={26} color="black" />
+              <TouchableOpacity onPress={() => this.toggleStar(item.videoID,item.tblStarVideos[0].isLike)}>
+                <Icon name={starIcon} size={26} color="black" />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.toggleCommentArea()}>
                 <Icon name="ios-text" size={26} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.toggleFollow(item.tblUser.userID)}
+                onPress={() => this.toggleFollow(item.tblUser.userID,item.tblUser.tblFollowers[0].isFollow)}
               >
-                <Icon name="md-person-add" size={26} color="black" />
+                <Icon name="md-person" size={26} color="black" />
               </TouchableOpacity>
             </View>
 
@@ -112,4 +126,13 @@ mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Card);
+mapDispatchToProps = dispatch => {
+  return {
+    addUser: user => dispatch(addUser(user))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card);

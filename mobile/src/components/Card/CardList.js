@@ -4,11 +4,15 @@ import Card from "./Card";
 import styles from "./styles";
 import * as Http from "../../../utils/httpHelper";
 import { getTokenStorage } from "../../AsyncStorage";
+import { connect, Provider } from "react-redux";
+import { addUser } from "../../store/user/userActionCreator";
+import store from "../../store/configureStore";
 
-export default class CardList extends Component {
+class CardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userID: this.props.getUser.userID,
       items: [],
       token: "",
       itemLength: 0,
@@ -33,9 +37,9 @@ export default class CardList extends Component {
 
   getData = async () => {
     try {
-      let { items, page, token } = this.state;
+      let { items, page, token, userID } = this.state;
 
-      let data = await Http.get(`/home/?page=${page}`, token);
+      let data = await Http.get(`/home/?page=${page}&userID=${userID}`, token);
 
       if (data.err === true) throw new Error("Hata");
       else {
@@ -74,9 +78,11 @@ export default class CardList extends Component {
     let { loading, items, err, threshold } = this.state;
     if (items.length == 0 || loading || err) {
       return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <Provider store={store}>
+          <View style={styles.container}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </Provider>
       );
     }
     return (
@@ -92,3 +98,20 @@ export default class CardList extends Component {
     );
   }
 }
+
+mapStateToProps = state => {
+  return {
+    getUser: state.user
+  };
+};
+
+mapDispatchToProps = dispatch => {
+  return {
+    addUser: user => dispatch(addUser(user))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CardList);
