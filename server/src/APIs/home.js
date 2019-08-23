@@ -1,9 +1,4 @@
-const {
-  Sequelize,
-  Op,
-  jwt,
-  models
-} = require("./imports");
+const { Sequelize, Op, jwt, models } = require("./imports");
 
 var express = require("express");
 var router = express.Router();
@@ -87,7 +82,7 @@ router.post("/toggleFollow", async (req, res) => {
     } else {
       throw new Error();
     }
-  } catch (err) {
+  } catch {
     res.json({ err: true });
   }
 });
@@ -108,7 +103,7 @@ router.post("/toggleStar", async (req, res) => {
     } else {
       throw new Error();
     }
-  } catch (err) {
+  } catch {
     res.json({ err: true });
   }
 });
