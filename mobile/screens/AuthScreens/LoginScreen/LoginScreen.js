@@ -43,7 +43,6 @@ class LoginScreen extends Component {
     let body = this.state.data;
     try {
       let data = await Http.postWithoutToken("/login/", body);
-      console.log("data", data);
       if (data.err) throw new Error();
       else {
         let storeUser = await storeUserStorage(body.username);

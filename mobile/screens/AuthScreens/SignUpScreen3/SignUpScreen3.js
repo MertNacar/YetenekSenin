@@ -85,6 +85,7 @@ class SignUpScreen3 extends Component {
     try {
       let user = { ...this.props.getUser, ...this.state.data };
       delete user.confirmPassword;
+      console.log("son",user)
       let data = await Http.postWithoutToken("/signup/", user);
       if (data === null || data.err) throw new Error();
       else {

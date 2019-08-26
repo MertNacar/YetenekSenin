@@ -1,6 +1,7 @@
 import { Navigation } from "react-native-navigation";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Platform, Dimensions } from "react-native";
+import { COLOR_PRIMARY } from "../src/styles/const";
 let getWidth = Dimensions.get("window").width;
 const MainTabs = () => {
   Promise.all([
@@ -49,7 +50,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
-                          id:"HomeScreen",
+                          id: "HomeScreen",
                           name: "yeteneksenin.screens.HomeScreen"
                         }
                       }
@@ -72,7 +73,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
-                          id:"SearchScreen",
+                          id: "SearchScreen",
                           name: "yeteneksenin.screens.SearchScreen"
                         }
                       }
@@ -95,7 +96,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
-                          id:"AddVideoScreen",
+                          id: "AddVideoScreen",
                           name: "yeteneksenin.screens.AddVideoScreen"
                         }
                       }
@@ -118,7 +119,7 @@ const MainTabs = () => {
                     children: [
                       {
                         component: {
-                          id:"ProfileScreen",
+                          id: "ProfileScreen",
                           name: "yeteneksenin.screens.ProfileScreen"
                         }
                       }
@@ -131,8 +132,8 @@ const MainTabs = () => {
                       },
                       topBar: {
                         elevation: 0,
-                        background:{
-                          color : ""
+                        background: {
+                          color: COLOR_PRIMARY
                         },
                         visible: true,
                         //animate:false,
@@ -152,7 +153,7 @@ const MainTabs = () => {
           },
           right: {
             component: {
-              id:"SideDrawer",
+              id: "SideDrawer",
               name: "yeteneksenin.screens.SideDrawer"
             }
           }
@@ -175,7 +176,7 @@ const AuthTabs = () => {
         children: [
           {
             component: {
-              id:"LoginScreen",
+              id: "LoginScreen",
               name: "yeteneksenin.screens.LoginScreen"
             }
           }
@@ -192,7 +193,7 @@ const InitTab = () => {
         children: [
           {
             component: {
-              id:"InitScreen",
+              id: "InitScreen",
               name: "yeteneksenin.screens.InitScreen"
             }
           }

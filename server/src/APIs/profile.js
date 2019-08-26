@@ -12,53 +12,46 @@ var router = express.Router();
 
 //FRONTEND -- TODO --
 //get profile's info
-router.get("/", async (req, res) => {
-  let { username } = req.body.data;
+router.get("/videos", async (req, res) => {
+  let username = req.query.username;
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
   try {
     if (validete) {
-      let data = await models.UserModel.findOne({
+      let videos = await models.VideoModel.findAll({
         attributes: [
-          "firstname",
-          "surname",
-          "username",
-          "email",
-          "phone",
-          "aboutMe",
-          "city",
-          "birthday",
-          "profilePhoto",
-          "socialMedia"
+          "videoPath",
+          "videoDescription",
+          "videoTitle",
+          "videoWatchCount",
+          "videoStarCount",
+          "createdAt"
         ],
-        where: {
-          username
-        },
+
         include: [
           {
             required: true,
-            model: models.VideoModel,
-            attributes: [
-              "videoPath",
-              "videoDescription",
-              "videoTitle",
-              "videoWatchCount",
-              "createdAt"
+            model: models.UserModel,
+            attributes: ["allStars"],
+            where: {
+              username
+            },
+            include: [
+              {
+                required: true,
+                model: models.TalentModel,
+                attributes: ["talentName"]
+              },
+              {
+                required: true,
+                model: models.SubTalentModel,
+                attributes: ["subTalentName"]
+              }
             ]
-          },
-          {
-            required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
-          },
-          {
-            required: true,
-            model: models.CommentModel,
-            attributes: ["commentDescription", "commentLikeCount"]
           }
         ]
       });
-      res.json({ err: false, data });
+      res.json({ err: false, videos });
     } else {
       throw new Error();
     }
@@ -105,7 +98,7 @@ router.get("/show", async (req, res) => {
             required: true,
             model: models.TalentModel,
             attributes: ["talentName"]
-          },
+          }
           /*{
             required: true,
             model: models.CommentModel,

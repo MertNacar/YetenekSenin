@@ -17,17 +17,20 @@ router.post("/", async (req, res) => {
     var token = jwt.createToken(user.username);
     let hash = await hashPassword(user.password);
     user.password = hash;
-    await models.UserModel.create(user);
+    let d = await models.UserModel.create(user);
     let data = await models.UserModel.findOne({
       attributes: ["userID"],
       where: {
         username: user.username
       }
     });
+    console.log("d",d)
     user.userID = data.userID;
     user.token = token;
     user.loginDate = Date(Date.now()).toString();
     delete user.password;
+    console.log("d",user)
+
     res.json({ err: false, user });
   } catch (err) {
     res.json({ err: true });

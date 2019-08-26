@@ -35,8 +35,7 @@ router.post("/immediately", async (req, res) => {
         where: {
           username
         },
-        //inner joinleyince calısmıyor bak
-        /*include: [
+        include: [
           {
             required: true,
             model: models.TalentModel,
@@ -47,14 +46,19 @@ router.post("/immediately", async (req, res) => {
             model: models.SubTalentModel,
             attributes: ["subTalentName"]
           }
-        ]*/
+        ]
       });
-      console.log(data.dataValues)
+     
       if (data === null) throw new Error();
       else {
         let user = data.dataValues;
+        user.talentName = data.tblTalent.talentName;
+        user.subTalentName = data.tblSubTalent.subTalentName;
+        delete user.tblTalent;
+        delete user.tblSubTalent;
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
+        console.log("***************************",user)
         res.json({ err: false, user });
       }
     } else throw new Error();
@@ -84,21 +88,40 @@ router.post("/", async (req, res) => {
       ],
       where: {
         username
-      }
+      },
+      include: [
+        {
+          required: true,
+          model: models.TalentModel,
+          attributes: ["talentName"]
+        },
+        {
+          required: true,
+          model: models.SubTalentModel,
+          attributes: ["subTalentName"]
+        }
+      ]
     });
+    console.log("********************************************",data.dataValues)
     if (data === null) throw new Error();
     else {
       let confirm = await verifyPassword(password, data.password);
       if (confirm) {
         let token = jwt.createToken(data.username);
-        let user = data.dataValues
-        user.token = token
-        user.loginDate = Date(Date.now()).toString()
-        delete user.password
+        let user = data.dataValues;
+        user.talentName = data.tblTalent.talentName;
+        user.subTalentName = data.tblSubTalent.subTalentName;
+        user.token = token;
+        user.loginDate = Date(Date.now()).toString();
+        delete user.password;
+        delete user.tblTalent;
+        delete user.tblSubTalent;
+        console.log("***************************",user)
         res.json({ err: false, user });
       } else res.json({ err: true });
     }
-  } catch {
+  } catch(err) {
+    console.log(err.message)
     res.json({ err: true });
   }
 });

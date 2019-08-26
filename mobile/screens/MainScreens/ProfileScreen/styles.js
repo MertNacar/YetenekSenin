@@ -1,38 +1,80 @@
 import { StyleSheet } from "react-native";
-
+import { COLOR_PRIMARY } from "../../../src/styles/const";
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 10,
+    flex: 1
   },
-  profileHeader: {
-    flex: 1.2,
-    flexDirection: "row"
-  },
-  photoSection: {
-    flex: 1.2,
+  header: {
+    flex: 2,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50
+    backgroundColor: COLOR_PRIMARY
   },
-  image: {
-    resizeMode: "contain",
-    width: 75,
-    height: 75
+  avatar: {
+    flex: 3.5,
+    width:70,
+    height:null,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "white"
   },
-  talentSection: {
+  username:{
     flex: 2,
-    justifyContent: "space-between",
-    alignItems: "flex-start"
+    justifyContent:"flex-start"
   },
-  profileBody: {
+  fullName: {
     flex: 2,
+    flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "flex-start",
-    paddingLeft: 5
+    alignItems: "center",
+    fontSize: 22,
+    color: "#FFFFFF",
+    fontWeight: "600"
   },
-  profileFooter: {
-    flex: 2
+  infoHeader: {
+    flex:1,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center",
+  },
+  infoCard: {
+    flex:1,
+    height:"100%",
+    justifyContent:"center",
+    alignItems:"center",
+    borderWidth: 1,
+    borderColor: "gray"
+    
+  },
+  infoIcon: {},
+  body: {
+    flex: 4,
+  },
+  bodyContent: {
+    flex: 3,
+    alignItems: "center",
+    padding: 30
+  },
+  name: {
+    fontSize: 28,
+    color: "#696969",
+    fontWeight: "600"
+  },
+  info: {
+    fontSize: 16,
+    color: "#00BFFF"
+  },
+  description: {
+    fontSize: 16,
+    color: "#696969",
+    textAlign: "center"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
+    backgroundColor: "#00BFFF"
   }
 });
 
