@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   cardIcons: {
     flex: 2,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "flex-start"
   },
   watching: {
     flex: 8,

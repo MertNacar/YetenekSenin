@@ -27,7 +27,7 @@ SearchCardList = props => {
               }
             }
           }
-        });      
+        });
       }
     } catch (err) {
       console.log(err.message);

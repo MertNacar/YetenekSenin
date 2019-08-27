@@ -68,7 +68,7 @@ class Card extends PureComponent {
   render() {
     let { item, userID } = this.state;
     let starIcon = item.isLike ? "md-star" : "md-star-outline";
-    let followIcon = item.isFollow ? "md-person" : "md-person-add";
+    //let followIcon = item.isFollow ? "md-person" : "md-person-add";
     let time = moment(item.createdAt).fromNow();
     console.log("data", item);
     return (
@@ -96,6 +96,7 @@ class Card extends PureComponent {
           <Video
             source={{ uri: item.videoPath }}
             repeat={true}
+            onBuffer={this.onBuffer}
             style={styles.rowCardBody}
             resizeMode="cover"
           />
@@ -110,11 +111,7 @@ class Card extends PureComponent {
               <TouchableOpacity onPress={() => this.toggleCommentArea()}>
                 <Icon name="ios-text" size={26} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.toggleFollow(userID, item.isFollow)}
-              >
-                <Icon name={followIcon} size={26} color="black" />
-              </TouchableOpacity>
+              
             </View>
 
             <View style={styles.watching}>
@@ -152,3 +149,10 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Card);
+
+/*
+<TouchableOpacity
+                onPress={() => this.toggleFollow(userID, item.isFollow)}
+              >
+                <Icon name={followIcon} size={26} color="black" />
+              </TouchableOpacity>*/
