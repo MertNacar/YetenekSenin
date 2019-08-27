@@ -51,6 +51,8 @@ class SearchScreen extends Component {
       <View style={{ flex: 1 }}>
           <SearchBar
             placeholder="Yetenekli Bul"
+            containerStyle={styles.containerSearch}
+            inputContainerStyle={styles.inputContainerSearch}
             onChangeText={value => this.search(value)}
             value={value}
             lightTheme={true}

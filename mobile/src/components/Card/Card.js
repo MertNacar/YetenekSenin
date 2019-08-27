@@ -68,7 +68,7 @@ class Card extends PureComponent {
   render() {
     let { item, userID } = this.state;
     let starIcon = item.isLike ? "md-star" : "md-star-outline";
-    //let followIcon = item.isFollow ? "md-person" : "md-person-add";
+    let followIcon = item.isFollow ? "md-checkmark" : "md-add";
     let time = moment(item.createdAt).fromNow();
     console.log("data", item);
     return (
@@ -79,7 +79,12 @@ class Card extends PureComponent {
               <View style={styles.positionLeft}>
                 <Icon name="md-contact" size={22} color="black" />
               </View>
-              <MainText style={styles.positionLeft}>{item.username}</MainText>
+              <TouchableOpacity onPress={() => this.toggleFollow()}>
+                <MainText style={styles.positionLeft}>{item.username}</MainText>
+              </TouchableOpacity>
+              <View style={styles.positionLeft}>
+                <Icon name={followIcon} size={22} color="black" />
+              </View>
             </View>
             <View style={styles.subTalent}>
               <View style={styles.positionRight}>
@@ -111,7 +116,6 @@ class Card extends PureComponent {
               <TouchableOpacity onPress={() => this.toggleCommentArea()}>
                 <Icon name="ios-text" size={26} color="black" />
               </TouchableOpacity>
-              
             </View>
 
             <View style={styles.watching}>

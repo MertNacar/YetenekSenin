@@ -6,7 +6,7 @@ import styles from "./styles";
 import MainText from "../../../src/components/MainText/MainText";
 import { Navigation } from "react-native-navigation";
 export default class SideDrawer extends Component {
-  goUpdate = () => {
+  goUpdate = (screenID) => {
     Navigation.mergeOptions("SideDrawer", {
       sideMenu: {
         right: {
@@ -16,8 +16,8 @@ export default class SideDrawer extends Component {
     });
     Navigation.push("ProfileScreen", {
       component: {
-        id: "UpdateInformationScreen",
-        name: "yeteneksenin.screens.UpdateInformationScreen",
+        id: screenID,
+        name: `yeteneksenin.screens.${screenID}`,
         options: {
           bottomTab: {
             visible: false
@@ -35,14 +35,18 @@ export default class SideDrawer extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.containerMenu}>
-          <Button title="Bilgileri Güncelle" onPress={() => this.goUpdate()} />
+          <Button title="Bilgileri Güncelle" onPress={() => this.goUpdate("UpdateInformationScreen")} />
 
-          <MainText> Şifre değiştir </MainText>
+          <Button
+            title="Şifre Değiştir"
+            onPress={() => this.goUpdate("UpdatePasswordScreen")}
+          />
 
-          <MainText> Ayarlarım </MainText>
+          <Button title="Ayarlarım" onPress={() => this.goUpdate("UpdateSettingsScreen")} />
         </View>
         <View style={styles.containerButton}>
           <Button
+          color="red"
             title="Cıkıs Yap"
             onPress={() => {
               AsyncStorage.clear();

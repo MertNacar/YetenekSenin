@@ -6,22 +6,26 @@ import SignUpScreen from "./AuthScreens/SignUpScreen/SignUpScreen";
 import SignUpScreen2 from "./AuthScreens/SignUpScreen2/SignUpScreen2";
 import SignUpScreen3 from "./AuthScreens/SignUpScreen3/SignUpScreen3";
 import AddVideoScreen from "./MainScreens/AddVideoScreen/AddVideoScreen";
-import SideDrawer from "./MainScreens/SideDrawer/SideDrawer";
+import SideDrawer from "./SettingsScreens/SideDrawer/SideDrawer";
 import InitScreen from "./InitScreen/initScreen";
 import ViewProfileScreen from "./MainScreens/ViewProfileScreen/ViewProfileScreen";
-import UpdateInformationScreen from "./MainScreens/UpdateInformationScreen/UpdateInformationScreen";
+import UpdateInformationScreen from "./SettingsScreens/UpdateInformationScreen/UpdateInformationScreen";
+import UpdatePasswordScreen from "./SettingsScreens/UpdatePasswordScreen/UpdatePasswordScreen";
+import UpdateSettingsScreen from "./SettingsScreens/UpdateSettingsScreen/UpdateSettingsScreen";
 
 export {
   HomeScreen,
+  SearchScreen,
+  AddVideoScreen,
   ProfileScreen,
   ViewProfileScreen,
-  SearchScreen,
   LoginScreen,
   SignUpScreen,
   SignUpScreen2,
   SignUpScreen3,
-  AddVideoScreen,
+  InitScreen,
   SideDrawer,
   UpdateInformationScreen,
-  InitScreen
+  UpdatePasswordScreen,
+  UpdateSettingsScreen
 };

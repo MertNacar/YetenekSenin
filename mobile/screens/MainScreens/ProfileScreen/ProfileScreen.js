@@ -56,7 +56,7 @@ class ProfileScreen extends Component {
           <Image
             style={styles.avatar}
             source={{
-              uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+              uri: user.profilePhoto
             }}
           />
           <View style={styles.fullName}>

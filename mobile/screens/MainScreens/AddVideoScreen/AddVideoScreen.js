@@ -76,8 +76,8 @@ class AddVideoScreen extends Component {
   render() {
     let { isNull, uri } = this.state;
     let display = isNull === true ? "none" : "flex";
-    console.warn(uri);
-    console.warn("null", isNull);
+    /*console.warn(uri);
+    console.warn("null", isNull);*/
     return (
       <View style={styles.container}>
         <View style={styles.buttons}>
