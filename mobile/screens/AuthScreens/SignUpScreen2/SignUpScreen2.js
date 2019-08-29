@@ -26,8 +26,8 @@ class SignUpScreen2 extends Component {
       data: {
         username: "",
         email: "",
-        talentName: "",
-        subTalentName: ""
+        talentID: "",
+        subTalentID: ""
       },
       colors: {
         subTalentColor: COLOR_PRIMARY,
@@ -78,19 +78,19 @@ class SignUpScreen2 extends Component {
     }
   };
 
-  pickerTalentHandler = async itemValue => {
+  pickerTalentHandler = async itemID => {
     let { colors, data } = this.state;
     try {
-      if (itemValue !== "Branş Seçiniz") {
+      if (itemID !== 0) {
         let subTalents = await Http.postWithoutToken(
           "/signup/subTalent",
-          itemValue
+          itemID
         );
         if (subTalents.err) throw new Error();
         else {
           this.setState({
             colors: { ...colors, talentColor: "green" },
-            data: { ...data, talentName: itemValue },
+            data: { ...data, talentID: itemID },
             subTalents: [...subTalents.data],
             pickerEnabled: true
           });
@@ -98,34 +98,44 @@ class SignUpScreen2 extends Component {
       } else throw new Error();
     } catch {
       this.setState({
-        data: { ...data, talentName: "Branş Seçiniz" },
+        data: { ...data, talentID: 0 },
         colors: { ...colors, talentColor: COLOR_PRIMARY },
         pickerEnabled: false
       });
     }
   };
 
-  pickerSubTalentHandler = itemValue => {
+  pickerSubTalentHandler = itemID => {
     let { colors, data } = this.state;
-    if (itemValue !== "Alt Branş Seçiniz") {
+    if (itemID !== 0) {
       this.setState({
-        data: { ...data, subTalentName: itemValue },
+        data: { ...data, subTalentID: itemID },
         colors: { ...colors, subTalentColor: "green" }
       });
     } else {
       this.setState({
-        data: { ...data, subTalentName: itemValue },
+        data: { ...data, subTalentID: 0 },
         colors: { ...colors, subTalentColor: COLOR_PRIMARY }
       });
     }
   };
 
   continue = () => {
-    let user = { ...this.props.getUser, ...this.state.data };
+    let { data, talents, subTalents } = this.state;
+    talents.find(item => {
+      return item.talentID === data.talentID;
+    });
+    subTalents.find(item => {
+      return item.subTalentID === data.subTalentID;
+    });
+    data.talentName = talents[0].talentName;
+    data.talentName = subTalents[0].subTalentName;
+    console.log(data);
+    let user = { ...this.props.getUser, ...data };
     this.props.addUser(user);
     Navigation.push(this.props.componentId, {
       component: {
-        id:"SignUpScreen3",
+        id: "SignUpScreen3",
         name: "yeteneksenin.screens.SignUpScreen3",
         options: {
           topBar: {
@@ -146,7 +156,7 @@ class SignUpScreen2 extends Component {
         <Picker.Item
           key={index}
           label={item.talentName}
-          value={item.talentName}
+          value={item.talentID}
         />
       );
     });
@@ -155,7 +165,7 @@ class SignUpScreen2 extends Component {
         <Picker.Item
           key={index}
           label={item.subTalentName}
-          value={item.subTalentName}
+          value={item.subTalentID}
         />
       );
     });
@@ -210,10 +220,10 @@ class SignUpScreen2 extends Component {
 
           <View style={{ borderWidth: 2, borderColor: colors.talentColor }}>
             <Picker
-              selectedValue={this.state.data.talentName}
-              onValueChange={itemValue => this.pickerTalentHandler(itemValue)}
+              selectedValue={this.state.data.talentID}
+              onValueChange={itemID => this.pickerTalentHandler(itemID)}
             >
-              <Picker.Item label="Branş Seçiniz" value="Branş Seçiniz" />
+              <Picker.Item label="Branş Seçiniz" value={0} />
               {talentItems}
             </Picker>
           </View>
@@ -221,15 +231,10 @@ class SignUpScreen2 extends Component {
           <View style={{ borderWidth: 2, borderColor: colors.subTalentColor }}>
             <Picker
               enabled={pickerEnabled}
-              selectedValue={this.state.data.subTalentName}
-              onValueChange={itemValue =>
-                this.pickerSubTalentHandler(itemValue)
-              }
+              selectedValue={this.state.data.subTalentID}
+              onValueChange={itemID => this.pickerSubTalentHandler(itemID)}
             >
-              <Picker.Item
-                label="Alt Branş Seçiniz"
-                value="Alt Branş Seçiniz"
-              />
+              <Picker.Item label="Alt Branş Seçiniz" value={0} />
               {subTalentItems}
             </Picker>
           </View>

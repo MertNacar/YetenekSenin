@@ -10,6 +10,9 @@ import SideDrawer from "./SettingsScreens/SideDrawer/SideDrawer";
 import InitScreen from "./InitScreen/initScreen";
 import ViewProfileScreen from "./MainScreens/ViewProfileScreen/ViewProfileScreen";
 import UpdateInformationScreen from "./SettingsScreens/UpdateInformationScreen/UpdateInformationScreen";
+import UpdateAboutMeScreen from "./SettingsScreens/UpdateInformationScreen/UpdateAboutMeScreen/UpdateAboutMeScreen";
+import UpdateOtherScreen from "./SettingsScreens/UpdateInformationScreen/UpdateOtherScreen/UpdateOtherScreen";
+import UpdateTalentScreen from "./SettingsScreens/UpdateInformationScreen/UpdateTalentScreen/UpdateTalentScreen";
 import UpdatePasswordScreen from "./SettingsScreens/UpdatePasswordScreen/UpdatePasswordScreen";
 import UpdateSettingsScreen from "./SettingsScreens/UpdateSettingsScreen/UpdateSettingsScreen";
 
@@ -27,5 +30,8 @@ export {
   SideDrawer,
   UpdateInformationScreen,
   UpdatePasswordScreen,
-  UpdateSettingsScreen
+  UpdateSettingsScreen,
+  UpdateAboutMeScreen,
+  UpdateOtherScreen,
+  UpdateTalentScreen
 };

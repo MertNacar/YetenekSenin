@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View, Image, Text } from "react-native";
 import MainText from "../../../src/components/MainText/MainText";
 import { connect } from "react-redux";
+import { Avatar } from "react-native-elements";
 import styles from "./styles";
 import { Navigation } from "react-native-navigation";
-import profilePhoto from "../../../src/assets/profile_photo.jpg";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
 import ProfileCardList from "../../../src/components/ProfileCard/ProfileCardList";
@@ -53,11 +53,15 @@ class ProfileScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image
-            style={styles.avatar}
+          <Avatar
+            rounded
             source={{
               uri: user.profilePhoto
             }}
+            title="YS"
+            size="large"
+            showEditButton
+            onPress={() => console.warn("Profile Photo Works!")}
           />
           <View style={styles.fullName}>
             <MainText>{user.firstname}</MainText>

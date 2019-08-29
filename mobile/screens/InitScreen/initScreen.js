@@ -23,13 +23,15 @@ class initScreen extends Component {
       if (token.err || username.err) AuthTabs();
       else {
         let data = await Http.post("/login/immediately/",username.value , token.value);
+        console.log("ınıt",data)
         if (data.err) AuthTabs();
         else {
           this.props.addUser(data.user);
           MainTabs();
         }
       }
-    } catch {
+    } catch (err){
+      console.log("ınıt err",err.message)
       AuthTabs();
     }
   }

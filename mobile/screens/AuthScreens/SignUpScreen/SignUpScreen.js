@@ -7,10 +7,15 @@ import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
 import { nameRegex, validateRegex } from "../../../RegExp/regex";
-import { COLOR_PRIMARY } from "../../../src/styles/const";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Input } from "react-native-elements";
+import AweIcon from "react-native-vector-icons/FontAwesome5";
+import { Input, Button } from "react-native-elements";
 import { Navigation } from "react-native-navigation";
+import {
+  COLOR_PRIMARY,
+  COLOR_PINK,
+  COLOR_BACKGROUND
+} from "../../../src/styles/const";
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -18,34 +23,63 @@ class SignUpScreen extends Component {
     this.state = {
       data: {
         firstname: "",
-        surname: ""
-        // birthday: "2012-02-21 18:10:00.000"
+        surname: "",
+        gender: null
       },
       colors: {
         firstnameColor: COLOR_PRIMARY,
-        surnameColor: COLOR_PRIMARY
+        surnameColor: COLOR_PRIMARY,
+        iconColorMale: COLOR_PRIMARY,
+        backColorMale: COLOR_BACKGROUND,
+        iconColorFemale: COLOR_PINK,
+        backColorFemale: COLOR_BACKGROUND
       }
     };
   }
 
   InputHandler = (typeRegex, input, inputName, inputColor) => {
+    let { data, colors } = this.state;
     let validate = validateRegex(typeRegex, input);
     if (validate) {
       this.setState({
-        data: { ...this.state.data, [inputName]: input },
-        colors: { ...this.state.colors, [inputColor]: "green" }
+        data: { ...data, [inputName]: input },
+        colors: { ...colors, [inputColor]: "green" }
       });
-    } else
-      this.setState({ colors: { ...this.state.colors, [inputColor]: "red" } });
+    } else this.setState({ colors: { ...colors, [inputColor]: "red" } });
   };
-
+  // true geldiğinde erkek false ise kadın
+  switchGender = genderType => {
+    let { data, colors } = this.state;
+    if (genderType) {
+      this.setState({
+        data: { ...data, gender: 1 },
+        colors: {
+          ...colors,
+          backColorMale: COLOR_PRIMARY,
+          iconColorMale: COLOR_BACKGROUND,
+          backColorFemale: COLOR_BACKGROUND,
+          iconColorFemale: COLOR_PINK
+        }
+      });
+    } else {
+      this.setState({
+        data: { ...data, gender: 0 },
+        colors: {
+          ...colors,
+          backColorMale: COLOR_BACKGROUND,
+          iconColorMale: COLOR_PRIMARY,
+          backColorFemale: COLOR_PINK,
+          iconColorFemale: COLOR_BACKGROUND
+        }
+      });
+    }
+  };
   continue = () => {
     let user = { ...this.props.getUser, ...this.state.data };
     this.props.addUser(user);
-    console.log("1", user);
     Navigation.push(this.props.componentId, {
       component: {
-        id:"SignUpScreen2",
+        id: "SignUpScreen2",
         name: "yeteneksenin.screens.SignUpScreen2",
         options: {
           topBar: {
@@ -69,9 +103,9 @@ class SignUpScreen extends Component {
     let opacity = validate ? 1.0 : 0.2;
     return (
       <View style={styles.containerLogin}>
-        <View style={styles.flex1}>
+        <View style={styles.flex2}>
           <MainText>
-            <HeadingText>SIGN UP</HeadingText>
+            <HeadingText>Kayıt Ol</HeadingText>
           </MainText>
         </View>
 
@@ -106,7 +140,32 @@ class SignUpScreen extends Component {
             }
           />
         </View>
-        <View style={styles.flex1}>
+        <View style={styles.buttons}>
+          <Button
+            onPress={() => this.switchGender(1)}
+            buttonStyle={{
+              borderWidth: 1,
+              borderColor: colors.iconColorMale,
+              backgroundColor: colors.backColorMale
+            }}
+            icon={
+              <AweIcon name="mars" color={colors.iconColorMale} size={26} />
+            }
+          />
+
+          <Button
+            onPress={() => this.switchGender(0)}
+            buttonStyle={{
+              borderWidth: 1,
+              borderColor: colors.iconColorFemale,
+              backgroundColor: colors.backColorFemale
+            }}
+            icon={
+              <AweIcon name="venus" color={colors.iconColorFemale} size={27} />
+            }
+          />
+        </View>
+        <View style={styles.flex2}>
           <CustomButton
             style={{ opacity }}
             disabled={!isClickable}

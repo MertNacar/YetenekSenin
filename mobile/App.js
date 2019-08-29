@@ -12,7 +12,10 @@ import {
   SideDrawer,
   UpdateInformationScreen,
   UpdatePasswordScreen,
-  UpdateSettingsScreen
+  UpdateSettingsScreen,
+  UpdateAboutMeScreen,
+  UpdateOtherScreen,
+  UpdateTalentScreen
 } from "./screens/AllScreens";
 import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
@@ -20,6 +23,24 @@ import { Provider } from "react-redux";
 import store from "./src/store/configureStore";
 
 console.log("store", store.getState());
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.UpdateAboutMeScreen",
+  () => UpdateAboutMeScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.UpdateOtherScreen",
+  () => UpdateOtherScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.UpdateTalentScreen",
+  () => UpdateTalentScreen,
+  Provider,
+  store
+);
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.LoginScreen",
   () => LoginScreen,

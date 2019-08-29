@@ -17,20 +17,17 @@ router.post("/", async (req, res) => {
     var token = jwt.createToken(user.username);
     let hash = await hashPassword(user.password);
     user.password = hash;
-    let d = await models.UserModel.create(user);
+    await models.UserModel.create(user);
     let data = await models.UserModel.findOne({
       attributes: ["userID"],
       where: {
         username: user.username
       }
     });
-    console.log("d",d)
     user.userID = data.userID;
     user.token = token;
     user.loginDate = Date(Date.now()).toString();
     delete user.password;
-    console.log("d",user)
-
     res.json({ err: false, user });
   } catch (err) {
     res.json({ err: true });
@@ -75,7 +72,7 @@ router.post("/validate/email", async (req, res) => {
 router.get("/talent", async (req, res) => {
   try {
     let data = await models.TalentModel.findAll({
-      attributes: ["talentName"]
+      attributes: ["talentID", "talentName"]
     });
 
     if (data.length > 0) res.json({ err: false, data });
@@ -86,17 +83,17 @@ router.get("/talent", async (req, res) => {
 });
 
 router.post("/subTalent", async (req, res) => {
-  let talentName = req.body.data;
+  let talentID = req.body.data;
   try {
     let data = await models.SubTalentModel.findAll({
-      attributes: ["subTalentName"],
+      attributes: ["subTalentID", "subTalentName"],
       include: [
         {
           required: true,
           model: models.TalentModel,
           attributes: [],
           where: {
-            talentName
+            talentID
           }
         }
       ]

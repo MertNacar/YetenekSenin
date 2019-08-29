@@ -5,6 +5,7 @@ const VideoModel = require("./Video");
 const FollowerModel = require("./Follower");
 const SubTalentModel = require("./SubTalent");
 const StarVideoModel = require("./StarVideo");
+const CityModel = require("./City");
 
 module.exports = {
   TalentModel,
@@ -13,5 +14,6 @@ module.exports = {
   VideoModel,
   FollowerModel,
   SubTalentModel,
-  StarVideoModel
+  StarVideoModel,
+  CityModel
 };

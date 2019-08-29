@@ -27,7 +27,7 @@ router.post("/immediately", async (req, res) => {
           "email",
           "phone",
           "aboutMe",
-          "city",
+          "gender",
           "birthday",
           "profilePhoto",
           "socialMedia"
@@ -45,20 +45,25 @@ router.post("/immediately", async (req, res) => {
             required: true,
             model: models.SubTalentModel,
             attributes: ["subTalentName"]
+          },
+          {
+            model: models.CityModel,
+            attributes: ["city"]
           }
         ]
       });
-     
       if (data === null) throw new Error();
       else {
         let user = data.dataValues;
         user.talentName = data.tblTalent.talentName;
         user.subTalentName = data.tblSubTalent.subTalentName;
+        user.city = data.tblCity.city;
         delete user.tblTalent;
         delete user.tblSubTalent;
+        delete user.tblCity
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
-        console.log("***************************",user)
+        console.log("***************************", user);
         res.json({ err: false, user });
       }
     } else throw new Error();
@@ -81,7 +86,7 @@ router.post("/", async (req, res) => {
         "email",
         "phone",
         "aboutMe",
-        "city",
+        "gender",
         "birthday",
         "profilePhoto",
         "socialMedia"
@@ -99,10 +104,17 @@ router.post("/", async (req, res) => {
           required: true,
           model: models.SubTalentModel,
           attributes: ["subTalentName"]
+        },
+        {
+          model: models.CityModel,
+          attributes: ["city"]
         }
       ]
     });
-    console.log("********************************************",data.dataValues)
+    console.log(
+      "********************************************",
+      data.dataValues
+    );
     if (data === null) throw new Error();
     else {
       let confirm = await verifyPassword(password, data.password);
@@ -111,17 +123,19 @@ router.post("/", async (req, res) => {
         let user = data.dataValues;
         user.talentName = data.tblTalent.talentName;
         user.subTalentName = data.tblSubTalent.subTalentName;
+        user.city = data.tblCity.city;
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
         delete user.password;
         delete user.tblTalent;
         delete user.tblSubTalent;
-        console.log("***************************",user)
+        delete user.tblCity
+        console.log("***************************", user);
         res.json({ err: false, user });
       } else res.json({ err: true });
     }
-  } catch(err) {
-    console.log(err.message)
+  } catch (err) {
+    console.log(err.message);
     res.json({ err: true });
   }
 });

@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
-
+import { COLOR_BACKGROUND } from "../../../src/styles/const";
 const styles = StyleSheet.create({
   containerLogin: {
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor:"#D7E1E9"
+    backgroundColor: COLOR_BACKGROUND
   },
 
   SignUpform: {
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "75%"
   },
-  
-  flex1: {
+
+  flex2: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center"
@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1
   },
+  buttons: {
+    flex: 1,
+    width:"30%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+  }
 });
 
 export default styles;
