@@ -94,6 +94,7 @@ class SignUpScreen3 extends Component {
         if (storeToken.err || storeUser.err) {
           throw new Error();
         } else {
+          console.log("3",user)
           this.props.addUser(user);
           MainTabs();
         }

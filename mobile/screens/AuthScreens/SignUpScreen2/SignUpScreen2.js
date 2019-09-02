@@ -26,8 +26,8 @@ class SignUpScreen2 extends Component {
       data: {
         username: "",
         email: "",
-        talentID: "",
-        subTalentID: ""
+        fTalentID: "",
+        fSubTalentID: ""
       },
       colors: {
         subTalentColor: COLOR_PRIMARY,
@@ -90,7 +90,7 @@ class SignUpScreen2 extends Component {
         else {
           this.setState({
             colors: { ...colors, talentColor: "green" },
-            data: { ...data, talentID: itemID },
+            data: { ...data, fTalentID: itemID },
             subTalents: [...subTalents.data],
             pickerEnabled: true
           });
@@ -98,7 +98,7 @@ class SignUpScreen2 extends Component {
       } else throw new Error();
     } catch {
       this.setState({
-        data: { ...data, talentID: 0 },
+        data: { ...data, fTalentID: 0 },
         colors: { ...colors, talentColor: COLOR_PRIMARY },
         pickerEnabled: false
       });
@@ -109,12 +109,12 @@ class SignUpScreen2 extends Component {
     let { colors, data } = this.state;
     if (itemID !== 0) {
       this.setState({
-        data: { ...data, subTalentID: itemID },
+        data: { ...data, fSubTalentID: itemID },
         colors: { ...colors, subTalentColor: "green" }
       });
     } else {
       this.setState({
-        data: { ...data, subTalentID: 0 },
+        data: { ...data, fSubTalentID: 0 },
         colors: { ...colors, subTalentColor: COLOR_PRIMARY }
       });
     }
@@ -123,15 +123,15 @@ class SignUpScreen2 extends Component {
   continue = () => {
     let { data, talents, subTalents } = this.state;
     talents.find(item => {
-      return item.talentID === data.talentID;
+      return item.talentID === data.fTalentID;
     });
     subTalents.find(item => {
-      return item.subTalentID === data.subTalentID;
+      return item.subTalentID === data.fSubTalentID;
     });
     data.talentName = talents[0].talentName;
-    data.talentName = subTalents[0].subTalentName;
-    console.log(data);
+    data.subTalentName = subTalents[0].subTalentName;
     let user = { ...this.props.getUser, ...data };
+    console.log("2", user);
     this.props.addUser(user);
     Navigation.push(this.props.componentId, {
       component: {
@@ -150,7 +150,7 @@ class SignUpScreen2 extends Component {
   };
 
   render() {
-    let { colors, talents, subTalents, pickerEnabled } = this.state;
+    let { colors, talents, subTalents, pickerEnabled, data } = this.state;
     let talentItems = talents.map((item, index) => {
       return (
         <Picker.Item
@@ -220,7 +220,7 @@ class SignUpScreen2 extends Component {
 
           <View style={{ borderWidth: 2, borderColor: colors.talentColor }}>
             <Picker
-              selectedValue={this.state.data.talentID}
+              selectedValue={data.fTalentID}
               onValueChange={itemID => this.pickerTalentHandler(itemID)}
             >
               <Picker.Item label="Branş Seçiniz" value={0} />
@@ -231,7 +231,7 @@ class SignUpScreen2 extends Component {
           <View style={{ borderWidth: 2, borderColor: colors.subTalentColor }}>
             <Picker
               enabled={pickerEnabled}
-              selectedValue={this.state.data.subTalentID}
+              selectedValue={data.fSubTalentID}
               onValueChange={itemID => this.pickerSubTalentHandler(itemID)}
             >
               <Picker.Item label="Alt Branş Seçiniz" value={0} />

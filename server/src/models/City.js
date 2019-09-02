@@ -21,12 +21,4 @@ const CityModel = sequelize.define(
   }
 );
 
-CityModel.hasMany(UserModel, {
-  foreignKey: "fCity"
-});
-
-UserModel.belongsTo(CityModel, {
-  foreignKey: "fCity"
-});
-
 module.exports = CityModel;

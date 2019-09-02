@@ -2,6 +2,7 @@ const sequelize = require("./index");
 const Sequelize = require("sequelize");
 const SubTalentModel = require("./SubTalent");
 const TalentModel = require("./Talent");
+const CityModel = require("./City");
 
 const UserModel = sequelize.define(
   "tblUser",
@@ -32,11 +33,14 @@ const UserModel = sequelize.define(
       allowNull: false
     },
 
+    gender: {
+      type: Sequelize.CHAR,
+      defaultValue: "u"
+    },
+
     phone: Sequelize.STRING,
 
     aboutMe: Sequelize.STRING,
-
-    city: Sequelize.STRING,
 
     birthday: {
       type: Sequelize.DATE,
@@ -63,6 +67,14 @@ SubTalentModel.hasMany(UserModel, {
 
 UserModel.belongsTo(SubTalentModel, {
   foreignKey: "fSubTalentID"
+});
+
+CityModel.hasMany(UserModel, {
+  foreignKey: "fCity"
+});
+
+UserModel.belongsTo(CityModel, {
+  foreignKey: "fCity"
 });
 
 TalentModel.hasMany(UserModel, {

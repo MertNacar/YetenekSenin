@@ -13,6 +13,7 @@ import UpdateInformationScreen from "./SettingsScreens/UpdateInformationScreen/U
 import UpdateAboutMeScreen from "./SettingsScreens/UpdateInformationScreen/UpdateAboutMeScreen/UpdateAboutMeScreen";
 import UpdateOtherScreen from "./SettingsScreens/UpdateInformationScreen/UpdateOtherScreen/UpdateOtherScreen";
 import UpdateTalentScreen from "./SettingsScreens/UpdateInformationScreen/UpdateTalentScreen/UpdateTalentScreen";
+import UpdateGenderScreen from "./SettingsScreens/UpdateInformationScreen/UpdateGenderScreen/UpdateGenderScreen";
 import UpdatePasswordScreen from "./SettingsScreens/UpdatePasswordScreen/UpdatePasswordScreen";
 import UpdateSettingsScreen from "./SettingsScreens/UpdateSettingsScreen/UpdateSettingsScreen";
 
@@ -33,5 +34,6 @@ export {
   UpdateSettingsScreen,
   UpdateAboutMeScreen,
   UpdateOtherScreen,
-  UpdateTalentScreen
+  UpdateTalentScreen,
+  UpdateGenderScreen
 };

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { connect } from "react-redux";
 import { editUser } from "../../../../src/store/user/userActionCreator";
+import styles from './styles'
 class UpdateOtherScreen extends Component {
   render() {
     return (

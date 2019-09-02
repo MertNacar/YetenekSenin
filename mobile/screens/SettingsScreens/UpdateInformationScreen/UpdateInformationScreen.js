@@ -11,7 +11,6 @@ import {
   COLOR_BACKGROUND,
   COLOR_PINK
 } from "../../../src/styles/const";
-import moment from "moment";
 import {
   usernameRegex,
   emailRegex,
@@ -23,55 +22,43 @@ class UpdateInformationScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      oldUsername: this.props.getUser.username,
+      oldEmail: this.props.getUser.email,
       user: this.props.getUser,
-      data: {
-        firstname: "",
-        surname: "",
-        username: "",
-        email: "",
-        talentName: "",
-        subTalentName: "",
-        phone: "",
-        aboutMe: "",
-        city: ""
-      },
       colors: {
         firstnameColor: COLOR_PRIMARY,
         surnameColor: COLOR_PRIMARY,
         usernameColor: COLOR_PRIMARY,
-        emailColor: COLOR_PRIMARY,
+        emailColor: COLOR_PRIMARY
+        /*
+         iconColorMale: COLOR_PRIMARY,
+        backColorMale: COLOR_BACKGROUND,
+        iconColorFemale: COLOR_PINK,
+        backColorFemale: COLOR_BACKGROUND
         socialMediaColor: COLOR_PRIMARY, //FARKLI
         birthdayColor: COLOR_PRIMARY, //
         cityColor: COLOR_PRIMARY, //
         aboutMeColor: COLOR_PRIMARY, //Sayfalar
-        phoneColor: COLOR_PRIMARY // Açılacak
+        phoneColor: COLOR_PRIMARY, // Açılacak*/
       }
     };
   }
   editProfilePost = async () => {
-    let token = this.state.user.token;
     try {
-      let user = { ...this.state.data };
+      let { user } = this.state;
+      let token = user.token;
+      delete user.token;
+      console.log("user", user);
+      console.log("new", newUser);
       let data = await Http.post("/profile/update/", user, token);
       if (data == null || data.err) throw new Error();
       else {
         this.props.editUser(user);
-        Navigation.push(this.props.componentId, {
-          component: {
-            id: "ProfileScreen",
-            name: "yeteneksenin.screens.ProfileScreen",
-            options: {
-              topBar: {
-                visible: false,
-                title: {
-                  text: "Yetenek Senin"
-                }
-              }
-            }
-          }
-        });
+        Navigation.pop("ProfileScreen");
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   goUpdatePage = screenID => {
@@ -98,17 +85,22 @@ class UpdateInformationScreen extends Component {
     inputName,
     inputColor
   ) => {
-    let { colors, data } = this.state;
+    let { colors, user, oldUsername, oldEmail } = this.state;
     let validate = validateRegex(typeRegex, input);
     try {
-      if (validate) {
+      if (input === oldUsername || input === oldEmail) {
+        this.setState({
+          user: { ...user, [inputName]: input },
+          colors: { ...colors, [inputColor]: "green" }
+        });
+      } else if (validate) {
         let confirm = await Http.postWithoutToken(
           `/signup/validate/${inputName}`,
           input
         );
         if (!confirm.err) {
           this.setState({
-            data: { ...data, [inputName]: input },
+            user: { ...user, [inputName]: input },
             colors: { ...colors, [inputColor]: "green" }
           });
         } else throw new Error();
@@ -119,19 +111,19 @@ class UpdateInformationScreen extends Component {
   };
 
   InputHandler = (typeRegex, input, inputName, inputColor) => {
-    let { data, colors } = this.state;
+    let { user, colors } = this.state;
     let validate = validateRegex(typeRegex, input);
     if (validate) {
       this.setState({
-        data: { data, [inputName]: input },
-        colors: { colors, [inputColor]: "green" }
+        user: { ...user, [inputName]: input },
+        colors: { ...colors, [inputColor]: "green" }
       });
-    } else this.setState({ colors: { colors, [inputColor]: "red" } });
+    } else this.setState({ colors: { ...colors, [inputColor]: "red" } });
   };
 
   render() {
     let { user, colors } = this.state;
-    console.warn(user);
+    console.log("aa", user);
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.container}>
@@ -222,27 +214,21 @@ class UpdateInformationScreen extends Component {
               <View
                 style={{
                   width: "25%",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: "space-evenly",
                   alignItems: "center",
                   paddingTop: 25
                 }}
               >
                 <Button
+                  onPress={() => this.goUpdatePage("UpdateGenderScreen")}
                   buttonStyle={{
                     borderWidth: 1,
                     borderColor: COLOR_PRIMARY,
                     backgroundColor: COLOR_BACKGROUND
                   }}
-                  icon={<Icon name="mars" color={COLOR_PRIMARY} size={26} />}
-                />
-                <Button
-                  buttonStyle={{
-                    borderWidth: 1,
-                    borderColor: COLOR_PINK,
-                    backgroundColor: COLOR_BACKGROUND
-                  }}
-                  icon={<Icon name="venus" color={COLOR_PINK} size={27} />}
+                  icon={
+                    <Icon name="venus-mars" color={COLOR_PRIMARY} size={28} />
+                  }
                 />
               </View>
             </View>
@@ -300,8 +286,8 @@ class UpdateInformationScreen extends Component {
 
             <View style={styles.button}>
               <Button
+                onPress={() => this.editProfilePost()}
                 buttonStyle={{ backgroundColor: "green" }}
-                titleStyle={{ marginLeft: 7 }}
                 title="Kaydet"
               />
             </View>
@@ -328,23 +314,64 @@ export default connect(
   mapDispatchToProps
 )(UpdateInformationScreen);
 
-/*<View style={styles.rowSingle}>
-              <Input
-                containerStyle={styles.singleInput}
-                placeholder="About Me"
-                value={user.aboutMe}
-                underlineColorAndroid="transparent"
-                leftIcon={
-                  <Icon name="address-card" size={24} color={COLOR_PRIMARY} />
-                }
-                inputStyle={{ paddingLeft: 15, fontSize: 15 }}
-                inputContainerStyle={{
-                  borderColor: colors.aboutMeColor
-                }}
-              />
-            </View>*/
-
 /*
+
+switchGender = genderType => {
+    let { user, colors } = this.state;
+    if (genderType == "m") {
+      this.setState({
+        user: { ...user, gender: "m" },
+        colors: {
+          ...colors,
+          backColorMale: COLOR_PRIMARY,
+          iconColorMale: COLOR_BACKGROUND,
+          backColorFemale: COLOR_BACKGROUND,
+          iconColorFemale: COLOR_PINK
+        }
+      });
+    } else {
+      this.setState({
+        user: { ...user, gender: "f" },
+        colors: {
+          ...colors,
+          backColorMale: COLOR_BACKGROUND,
+          iconColorMale: COLOR_PRIMARY,
+          backColorFemale: COLOR_PINK,
+          iconColorFemale: COLOR_BACKGROUND
+        }
+      });
+    }
+  };
+
+  
+
+<View
+                style={{
+                  width: "25%",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  paddingTop: 25
+                }}
+              >
+                <Button
+                  buttonStyle={{
+                    borderWidth: 1,
+                    borderColor: COLOR_PRIMARY,
+                    backgroundColor: COLOR_BACKGROUND
+                  }}
+                  icon={<Icon name="mars" color={COLOR_PRIMARY} size={26} />}
+                />
+                <Button
+                  buttonStyle={{
+                    borderWidth: 1,
+                    borderColor: COLOR_PINK,
+                    backgroundColor: COLOR_BACKGROUND
+                  }}
+                  icon={<Icon name="venus" color={COLOR_PINK} size={27} />}
+                />
+              </View>
+
 
  <View style={styles.info}>
               <MainText style={styles.infoWords}>Diğer İşlemler</MainText>

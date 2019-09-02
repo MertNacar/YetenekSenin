@@ -13,10 +13,13 @@ var router = express.Router();
 // ------------  TODO  ------------------
 //Get ınformation from user
 router.post("/immediately", async (req, res) => {
-  let username = req.body.data;
-  let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);
   try {
+    let username = req.body.data;
+    let token = req.headers.authorization.split(" ")[1];
+    let validate = jwt.validateToken(token);
+    console.log("username", username);
+    console.log("token", token);
+    console.log("validate", validate);
     if (validate) {
       let data = await models.UserModel.findOne({
         attributes: [
@@ -52,6 +55,7 @@ router.post("/immediately", async (req, res) => {
           }
         ]
       });
+      console.log("DATA",data)
       if (data === null) throw new Error();
       else {
         let user = data.dataValues;
@@ -60,7 +64,7 @@ router.post("/immediately", async (req, res) => {
         user.city = data.tblCity.city;
         delete user.tblTalent;
         delete user.tblSubTalent;
-        delete user.tblCity
+        delete user.tblCity;
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
         console.log("***************************", user);
@@ -74,8 +78,8 @@ router.post("/immediately", async (req, res) => {
 
 //login validate with form
 router.post("/", async (req, res) => {
-  let { username, password } = req.body.data;
   try {
+    let { username, password } = req.body.data;
     let data = await models.UserModel.findOne({
       attributes: [
         "userID",
@@ -129,7 +133,7 @@ router.post("/", async (req, res) => {
         delete user.password;
         delete user.tblTalent;
         delete user.tblSubTalent;
-        delete user.tblCity
+        delete user.tblCity;
         console.log("***************************", user);
         res.json({ err: false, user });
       } else res.json({ err: true });

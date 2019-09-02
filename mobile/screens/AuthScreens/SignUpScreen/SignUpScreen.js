@@ -24,7 +24,7 @@ class SignUpScreen extends Component {
       data: {
         firstname: "",
         surname: "",
-        gender: null
+        gender: "u"
       },
       colors: {
         firstnameColor: COLOR_PRIMARY,
@@ -50,9 +50,9 @@ class SignUpScreen extends Component {
   // true geldiğinde erkek false ise kadın
   switchGender = genderType => {
     let { data, colors } = this.state;
-    if (genderType) {
+    if (genderType == 'm') {
       this.setState({
-        data: { ...data, gender: 1 },
+        data: { ...data, gender: 'm' },
         colors: {
           ...colors,
           backColorMale: COLOR_PRIMARY,
@@ -63,7 +63,7 @@ class SignUpScreen extends Component {
       });
     } else {
       this.setState({
-        data: { ...data, gender: 0 },
+        data: { ...data, gender: 'f' },
         colors: {
           ...colors,
           backColorMale: COLOR_BACKGROUND,
@@ -142,7 +142,7 @@ class SignUpScreen extends Component {
         </View>
         <View style={styles.buttons}>
           <Button
-            onPress={() => this.switchGender(1)}
+            onPress={() => this.switchGender('m')}
             buttonStyle={{
               borderWidth: 1,
               borderColor: colors.iconColorMale,
@@ -154,7 +154,7 @@ class SignUpScreen extends Component {
           />
 
           <Button
-            onPress={() => this.switchGender(0)}
+            onPress={() => this.switchGender('f')}
             buttonStyle={{
               borderWidth: 1,
               borderColor: colors.iconColorFemale,
