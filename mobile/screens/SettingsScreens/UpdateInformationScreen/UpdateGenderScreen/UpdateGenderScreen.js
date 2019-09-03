@@ -7,28 +7,23 @@ import { Input } from "react-native-elements";
 import * as Http from "../../../../utils/httpHelper";
 import styles from "./styles";
 import { COLOR_PRIMARY, COLOR_BACKGROUND } from "../../../../src/styles/const";
-const products = [
-  {
-    id: "m",
-    text: "Erkek"
-  },
-  {
-    id: "f",
-    text: "Kadın"
-  },
-  {
-    id: "u",
-    text: "Söylemek İstemiyorum"
-  }
-];
-
+import RadioButton from "../../../../src/components/RadioButton/RadioButton";
+import { genders } from "./genders";
+import { Navigation } from "react-native-navigation";
 class UpdateGenderScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gender: this.props.getUser.gender,
+      gender: this.props.getUser.gender
     };
   }
+
+  saveGender = () => {
+    let { gender } = this.state;
+    let newUser = { ...this.props.getUser, gender };
+    this.props.editUser(newUser);
+    Navigation.pop("ProfileScreen");
+  };
 
   selectGender = gender => {
     this.setState({
@@ -36,55 +31,25 @@ class UpdateGenderScreen extends Component {
     });
   };
   render() {
-    let { gender, selectedRadio } = this.state;
-    console.log("GENDER", gender);
-    let Buttons = products.map(item => {
-      let selected =
-        item.id == gender ? COLOR_PRIMARY : COLOR_BACKGROUND;
+    let { gender } = this.state;
+    let buttons = genders.map((item, index) => {
+      let selected = item.id == gender ? COLOR_PRIMARY : COLOR_BACKGROUND;
       return (
-        <TouchableOpacity
-          key={item.id}
-          style={styles.rowSingle}
+        <RadioButton
+          key={index}
+          text={item.text}
+          selected={selected}
           onPress={() => this.selectGender(item.id)}
-        >
-          <View style={{ flex: 4 }}>
-            <Text>{item.text}</Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
-              style={{
-                height: "25%",
-                width: "20%",
-                borderRadius: 50,
-                borderWidth: 2,
-                borderColor: COLOR_PRIMARY,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <View
-                style={{
-                  height: "85%",
-                  width: "80%",
-                  borderRadius: 50,
-                  backgroundColor: selected
-                }}
-              ></View>
-            </View>
-          </View>
-        </TouchableOpacity>
+        />
       );
     });
     return (
       <View style={styles.container}>
-        {Buttons}
-        <View style={{ flex: 6 }}></View>
+        {buttons}
+        <View style={{ flex: 4.5 }}></View>
+        <View style={styles.button}>
+          <Button onPress={() => this.saveGender()} title="Bitti" />
+        </View>
       </View>
     );
   }

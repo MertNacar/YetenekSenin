@@ -4,14 +4,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR_BACKGROUND,
-    justifyContent:"flex-start"
+    justifyContent: "flex-start"
   },
   rowSingle: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth:1
+  },
+  button: {
+    flex: 1,
+    justifyContent: "flex-end"
   }
 });
 

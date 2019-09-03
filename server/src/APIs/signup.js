@@ -14,32 +14,33 @@ var router = express.Router();
 router.post("/", async (req, res) => {
   try {
     let user = req.body.data;
-    console.log(user.gender)
+    console.log(user.gender);
     var token = jwt.createToken(user.username);
     let hash = await hashPassword(user.password);
     user.password = hash;
     await models.UserModel.create(user);
     let data = await models.UserModel.findOne({
-      attributes: ["userID"],
+      attributes: ["userID","fCity"],
       where: {
         username: user.username
       }
     });
     user.userID = data.userID;
+    user.fCity = data.fCity
     user.token = token;
     user.loginDate = Date(Date.now()).toString();
     delete user.password;
     res.json({ err: false, user });
   } catch (err) {
-    console.log(err.message)
-    res.json({ err: true, err:err.message });
+    console.log(err.errors.map(error => error.message));
+    res.json({ err: true, err: err.message });
   }
 });
 
 //validate for inputs
 router.post("/validate/username", async (req, res) => {
   try {
-  let username = req.body.data;
+    let username = req.body.data;
     let data = await models.UserModel.findOne({
       attributes: ["username"],
       where: {

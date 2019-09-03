@@ -22,6 +22,8 @@ class initScreen extends Component {
       let username = await getUserStorage();
       if (token.err || username.err) AuthTabs();
       else {
+        console.log("ussername", username.value)
+        console.log("token", token.value)
         let data = await Http.post("/login/immediately/",username.value , token.value);
         console.log("ınıt",data)
         if (data.err) AuthTabs();

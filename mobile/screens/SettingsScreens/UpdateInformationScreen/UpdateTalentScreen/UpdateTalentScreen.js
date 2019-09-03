@@ -6,31 +6,50 @@ import { editUser } from "../../../../src/store/user/userActionCreator";
 import * as Http from "../../../../utils/httpHelper";
 import { COLOR_PRIMARY, COLOR_BACKGROUND } from "../../../../src/styles/const";
 import styles from "./styles";
+import { Navigation } from "react-native-navigation";
 class UpdateTalentScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       talents: [],
       subTalents: [],
-      pickerEnabled: false,
+      pickerEnabled: true,
       data: {
-        fTalentID: "",
-        fSubTalentID: ""
+        fTalentID: this.props.getUser.fTalentID,
+        fSubTalentID: this.props.getUser.fSubTalentID
       },
       colors: {
-        subTalentColor: COLOR_PRIMARY,
-        talentColor: COLOR_PRIMARY
+        subTalentColor: "green",
+        talentColor: "green"
       }
     };
   }
 
+  saveTalents = () => {
+    console.log("önce state", this.props.getUser);
+    let data = this.setTalentNames();
+    let newUser = {
+      ...this.props.getUser,
+      ...data
+    };
+    console.log("sonra state", newUser);
+    this.props.editUser(newUser);
+    Navigation.pop("ProfileScreen");
+  };
+
   async componentDidMount() {
     try {
+      let { data } = this.state;
       let talents = await Http.getWithoutToken("/signup/talent");
+      let subTalents = await Http.postWithoutToken(
+        "/signup/subTalent",
+        data.fTalentID
+      );
       if (talents.err) throw new Error();
       else {
         this.setState({
-          talents: [...talents.data]
+          talents: [...talents.data],
+          subTalents: [...subTalents.data]
         });
       }
     } catch {
@@ -80,7 +99,7 @@ class UpdateTalentScreen extends Component {
     }
   };
 
-  continue = () => {
+  setTalentNames = () => {
     let { data, talents, subTalents } = this.state;
     talents.find(item => {
       return item.talentID === data.fTalentID;
@@ -90,14 +109,15 @@ class UpdateTalentScreen extends Component {
     });
     data.talentName = talents[0].talentName;
     data.subTalentName = subTalents[0].subTalentName;
-
-    /*let user = { ...this.props.getUser, ...data };
-    this.props.addUser(user);
-    Navigation.pop("ProfileScreen");*/
+    return data;
   };
 
   render() {
     let { colors, data, talents, subTalents, pickerEnabled } = this.state;
+    let validate =
+      colors.subTalentColor === "green" && colors.talentColor === "green"
+        ? true
+        : false;
     let talentItems = talents.map((item, index) => {
       return (
         <Picker.Item
@@ -118,7 +138,13 @@ class UpdateTalentScreen extends Component {
     });
     return (
       <View style={styles.container}>
-        <View style={{ borderWidth: 2, borderColor: colors.talentColor }}>
+        <View
+          style={{
+            paddingTop: 15,
+            borderBottomWidth: 2,
+            borderColor: colors.talentColor
+          }}
+        >
           <Picker
             selectedValue={data.fTalentID}
             onValueChange={itemID => this.pickerTalentHandler(itemID)}
@@ -128,7 +154,13 @@ class UpdateTalentScreen extends Component {
           </Picker>
         </View>
 
-        <View style={{ borderWidth: 2, borderColor: colors.subTalentColor }}>
+        <View
+          style={{
+            paddingTop: 15,
+            borderBottomWidth: 2,
+            borderColor: colors.subTalentColor
+          }}
+        >
           <Picker
             enabled={pickerEnabled}
             selectedValue={data.fSubTalentID}
@@ -141,8 +173,10 @@ class UpdateTalentScreen extends Component {
 
         <View style={styles.button}>
           <Button
-            //onPress={() => this.editProfilePost()}
-            buttonStyle={{ backgroundColor: "green" }}
+            style={{ opacity: 1 }}
+            disabledStyle={{ opacity: 0.3, backgroundColor: COLOR_PRIMARY }}
+            disabled={!validate}
+            onPress={() => this.saveTalents()}
             title="Bitti"
           />
         </View>

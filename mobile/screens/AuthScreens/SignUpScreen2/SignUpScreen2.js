@@ -218,7 +218,9 @@ class SignUpScreen2 extends Component {
             }
           />
 
-          <View style={{ borderWidth: 2, borderColor: colors.talentColor }}>
+          <View
+            style={{ borderBottomWidth: 2, borderColor: colors.talentColor }}
+          >
             <Picker
               selectedValue={data.fTalentID}
               onValueChange={itemID => this.pickerTalentHandler(itemID)}
@@ -228,7 +230,9 @@ class SignUpScreen2 extends Component {
             </Picker>
           </View>
 
-          <View style={{ borderWidth: 2, borderColor: colors.subTalentColor }}>
+          <View
+            style={{ borderBottomWidth: 2, borderColor: colors.subTalentColor }}
+          >
             <Picker
               enabled={pickerEnabled}
               selectedValue={data.fSubTalentID}

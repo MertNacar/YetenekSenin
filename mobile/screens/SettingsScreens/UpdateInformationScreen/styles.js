@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLOR_PRIMARY,COLOR_BACKGROUND } from "../../../src/styles/const";
+import { COLOR_PRIMARY, COLOR_BACKGROUND } from "../../../src/styles/const";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,6 +17,12 @@ const styles = StyleSheet.create({
     flex: 3,
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  rowItems: {
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   rowSingle: {
     flex: 3,
@@ -42,8 +48,7 @@ const styles = StyleSheet.create({
   },
   singleInput: {
     width: "97%"
-  },
-  footer: {}
+  }
 });
 
 export default styles;

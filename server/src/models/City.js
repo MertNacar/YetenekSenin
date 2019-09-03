@@ -1,6 +1,5 @@
 const sequelize = require("./index");
 const Sequelize = require("sequelize");
-const UserModel = require("./User");
 
 const CityModel = sequelize.define(
   "tblCity",
@@ -17,6 +16,7 @@ const CityModel = sequelize.define(
     }
   },
   {
+    timestamps: false,
     freezeTableName: true
   }
 );

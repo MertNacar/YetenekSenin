@@ -17,9 +17,6 @@ router.post("/immediately", async (req, res) => {
     let username = req.body.data;
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
-    console.log("username", username);
-    console.log("token", token);
-    console.log("validate", validate);
     if (validate) {
       let data = await models.UserModel.findOne({
         attributes: [
@@ -33,7 +30,10 @@ router.post("/immediately", async (req, res) => {
           "gender",
           "birthday",
           "profilePhoto",
-          "socialMedia"
+          "socialMedia",
+          "fTalentID",
+          "fSubTalentID",
+          "fCity"
         ],
         where: {
           username
@@ -55,23 +55,21 @@ router.post("/immediately", async (req, res) => {
           }
         ]
       });
-      console.log("DATA",data)
       if (data === null) throw new Error();
       else {
         let user = data.dataValues;
         user.talentName = data.tblTalent.talentName;
         user.subTalentName = data.tblSubTalent.subTalentName;
-        user.city = data.tblCity.city;
+        user.city = data.tblCity ? data.tblCity.city : "";
         delete user.tblTalent;
         delete user.tblSubTalent;
         delete user.tblCity;
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
-        console.log("***************************", user);
         res.json({ err: false, user });
       }
     } else throw new Error();
-  } catch (err) {
+  } catch {
     res.json({ err: true });
   }
 });
@@ -93,7 +91,10 @@ router.post("/", async (req, res) => {
         "gender",
         "birthday",
         "profilePhoto",
-        "socialMedia"
+        "socialMedia",
+        "fTalentID",
+        "fSubTalentID",
+        "fCity"
       ],
       where: {
         username
@@ -115,10 +116,6 @@ router.post("/", async (req, res) => {
         }
       ]
     });
-    console.log(
-      "********************************************",
-      data.dataValues
-    );
     if (data === null) throw new Error();
     else {
       let confirm = await verifyPassword(password, data.password);
@@ -127,19 +124,17 @@ router.post("/", async (req, res) => {
         let user = data.dataValues;
         user.talentName = data.tblTalent.talentName;
         user.subTalentName = data.tblSubTalent.subTalentName;
-        user.city = data.tblCity.city;
+        user.city = data.tblCity ? data.tblCity.city : "";
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
         delete user.password;
         delete user.tblTalent;
         delete user.tblSubTalent;
         delete user.tblCity;
-        console.log("***************************", user);
         res.json({ err: false, user });
-      } else res.json({ err: true });
+      } else throw new Error();
     }
-  } catch (err) {
-    console.log(err.message);
+  } catch {
     res.json({ err: true });
   }
 });

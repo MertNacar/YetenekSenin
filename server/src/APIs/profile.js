@@ -180,4 +180,15 @@ router.put("/update/password", async (req, res) => {
   }
 });
 
+
+router.get("/city", async (req, res) => {
+  try {
+    let data = await models.CityModel.findAll();
+    if (data.length > 0) res.json({ err: false, data });
+    else res.json({ err: true });
+  } catch {
+    res.json({ err: true });
+  }
+});
+
 module.exports = router;
