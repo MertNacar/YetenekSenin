@@ -1,9 +1,4 @@
-const {
-  Sequelize,
-  Op,
-  jwt,
-  models
-} = require("./imports");
+const { Sequelize, Op, jwt, models } = require("./imports");
 
 var express = require("express");
 var router = express.Router();
@@ -17,9 +12,7 @@ router.post("/user", async (req, res) => {
   try {
     if (validate) {
       let users = await models.UserModel.findAll({
-        attributes: [
-          "username", "profilePhoto"
-        ],
+        attributes: ["userID", "username", "profilePhoto"],
         where: {
           username: {
             [Op.like]: `%${username}%`
@@ -34,7 +27,7 @@ router.post("/user", async (req, res) => {
         ]
       });
       if (users.length > 0) {
-        res.json({ err: false, users : users });
+        res.json({ err: false, users: users });
       } else {
         throw new Error();
       }

@@ -20,23 +20,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start"
   },
-
   cityIcon: {
     flex: 1,
-    paddingRight: 5,
-    justifyContent: "center",
-    alignItems: "center"
+    paddingRight: 10,
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
   },
   cityPicker: {
     flex: 9,
-    paddingLeft: 5,
-    justifyContent: "center",
-    alignItems: "center"
+    paddingLeft: 10,
+    justifyContent: "flex-start",
+    alignItems: "flex-start"
   },
   datepicker: {
     flex: 15,
     paddingLeft: 5,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "flex-start"
   },
   dateIcon: {

@@ -101,14 +101,14 @@ class UpdateTalentScreen extends Component {
 
   setTalentNames = () => {
     let { data, talents, subTalents } = this.state;
-    talents.find(item => {
+    let selectedTalent = talents.find(item => {
       return item.talentID === data.fTalentID;
     });
-    subTalents.find(item => {
+    let selectedSubTalent = subTalents.find(item => {
       return item.subTalentID === data.fSubTalentID;
     });
-    data.talentName = talents[0].talentName;
-    data.subTalentName = subTalents[0].subTalentName;
+    data.talentName = selectedTalent.talentName;
+    data.subTalentName = selectedSubTalent.subTalentName;
     return data;
   };
 

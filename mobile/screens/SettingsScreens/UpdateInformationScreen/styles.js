@@ -11,38 +11,39 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   body: {
-    flex: 3
+    flex: 5
   },
   row: {
-    flex: 3,
+    flex: 8,
     flexDirection: "row",
     justifyContent: "space-around"
   },
   rowItems: {
-    flex: 2,
+    flex: 6,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingVertical:5,
   },
   rowSingle: {
-    flex: 3,
+    flex: 8,
     justifyContent: "center",
     alignItems: "center"
   },
   info: {
-    flex: 2,
+    flex: 5,
     justifyContent: "flex-end",
     alignItems: "flex-start",
     borderBottomWidth: 1,
     borderColor: COLOR_PRIMARY,
-    marginVertical: 10
+    marginBottom: 10
   },
   infoWords: {
     fontSize: 16,
     padding: 5
   },
   button: {
-    flex: 2,
+    flex: 5,
     marginTop: 20,
     marginBottom: 15
   },

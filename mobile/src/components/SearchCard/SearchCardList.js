@@ -7,14 +7,15 @@ import store from "../../store/configureStore";
 import { Navigation } from "react-native-navigation";
 import { viewUser } from "../../store/userView/userViewActionCreator";
 SearchCardList = props => {
-  goProfile = async username => {
+  goProfile = async userID => {
     let token = props.getUser.token;
+    console.log(userID)
     try {
-      let data = await Http.get(`/profile/show?user=${username}`, token);
+      let data = await Http.get(`/profile/show?userID=${userID}`, token);
       if (data.err) throw new Error();
       else {
         props.viewUser(data.user);
-        Navigation.push(props.componentId, {
+        Navigation.push("SearchScreen", {
           component: {
             name: "yeteneksenin.screens.ViewProfileScreen",
             options: {
@@ -30,7 +31,9 @@ SearchCardList = props => {
         });
       }
     } catch (err) {
+      
       console.log(err.message);
+      console.warn(err.message);
     }
   };
 
@@ -42,7 +45,7 @@ SearchCardList = props => {
         renderItem={({ item }) => (
           <SearchCard
             item={item}
-            onPress={() => this.goProfile(item.username)}
+            onPress={() => this.goProfile(item.userID)}
           />
         )}
       />

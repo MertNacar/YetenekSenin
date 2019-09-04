@@ -45,7 +45,7 @@ class SearchScreen extends Component {
     let display = err ? (
       <MainText>Aradığınız kişiyi bulamadık.</MainText>
     ) : (
-      <SearchCardList data={users} {...this.props} />
+      <SearchCardList data={users} />
     );
     return (
       <View style={{ flex: 1 }}>

@@ -61,11 +61,12 @@ router.get("/videos", async (req, res) => {
 });
 
 router.get("/show", async (req, res) => {
-  let username = req.query.user;
+  let userID = req.query.userID;
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
   try {
     if (validete) {
+      console.log("heyy")
       let user = await models.UserModel.findOne({
         attributes: [
           "firstname",
@@ -74,61 +75,66 @@ router.get("/show", async (req, res) => {
           "email",
           "phone",
           "aboutMe",
-          "city",
           "birthday",
           "profilePhoto",
           "socialMedia"
         ],
         where: {
-          username
+          userID
         },
         include: [
-          /*{
+          {
             required: true,
+            model: models.TalentModel,
+            attributes: ["talentName"]
+          },
+          {
+            required: true,
+            model: models.SubTalentModel,
+            attributes: ["subTalentName"]
+          },
+          {
             model: models.VideoModel,
             attributes: [
               "videoPath",
               "videoDescription",
               "videoTitle",
               "videoWatchCount",
+              "videoStarCount",
               "createdAt"
             ]
-          },*/
+          },
+
           {
-            required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
+            model: models.CityModel,
+            attributes: ["city"]
           }
-          /*{
-            required: true,
-            model: models.CommentModel,
-            attributes: ["commentDescription", "commentLikeCount"]
-          }*/
         ]
       });
       res.json({ err: false, user });
     } else {
       throw new Error();
     }
-  } catch {
-    res.json({ err: true });
+  } catch (err) {
+    res.json({ err: true, err: err.message });
   }
 });
 
 // TO DOOOOOOOOOO PASSWORD UPDATE
 router.put("/update/all", async (req, res) => {
-  let data = req.body.data;
-  let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);
   try {
+    let data = req.body.data;
+    let token = req.headers.authorization.split(" ")[1];
+    console.log(token);
+    let validate = jwt.validateToken(token);
+    console.log(validate);
     if (validate) {
       let user = await models.UserModel.findOne({
-        attributes: ["password"],
+        attributes: ["userID"],
         where: {
-          username: data.oldUsername
+          userID: data.userID
         }
       });
-
       await user.update({
         firstname: data.firstname,
         surname: data.surname,
@@ -136,42 +142,41 @@ router.put("/update/all", async (req, res) => {
         email: data.email,
         phone: data.phone,
         aboutMe: data.aboutMe,
-        city: data.city,
+        fCity: data.fCity,
         birthday: data.birthday,
+        gender: data.gender,
         profilePhoto: data.profilePhoto,
-        socialMedia: data.socialMedia
+        socialMedia: data.socialMedia,
+        fSubTalentID: data.fSubTalentID,
+        fTalentID: data.fTalentID
       });
       res.json({ err: false });
     }
-  } catch {
+  } catch (err) {
+    console.log("error", err.message);
     res.json({ err: true });
   }
 });
-
+//userID oldPassword newPassword bekleniyo TODO CLIENT
 router.put("/update/password", async (req, res) => {
-  let data = req.body.data;
-  let token = req.headers.authorization.split(" ")[1];
-  let validate = jwt.validateToken(token);
   try {
-    if (validate) {
-      let user = await models.UserModel.findOne({
-        where: {
-          username: data.oldUsername
-        }
-      });
-      let old = await hashPassword(data.oldPassword);
-      // let new = await verifyPassword(data.)
+    let data = req.body.data;
+    let token = req.headers.authorization.split(" ")[1];
+    let validate = jwt.validateToken(token);
+    let user = await models.UserModel.findOne({
+      attributes: ["password"],
+      where: {
+        userID: data.userID
+      }
+    });
+    let validatePassword = await verifyPassword(
+      data.oldPassword,
+      user.password
+    );
+    if (validate && validatePassword) {
+      let password = await hashPassword(data.newPassword);
       await user.update({
-        firstname: data.firstname,
-        surname: data.surname,
-        username: data.username,
-        email: data.email,
-        phone: data.phone,
-        aboutMe: data.aboutMe,
-        city: data.city,
-        birthday: data.birthday,
-        profilePhoto: data.profilePhoto,
-        socialMedia: data.socialMedia
+        password
       });
       res.json({ err: false });
     }
@@ -179,7 +184,6 @@ router.put("/update/password", async (req, res) => {
     res.json({ err: true });
   }
 });
-
 
 router.get("/city", async (req, res) => {
   try {

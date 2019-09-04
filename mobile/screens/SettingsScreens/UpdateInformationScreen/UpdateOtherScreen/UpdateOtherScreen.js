@@ -8,6 +8,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { COLOR_PRIMARY } from "../../../../src/styles/const";
 import moment from "moment";
 import * as Http from "../../../../utils/httpHelper";
+import { Navigation } from "react-native-navigation";
 class UpdateOtherScreen extends Component {
   constructor(props) {
     super(props);
@@ -49,11 +50,11 @@ class UpdateOtherScreen extends Component {
 
   setCityName = () => {
     let { data, cities } = this.state;
-    cities.find(item => {
+    let selectedCity = cities.find(item => {
       return item.code === data.fCity;
     });
-    console.log(cities);
-    data.city = cities[0].city;
+
+    data.city = selectedCity.city;
 
     return data;
   };
@@ -146,9 +147,9 @@ class UpdateOtherScreen extends Component {
   render() {
     let { colors, datePickerTitle, cities, data } = this.state;
     let validate =
-      colors.birthdayColor === "green" &&
-      colors.cityColor === "green" &&
-      colors.phoneColor === "green";
+      colors.birthdayColor === "red" ||
+      colors.cityColor === "red" ||
+      colors.phoneColor === "red";
 
     let cityList = cities.map((item, index) => {
       return (
@@ -167,7 +168,7 @@ class UpdateOtherScreen extends Component {
             placeholder="Phone"
             value={data.phone}
             underlineColorAndroid="transparent"
-            leftIcon={<Icon name="phone" size={24} color={COLOR_PRIMARY} />}
+            leftIcon={<Icon name="phone" size={20} color={COLOR_PRIMARY} />}
             inputStyle={{ paddingLeft: 15, fontSize: 15 }}
             inputContainerStyle={{
               borderColor: COLOR_PRIMARY
@@ -185,17 +186,17 @@ class UpdateOtherScreen extends Component {
           ]}
         >
           <View style={styles.cityIcon}>
-            <Icon name="city" size={24} color={colors.cityColor}></Icon>
+            <Icon name="city" size={20} color={colors.cityColor}></Icon>
           </View>
-          <View style={styles.cityPicker}>
-            <Picker
-              selectedValue={data.fCity}
-              onValueChange={itemID => this.pickerCityHandler(itemID)}
-            >
-              <Picker.Item label="Şehir Seçiniz" value={0} />
-              {cityList}
-            </Picker>
-          </View>
+
+          <Picker
+            style={styles.cityPicker}
+            selectedValue={data.fCity}
+            onValueChange={itemID => this.pickerCityHandler(itemID)}
+          >
+            <Picker.Item label="Şehir Seçiniz" value={0} />
+            {cityList}
+          </Picker>
         </View>
 
         <View style={styles.rowItems}>
@@ -204,7 +205,7 @@ class UpdateOtherScreen extends Component {
           </View>
           <View style={styles.datepicker}>
             <Button
-              //buttonStyle={}
+              buttonStyle={{ backgroundColor: colors.birthdayColor }}
               title={datePickerTitle}
               onPress={() => this.DatePickerAndroid()}
             />
@@ -214,7 +215,7 @@ class UpdateOtherScreen extends Component {
           <Button
             style={{ opacity: 1 }}
             disabledStyle={{ opacity: 0.3, backgroundColor: COLOR_PRIMARY }}
-            disabled={!validate}
+            disabled={validate}
             onPress={() => this.saveOthers()}
             title="Bitti"
           />
