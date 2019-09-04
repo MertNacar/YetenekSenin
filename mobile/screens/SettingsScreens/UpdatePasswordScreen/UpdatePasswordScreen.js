@@ -1,70 +1,147 @@
 import React, { Component } from "react";
 import { View, Image, Text } from "react-native";
 import { connect } from "react-redux";
-import { Input } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import * as Http from "../../../utils/httpHelper";
 import styles from "./styles";
-import CustomButton from "../../../src/components/CustomButton/CustomButton";
+import { Navigation } from "react-native-navigation";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { COLOR_PRIMARY } from "../../../src/styles/const";
+import { validateRegex, passwordRegex } from "../../../RegExp/regex";
 class UpdatePasswordScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        firstname: "",
-        surname: "",
-        username: "",
-        phone: "",
-        aboutMe: "",
-        city: "",
-        email: ""
-      }
+      user: {
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        userID: this.props.getUser.userID
+      },
+      colors: {
+        oldPasswordColor: COLOR_PRIMARY,
+        newPasswordColor: COLOR_PRIMARY,
+        confirmNewPasswordColor: COLOR_PRIMARY
+      },
+      token: this.props.getUser.token
     };
   }
-  editProfilePost = async () => {
-    let token = props.getUser.token;
+  postPassword = async () => {
+    let { user, token } = this.state;
     try {
-      let user = { ...this.state.data };
-      let data = await Http.post("/profile/update/", user, token);
-      if (data == null || data.err) throw new Error();
+      let data = await Http.put("/profile/update/password", user, token);
+      console.log(data);
+      if (data.err) throw new Error();
       else {
-        this.props.editUser(user);
-        Navigation.push(this.props.componentId, {
-          component: {
-            id: "ProfileScreen",
-            name: "yeteneksenin.screens.ProfileScreen",
-            options: {
-              topBar: {
-                visible: false,
-                title: {
-                  text: "Yetenek Senin"
-                }
-              }
-            }
-          }
-        });
+        //POP UP CIKACAK
+        console.log(data);
+        Navigation.pop("ProfileScreen");
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err.message);
+    }
   };
-  InputChange = (input, inputName) => {
-    this.setState({
-      data: { ...this.state.data, [inputName]: input }
-    });
+
+  cancelPassword = () => {
+    //POP UP CIKACAK
+    Navigation.pop("ProfileScreen");
+  };
+
+  passwordHandler = (input, inputName, inputColor) => {
+    let { user, colors } = this.state;
+    let validate = validateRegex(passwordRegex, input);
+    if (validate) {
+      this.setState({
+        user: { ...user, [inputName]: input },
+        colors: { ...colors, [inputColor]: "green" }
+      });
+    } else this.setState({ colors: { ...colors, [inputColor]: "red" } });
+  };
+
+  verifyPassword = input => {
+    let { user, colors } = this.state;
+    if (input === user.newPassword) {
+      this.setState({
+        user: { ...user, confirmNewPassword: input },
+        colors: { ...colors, confirmNewPasswordColor: "green" }
+      });
+    } else
+      this.setState({ colors: { ...colors, confirmNewPasswordColor: "red" } });
   };
 
   render() {
+    let { colors } = this.state;
     return (
       <View style={styles.container}>
-        <Text>UPDATE PASSWORD</Text>
+        <View style={styles.inputRow}>
+          <Input
+            secureTextEntry={true}
+            placeholder="Eski Şifre"
+            underlineColorAndroid="transparent"
+            leftIcon={<Icon name="lock" size={24} color={COLOR_PRIMARY} />}
+            inputStyle={{ paddingLeft: 15, fontSize: 15 }}
+            inputContainerStyle={{
+              borderColor: colors.oldPasswordColor
+            }}
+            onChangeText={oldPassword =>
+              this.passwordHandler(
+                oldPassword,
+                "oldPassword",
+                "oldPasswordColor"
+              )
+            }
+          />
+        </View>
+        <View style={styles.inputRow}>
+          <Input
+            secureTextEntry={true}
+            placeholder="Yeni Şifre"
+            underlineColorAndroid="transparent"
+            leftIcon={<Icon name="lock" size={24} color={COLOR_PRIMARY} />}
+            inputStyle={{ paddingLeft: 15, fontSize: 15 }}
+            inputContainerStyle={{
+              borderColor: colors.newPasswordColor
+            }}
+            onChangeText={newPassword =>
+              this.passwordHandler(
+                newPassword,
+                "newPassword",
+                "newPasswordColor"
+              )
+            }
+          />
+        </View>
+        <View style={styles.inputRow}>
+          <Input
+            secureTextEntry={true}
+            placeholder="Şifre Onayla"
+            underlineColorAndroid="transparent"
+            leftIcon={<Icon name="lock" size={24} color={COLOR_PRIMARY} />}
+            inputStyle={{ paddingLeft: 15, fontSize: 15 }}
+            inputContainerStyle={{
+              borderColor: colors.confirmNewPasswordColor
+            }}
+            onChangeText={confirmNewPassword =>
+              this.verifyPassword(confirmNewPassword)
+            }
+          />
+        </View>
+        <View style={styles.buttons}>
+          <Button
+            buttonStyle={{ backgroundColor: "red" }}
+            onPress={() => this.cancelPassword()}
+            title="İptal"
+          />
+          <Button
+            buttonStyle={{ backgroundColor: COLOR_PRIMARY }}
+            onPress={() => this.postPassword()}
+            title="Kaydet"
+          />
+        </View>
       </View>
     );
   }
 }
-
-/*mapDispatchToProps = dispatch => {
-    return {
-      viewUser: userView => dispatch(viewUser(userView))
-    };
-  };*/
 
 mapStateToProps = state => {
   return {

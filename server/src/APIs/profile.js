@@ -66,7 +66,7 @@ router.get("/show", async (req, res) => {
   let validete = jwt.validateToken(token);
   try {
     if (validete) {
-      console.log("heyy")
+      console.log("heyy");
       let user = await models.UserModel.findOne({
         attributes: [
           "firstname",
@@ -164,7 +164,7 @@ router.put("/update/password", async (req, res) => {
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
     let user = await models.UserModel.findOne({
-      attributes: ["password"],
+      attributes: ["userID","password"],
       where: {
         userID: data.userID
       }
@@ -179,9 +179,9 @@ router.put("/update/password", async (req, res) => {
         password
       });
       res.json({ err: false });
-    }
-  } catch {
-    res.json({ err: true });
+    } else throw new Error();
+  } catch(err) {
+    res.json({ err: true,mess:err.message });
   }
 });
 

@@ -63,6 +63,7 @@ class UpdateInformationScreen extends Component {
 
   // YAPILACAK
   cancelProfilePost = () => {
+    //POP UP CIKACAK
     let { oldUser } = this.state;
     this.props.editUser(oldUser);
     Navigation.pop("ProfileScreen");
@@ -70,11 +71,7 @@ class UpdateInformationScreen extends Component {
 
   goUpdatePage = screenID => {
     let { user } = this.state;
-    console.log("updateki user", user);
-    console.log("update öncesi state", this.props.getUser);
     this.props.editUser(user);
-    console.log("update sonrası state", this.props.getUser);
-
     Navigation.push("ProfileScreen", {
       component: {
         id: screenID,
