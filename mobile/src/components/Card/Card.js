@@ -1,9 +1,10 @@
 import React, { PureComponent } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
 import Video from "react-native-video";
 import moment from "moment";
 import styles from "./styles";
 import Icon from "react-native-vector-icons/Ionicons";
+import Modal, { ModalContent, ModalTitle, ModalButton, ModalFooter, SlideAnimation } from 'react-native-modals';
 import MainText from "../MainText/MainText";
 import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
@@ -28,11 +29,18 @@ class Card extends PureComponent {
         subTalentName: this.props.item.tblSubTalent.subTalentName,
         isLike: this.props.item.tblStarVideos[0].isLike,
         isFollow: this.props.item.tblUser.tblFollowers[0].isFollow
-      }
+      },
+      visible: false
     };
   }
 
-  openComplaintMenu = () => {};
+  openComplaintMenu = () => {
+    this.setState({
+      visible: true
+    })
+
+
+  };
 
   toggleStar = async (videoID, isLike) => {
     let { token, userID, item } = this.state;
@@ -48,7 +56,7 @@ class Card extends PureComponent {
     }
   };
 
-  toggleCommentArea = () => {};
+  toggleCommentArea = () => { };
 
   toggleFollow = async (followerID, isFollow) => {
     let { token, userID, item } = this.state;
@@ -94,10 +102,56 @@ class Card extends PureComponent {
                 <TouchableOpacity onPress={() => this.openComplaintMenu()}>
                   <Icon name="md-alert" size={25} color="black" />
                 </TouchableOpacity>
+
+                <View style={styles.container}>
+                  {/* <Modal
+                    visible={this.state.visible}
+                    swipeDirection={['up', 'down']} // can be string or an array
+                    swipeThreshold={100} // default 100
+                    modalTitle={<ModalTitle title="Şikayet Bildirimi" />}
+                    onSwipeOut={(event) => {
+                      this.setState({ visible: false });
+                    }}
+                  > */}
+                  <Modal
+                    visible={this.state.visible}
+                    footer={
+                      <ModalFooter>
+                        <ModalButton
+                          text="Takibi Bırak"
+                          onPress={() => { }}
+                          style={styles.modalButton}
+                        />
+                        <ModalButton
+                          text="Şikayet et"
+                          onPress={() => { }}
+                          style={styles.modalButton}
+                        />
+                        <ModalButton
+                          text="Paylaş"
+                          onPress={() => { }}
+                          style={styles.modalButton}
+                        />
+                        <ModalButton
+                          text="Gönderi bildirimlerini aç"
+                          onPress={() => { }}
+                          style={styles.modalButton}
+                        />
+                      </ModalFooter>
+                    }
+                    onTouchOutside={() => {
+                      this.setState({ visible: false });
+                    }}
+                    modalAnimation={new SlideAnimation({
+                      slideFrom: 'bottom',
+                    })}
+                  >
+
+                  </Modal>
+                </View>
               </View>
             </View>
           </View>
-
           <Video
             source={{ uri: item.videoPath }}
             repeat={true}

@@ -11,6 +11,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 20
   },
+  modalButton:{
+    flex:1,
+    backgroundColor:"#9a8888"
+  },
 
   rowCardHeader: {
     marginTop: 10,
