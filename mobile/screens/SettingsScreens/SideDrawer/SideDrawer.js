@@ -2,15 +2,19 @@ import React, { Component } from "react";
 import { Text, View, Button } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthTabs } from "../../MainTabs";
-import Modal, { ModalFooter, ModalButton, ModalContent } from 'react-native-modals';
+import Modal, {
+  ModalFooter,
+  ModalButton,
+  ModalContent
+} from "react-native-modals";
 import styles from "./styles";
 import MainText from "../../../src/components/MainText/MainText";
 import { Navigation } from "react-native-navigation";
 export default class SideDrawer extends Component {
   state = {
     visiblePopup: false
-  }
-  goUpdate = (screenID) => {
+  };
+  goUpdate = screenID => {
     Navigation.mergeOptions("SideDrawer", {
       sideMenu: {
         right: {
@@ -39,14 +43,20 @@ export default class SideDrawer extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.containerMenu}>
-          <Button title="Bilgileri Güncelle" onPress={() => this.goUpdate("UpdateInformationScreen")} />
+          <Button
+            title="Bilgileri Güncelle"
+            onPress={() => this.goUpdate("UpdateInformationScreen")}
+          />
 
           <Button
             title="Şifre Değiştir"
             onPress={() => this.goUpdate("UpdatePasswordScreen")}
           />
 
-          <Button title="Ayarlarım" onPress={() => this.goUpdate("UpdateSettingsScreen")} />
+          <Button
+            title="Ayarlarım"
+            onPress={() => this.goUpdate("UpdateSettingsScreen")}
+          />
         </View>
         <View style={styles.containerButton}>
           <Modal
@@ -55,9 +65,9 @@ export default class SideDrawer extends Component {
               <ModalFooter>
                 <ModalButton
                   text="Hayır"
-                  onPress={
-                    () => { this.setState({ visiblePopup: false }) }
-                  }
+                  onPress={() => {
+                    this.setState({ visiblePopup: false });
+                  }}
                 />
                 <ModalButton
                   text="Evet"
@@ -77,17 +87,20 @@ export default class SideDrawer extends Component {
             <Button
               title="Çıkış Yap"
               onPress={() => {
-                 this.setState({
-                   visiblePopup:true
-                 }) 
-                 //side drawer'ında kapanması lazım not al bak.
-              }}>
-
-            </Button>
-
+                Navigation.mergeOptions("SideDrawer", {
+                  sideMenu: {
+                    right: {
+                      visible: false
+                    }
+                  }
+                });
+                this.setState({
+                  visiblePopup: true
+                });
+              }}
+            ></Button>
           </View>
         </View>
-
       </View>
     );
   }
