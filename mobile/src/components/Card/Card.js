@@ -4,7 +4,13 @@ import Video from "react-native-video";
 import moment from "moment";
 import styles from "./styles";
 import Icon from "react-native-vector-icons/Ionicons";
-import Modal, { ModalContent, ModalTitle, ModalButton, ModalFooter, SlideAnimation } from 'react-native-modals';
+import Modal, {
+  ModalContent,
+  ModalTitle,
+  ModalButton,
+  ModalFooter,
+  SlideAnimation
+} from "react-native-modals";
 import MainText from "../MainText/MainText";
 import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
@@ -37,9 +43,7 @@ class Card extends PureComponent {
   openComplaintMenu = () => {
     this.setState({
       visible: true
-    })
-
-
+    });
   };
 
   toggleStar = async (videoID, isLike) => {
@@ -56,7 +60,7 @@ class Card extends PureComponent {
     }
   };
 
-  toggleCommentArea = () => { };
+  toggleCommentArea = () => {};
 
   toggleFollow = async (followerID, isFollow) => {
     let { token, userID, item } = this.state;
@@ -119,22 +123,22 @@ class Card extends PureComponent {
                       <ModalFooter>
                         <ModalButton
                           text="Takibi Bırak"
-                          onPress={() => { }}
+                          //onPress={() => { }}
                           style={styles.modalButton}
                         />
                         <ModalButton
                           text="Şikayet et"
-                          onPress={() => { }}
+                          //onPress={() => { }}
                           style={styles.modalButton}
                         />
                         <ModalButton
                           text="Paylaş"
-                          onPress={() => { }}
+                          //onPress={() => { }}
                           style={styles.modalButton}
                         />
                         <ModalButton
                           text="Gönderi bildirimlerini aç"
-                          onPress={() => { }}
+                          //onPress={() => { }}
                           style={styles.modalButton}
                         />
                       </ModalFooter>
@@ -142,11 +146,15 @@ class Card extends PureComponent {
                     onTouchOutside={() => {
                       this.setState({ visible: false });
                     }}
-                    modalAnimation={new SlideAnimation({
-                      slideFrom: 'bottom',
-                    })}
+                    modalAnimation={
+                      new SlideAnimation({
+                        slideFrom: "bottom"
+                      })
+                    }
                   >
-
+                    <ModalContent>
+                      <Text>{item.username}</Text>
+                    </ModalContent>
                   </Modal>
                 </View>
               </View>
@@ -157,7 +165,11 @@ class Card extends PureComponent {
             repeat={true}
             onBuffer={this.onBuffer}
             style={styles.rowCardBody}
+            ref={ref => this.player = ref}
+            onBuffer={this._onBuffer}
             resizeMode="cover"
+            //poster="URL" yğklenirken bekleme ekranı
+            //posterResizeMode kullan
           />
 
           <View style={styles.rowCardFooter}>

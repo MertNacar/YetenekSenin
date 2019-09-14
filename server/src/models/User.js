@@ -38,6 +38,11 @@ const UserModel = sequelize.define(
       defaultValue: "u"
     },
 
+    isMentor: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+
     phone: Sequelize.STRING,
 
     aboutMe: Sequelize.STRING,

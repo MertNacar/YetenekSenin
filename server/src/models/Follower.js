@@ -14,6 +14,11 @@ const FollowerModel = sequelize.define(
     isFollow: {
       type: Sequelize.BOOLEAN,
       defaultValue: true
+    },
+
+    isBlock: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
   },
   {

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
   rowCardBody: {
     marginTop: 10,
-    aspectRatio: 2,
+    aspectRatio: 1.3,
     width: "100%"
   },
   rowCardFooter: {

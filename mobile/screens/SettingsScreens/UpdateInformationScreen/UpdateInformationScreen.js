@@ -6,6 +6,8 @@ import * as Http from "../../../utils/httpHelper";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import styles from "./styles";
 import MainText from "../../../src/components/MainText/MainText";
+import options from "./options";
+import ImagePicker from "react-native-image-picker";
 import {
   COLOR_PRIMARY,
   COLOR_BACKGROUND,
@@ -41,6 +43,23 @@ class UpdateInformationScreen extends Component {
   async componentDidAppear() {
     this.setState({ user: this.props.getUser });
   }
+
+  launchCamera = () => {
+    let { user } = this.state;
+    ImagePicker.launchCamera(options, response => {
+      // Same code as in above section!
+      console.warn("Response = ", response);
+      if (response.didCancel) {
+        //console.warn("User cancelled image picker");
+      } else if (response.error) {
+        //console.warn("ImagePicker Error: ", response.error);
+      } else {
+        this.setState({
+          user: { ...user, profilePhoto: response.uri }
+        });
+      }
+    });
+  };
 
   // YAPILACAK
   editProfilePost = async () => {
@@ -151,7 +170,7 @@ class UpdateInformationScreen extends Component {
                 size="large"
                 title="YS"
                 showEditButton
-                onPress={() => console.warn("Profile Photo Works!")}
+                onPress={() => this.launchCamera()}
               />
             </View>
 

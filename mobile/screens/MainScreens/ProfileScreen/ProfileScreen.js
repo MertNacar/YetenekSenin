@@ -60,8 +60,6 @@ class ProfileScreen extends Component {
             }}
             title="YS"
             size="large"
-            showEditButton
-            onPress={() => console.warn("Profile Photo Works!")}
           />
           <View style={styles.fullName}>
             <MainText>{user.firstname}</MainText>

@@ -86,6 +86,7 @@ export default class SideDrawer extends Component {
           <View style={styles.containerButton}>
             <Button
               title="Çıkış Yap"
+              color="red"
               onPress={() => {
                 Navigation.mergeOptions("SideDrawer", {
                   sideMenu: {

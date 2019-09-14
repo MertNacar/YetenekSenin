@@ -40,7 +40,8 @@ router.get("/", async (req, res) => {
                 model: models.FollowerModel,
                 attributes: ["isFollow"],
                 where: {
-                  userID: data.userID
+                  userID: data.userID,
+                  isBlock: 0
                 }
               }
             ]
