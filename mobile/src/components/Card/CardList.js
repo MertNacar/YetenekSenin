@@ -39,14 +39,14 @@ class CardList extends Component {
     try {
       let { items, page, token, userID } = this.state;
 
-      let data = await Http.get(`/home/?page=${page}&userID=${userID}`, token);
+      let data = await Http.get(`/home/competitions/videos?competitionID=1&page=${page}&userID=1`, token);
 
       if (data.err === true) throw new Error("Hata");
       else {
         this.setState({
-          items: [...items, ...data.gelen],
+          items: [...items, ...data.videos],
           loading: false,
-          itemLength: data.gelenLen
+          itemLength: data.videosLen
         });
       }
     } catch {

@@ -4,7 +4,6 @@ const UserModel = require("./User");
 
 const FollowerModel = sequelize.define(
   "tblFollower",
-
   {
     followID: {
       type: Sequelize.INTEGER,

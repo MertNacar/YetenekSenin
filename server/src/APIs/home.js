@@ -74,19 +74,11 @@ router.get("/competitions/videos", async (req, res) => {
           {
             required: true,
             model: models.UserModel,
-            attributes: ["username"],
-            include: [
-              {
-                required: true,
-                model: models.FollowerModel,
-                attributes: ["isFollow"],
-                as: "user"
-              }
-            ]
+            attributes: ["username"],          
           }
         ]
       });
-      res.json({ err: false, videos });
+      res.json({ err: false, videos, videosLen: videos.length });
     } else {
       throw new Error();
     }
@@ -134,23 +126,6 @@ router.post("/toggleStar", async (req, res) => {
     }
   } catch {
     res.json({ err: true });
-  }
-});
-
-router.post("/deneme", async (req, res) => {
-  try {
-
-    let star = await models.UserCompetitionModel.findAll({
-      include: [{
-
-        model: models.VideoModel
-      }
-
-      ]
-    });
-    res.json({ sss: star })
-  } catch (err) {
-    res.json({ err: true, mess: err.message });
   }
 });
 

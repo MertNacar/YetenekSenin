@@ -15,7 +15,8 @@ import {
   UpdateAboutMeScreen,
   UpdateOtherScreen,
   UpdateTalentScreen,
-  UpdateGenderScreen
+  UpdateGenderScreen,
+  VideosScreen
 } from "./screens/AllScreens";
 import { InitTab } from "./screens/MainTabs";
 import { Navigation } from "react-native-navigation";
@@ -75,6 +76,13 @@ Navigation.registerComponentWithRedux(
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.ViewProfileScreen",
   () => ViewProfileScreen,
+  Provider,
+  store
+);
+
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.VideosScreen",
+  () => VideosScreen,
   Provider,
   store
 );

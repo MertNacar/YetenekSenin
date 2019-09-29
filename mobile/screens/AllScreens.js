@@ -15,6 +15,7 @@ import UpdateTalentScreen from "./SettingsScreens/UpdateInformationScreen/Update
 import UpdateGenderScreen from "./SettingsScreens/UpdateInformationScreen/UpdateGenderScreen/UpdateGenderScreen";
 import UpdatePasswordScreen from "./SettingsScreens/UpdatePasswordScreen/UpdatePasswordScreen";
 import UpdateSettingsScreen from "./SettingsScreens/UpdateSettingsScreen/UpdateSettingsScreen";
+import VideosScreen from "./MainScreens/VideosScreen/VideosScreen";
 
 export {
   HomeScreen,
@@ -33,5 +34,6 @@ export {
   UpdateAboutMeScreen,
   UpdateOtherScreen,
   UpdateTalentScreen,
-  UpdateGenderScreen
+  UpdateGenderScreen,
+  VideosScreen
 };

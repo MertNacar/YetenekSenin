@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Text, Button, TouchableOpacity,Image } from "react-native";
+import { View, Text, Button, TouchableOpacity, Image } from "react-native";
 import Video from "react-native-video";
 import moment from "moment";
 import styles from "./styles";
@@ -15,7 +15,7 @@ import MainText from "../MainText/MainText";
 import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
 import * as Http from "../../../utils/httpHelper";
-
+import { Navigation } from "react-native-navigation";
 class CompetitionCard extends PureComponent {
   constructor(props) {
     super(props);
@@ -27,7 +27,22 @@ class CompetitionCard extends PureComponent {
     };
   }
 
-
+  goCompetition = () => {
+    Navigation.push("HomeScreen", {
+      component: {
+        name: "yeteneksenin.screens.VideosScreen",
+        options: {
+          bottomTab: {
+            visible: false
+          },
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        }
+      }
+    });
+  }
   render() {
     let { item, userID } = this.state;
     let starIcon = item.tblUserCompetitions[0].voteVideoID !== null ? "md-star" : "md-star-outline";
@@ -35,15 +50,15 @@ class CompetitionCard extends PureComponent {
     console.warn("data", item);
     return (
       <Provider store={store}>
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity onPress={() => this.goCompetition()} style={styles.container}>
           <View style={styles.logo}>
-          <Image
-          style={{width: 50, height: 50}}
-          source={{uri: 'https://facebook.github.io/react-native/img/tiny_logo.png'}}
-        />
-        <Text>
-          finale {time}
-        </Text>
+            <Image
+              style={{ width: 50, height: 50 }}
+              source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }}
+            />
+            <Text>
+              finale {time}
+            </Text>
           </View>
           <View style={styles.banner}>
             <View style={styles.description}>

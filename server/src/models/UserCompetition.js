@@ -54,7 +54,6 @@ UserCompetitionModel.belongsTo(CompetitionModel, {
   },
 });
 
-
 VideoModel.hasMany(UserCompetitionModel, {
   foreignKey: "uploadVideoID"
 });
