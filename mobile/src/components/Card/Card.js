@@ -31,8 +31,6 @@ class Card extends PureComponent {
         videoStarCount: this.props.item.videoStarCount,
         videoWatchCount: this.props.item.videoWatchCount,
         createdAt: this.props.item.createdAt,
-        talentName: this.props.item.tblTalent.talentName,
-        subTalentName: this.props.item.tblSubTalent.subTalentName,
         isLike: this.props.item.tblStarVideos[0].isLike,
         isFollow: this.props.item.tblUser.tblFollowers[0].isFollow
       },
@@ -167,7 +165,7 @@ class Card extends PureComponent {
             style={styles.rowCardBody}
             ref={ref => this.player = ref}
             onBuffer={this._onBuffer}
-            resizeMode="cover"
+            resizeMode="stretch"
             //poster="URL" yğklenirken bekleme ekranı
             //posterResizeMode kullan
           />

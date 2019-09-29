@@ -5,12 +5,12 @@ var router = express.Router();
 
 //video ekleme
 router.post("/add", async (req, res) => {
+  try {
   let data = req.body.data;
   let token = req.headers.authorization.split(" ")[1];
   let validate = jwt.validateToken(token);
-  try {
     if (validate) {
-      let d = await models.VideoModel.create(data);
+      await models.VideoModel.create(data);
       res.json({ err: false });
     }
   } catch (err) {

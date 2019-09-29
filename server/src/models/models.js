@@ -3,9 +3,10 @@ const CommentModel = require("./Comment");
 const UserModel = require("./User");
 const VideoModel = require("./Video");
 const FollowerModel = require("./Follower");
-const SubTalentModel = require("./SubTalent");
 const StarVideoModel = require("./StarVideo");
 const CityModel = require("./City");
+const CompetitionModel = require("./Competition");
+const UserCompetitionModel = require("./UserCompetition");
 
 module.exports = {
   TalentModel,
@@ -13,7 +14,8 @@ module.exports = {
   UserModel,
   VideoModel,
   FollowerModel,
-  SubTalentModel,
   StarVideoModel,
-  CityModel
+  CityModel,
+  CompetitionModel,
+  UserCompetitionModel
 };

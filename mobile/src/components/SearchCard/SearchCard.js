@@ -13,8 +13,8 @@ export default class SearchCard extends Component {
       <TouchableOpacity onPress={this.props.onPress}>
         <ListItem
           title={item.username}
-          subtitleStyle={{ color: COLOR_PRIMARY }}
-          subtitle={item.tblSubTalent.subTalentName}
+          /*subtitleStyle={{ color: COLOR_PRIMARY }}
+          subtitle={item.tblSubTalent.subTalentName}*/
           leftAvatar={{ source: { uri: item.profilePhoto } }}
           rightIcon={<Icon name="futbol" color={COLOR_PRIMARY} size={22} />}
         />

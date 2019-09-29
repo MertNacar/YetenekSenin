@@ -35,11 +35,31 @@ const FollowerModel = sequelize.define(
 );
 
 UserModel.hasMany(FollowerModel, {
-  foreignKey: "userID"
+  foreignKey: {
+    name: "userID",
+    allowNull: false
+  }
+});
+
+FollowerModel.belongsTo(UserModel, {
+  foreignKey: {
+    name: "userID",
+    allowNull: false
+  }
 });
 
 UserModel.hasMany(FollowerModel, {
-  foreignKey: "followerID"
+  foreignKey: {
+    name: "followerID",
+    allowNull: false
+  }
+});
+
+FollowerModel.belongsTo(UserModel, {
+  foreignKey: {
+    name: "followerID",
+    allowNull: false
+  }
 });
 
 module.exports = FollowerModel;

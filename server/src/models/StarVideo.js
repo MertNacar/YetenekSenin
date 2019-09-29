@@ -31,11 +31,17 @@ const StarVideoModel = sequelize.define(
 );
 
 UserModel.hasMany(StarVideoModel, {
-  foreignKey: "userID"
+  foreignKey: {
+    name: "userID",
+    allowNull: false
+  }
 });
 
 VideoModel.hasMany(StarVideoModel, {
-  foreignKey: "videoID"
+  foreignKey: {
+    name: "videoID",
+    allowNull: false
+  }
 });
 
 module.exports = StarVideoModel;

@@ -14,13 +14,20 @@ const styles = StyleSheet.create({
     width: "75%"
   },
 
+  inputs: {
+    flex:25,
+    justifyContent:"space-evenly",
+    alignItems: "center"
+  },
+  errMessage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
   flex1: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center"
-  },
-  backgroundImage: {
-    flex: 1
   },
 });
 

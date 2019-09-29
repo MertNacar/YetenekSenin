@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     user.password = hash;
     await models.UserModel.create(user);
     let data = await models.UserModel.findOne({
-      attributes: ["userID","fCity","isMentor"],
+      attributes: ["userID"],
       where: {
         username: user.username
       }
@@ -53,8 +53,8 @@ router.post("/validate/username", async (req, res) => {
 
 //validate for inputs
 router.post("/validate/email", async (req, res) => {
-  let email = req.body.data;
   try {
+  let email = req.body.data;
     let data = await models.UserModel.findOne({
       attributes: ["email"],
       where: {
@@ -69,6 +69,24 @@ router.post("/validate/email", async (req, res) => {
   }
 });
 
+router.post("/validate/phone", async (req, res) => {
+  try {
+  let phone = req.body.data;
+    let data = await models.UserModel.findOne({
+      attributes: ["phone"],
+      where: {
+        phone
+      }
+    });
+
+    if (data === null) res.json({ err: false });
+    else res.json({ err: true });
+  } catch {
+    res.json({ err: true });
+  }
+});
+
+/*
 router.get("/talent", async (req, res) => {
   try {
     let data = await models.TalentModel.findAll({
@@ -83,8 +101,8 @@ router.get("/talent", async (req, res) => {
 });
 
 router.post("/subTalent", async (req, res) => {
-  let talentID = req.body.data;
   try {
+  let talentID = req.body.data;
     let data = await models.SubTalentModel.findAll({
       attributes: ["subTalentID", "subTalentName"],
       include: [
@@ -103,6 +121,6 @@ router.post("/subTalent", async (req, res) => {
   } catch {
     res.json({ err: true });
   }
-});
+});*/
 
 module.exports = router;

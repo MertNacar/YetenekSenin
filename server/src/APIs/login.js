@@ -28,28 +28,17 @@ router.post("/immediately", async (req, res) => {
           "phone",
           "aboutMe",
           "gender",
-          "isMentor",
           "birthday",
+          "allStars",
+          "allVotes",
           "profilePhoto",
           "socialMedia",
-          "fTalentID",
-          "fSubTalentID",
           "fCity"
         ],
         where: {
           username
         },
         include: [
-          {
-            required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
-          },
-          {
-            required: true,
-            model: models.SubTalentModel,
-            attributes: ["subTalentName"]
-          },
           {
             model: models.CityModel,
             attributes: ["city"]
@@ -59,11 +48,7 @@ router.post("/immediately", async (req, res) => {
       if (data === null) throw new Error();
       else {
         let user = data.dataValues;
-        user.talentName = data.tblTalent.talentName;
-        user.subTalentName = data.tblSubTalent.subTalentName;
         user.city = data.tblCity ? data.tblCity.city : "";
-        delete user.tblTalent;
-        delete user.tblSubTalent;
         delete user.tblCity;
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
@@ -90,28 +75,17 @@ router.post("/", async (req, res) => {
         "phone",
         "aboutMe",
         "gender",
-        "isMentor",
         "birthday",
+        "allStars",
+        "allVotes",
         "profilePhoto",
         "socialMedia",
-        "fTalentID",
-        "fSubTalentID",
         "fCity"
       ],
       where: {
         username
       },
       include: [
-        {
-          required: true,
-          model: models.TalentModel,
-          attributes: ["talentName"]
-        },
-        {
-          required: true,
-          model: models.SubTalentModel,
-          attributes: ["subTalentName"]
-        },
         {
           model: models.CityModel,
           attributes: ["city"]
@@ -124,14 +98,10 @@ router.post("/", async (req, res) => {
       if (confirm) {
         let token = jwt.createToken(data.username);
         let user = data.dataValues;
-        user.talentName = data.tblTalent.talentName;
-        user.subTalentName = data.tblSubTalent.subTalentName;
         user.city = data.tblCity ? data.tblCity.city : "";
         user.token = token;
         user.loginDate = Date(Date.now()).toString();
         delete user.password;
-        delete user.tblTalent;
-        delete user.tblSubTalent;
         delete user.tblCity;
         res.json({ err: false, user });
       } else throw new Error();

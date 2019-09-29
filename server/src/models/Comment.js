@@ -17,7 +17,10 @@ const CommentModel = sequelize.define(
       allowNull: false
     },
 
-    commentLikeCount: Sequelize.INTEGER
+    commentLikeCount: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    }
   },
   {
     freezeTableName: true
@@ -25,19 +28,31 @@ const CommentModel = sequelize.define(
 );
 
 UserModel.hasMany(CommentModel, {
-  foreignKey: "fUserID"
+  foreignKey: {
+    name: "fUserID",
+    allowNull: false
+  }
 });
 
 CommentModel.belongsTo(UserModel, {
-  foreignKey: "fUserID"
+  foreignKey: {
+    name: "fUserID",
+    allowNull: false
+  }
 });
 
 VideoModel.hasMany(CommentModel, {
-  foreignKey: "fVideoID"
+  foreignKey: {
+    name: "fVideoID",
+    allowNull: false
+  }
 });
 
 CommentModel.belongsTo(VideoModel, {
-  foreignKey: "fVideoID"
+  foreignKey: {
+    name: "fVideoID",
+    allowNull: false
+  }
 });
 
 module.exports = CommentModel;

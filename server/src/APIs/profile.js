@@ -12,11 +12,12 @@ var router = express.Router();
 
 //FRONTEND -- TODO --
 //get profile's info
+//talent kısmı bakkkkkkkkkk
 router.get("/videos", async (req, res) => {
+  try {
   let username = req.query.username;
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
-  try {
     if (validete) {
       let videos = await models.VideoModel.findAll({
         attributes: [
@@ -32,39 +33,33 @@ router.get("/videos", async (req, res) => {
           {
             required: true,
             model: models.UserModel,
-            attributes: ["allStars"],
+            attributes: ["allStars","allVotes"],
             where: {
               username
-            },
-            include: [
-              {
+            }
+          },
+            {
                 required: true,
                 model: models.TalentModel,
                 attributes: ["talentName"]
-              },
-              {
-                required: true,
-                model: models.SubTalentModel,
-                attributes: ["subTalentName"]
-              }
-            ]
-          }
-        ]
+            }     
+          ]
       });
+      console.log(videos)
       res.json({ err: false, videos });
     } else {
       throw new Error();
     }
-  } catch {
-    res.json({ err: true });
+  } catch (err){
+    res.json({ err: true,errrr:err.message });
   }
 });
 
 router.get("/show", async (req, res) => {
+  try {
   let userID = req.query.userID;
   let token = req.headers.authorization.split(" ")[1];
   let validete = jwt.validateToken(token);
-  try {
     if (validete) {
       console.log("heyy");
       let user = await models.UserModel.findOne({
@@ -73,6 +68,7 @@ router.get("/show", async (req, res) => {
           "surname",
           "username",
           "email",
+          "gender",
           "phone",
           "aboutMe",
           "birthday",
@@ -82,17 +78,7 @@ router.get("/show", async (req, res) => {
         where: {
           userID
         },
-        include: [
-          {
-            required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
-          },
-          {
-            required: true,
-            model: models.SubTalentModel,
-            attributes: ["subTalentName"]
-          },
+        include: [         
           {
             model: models.VideoModel,
             attributes: [
@@ -147,8 +133,6 @@ router.put("/update/all", async (req, res) => {
         gender: data.gender,
         profilePhoto: data.profilePhoto,
         socialMedia: data.socialMedia,
-        fSubTalentID: data.fSubTalentID,
-        fTalentID: data.fTalentID
       });
       res.json({ err: false });
     }

@@ -1,81 +1,65 @@
 import React, { Component } from "react";
-import { View, Platform } from "react-native";
-import HeadingText from "../../../src/components/HeadingText/headingText";
+import { View, Platform, Picker } from "react-native";
+import * as Http from "../../../utils/httpHelper";
 import MainText from "../../../src/components/MainText/MainText";
 import styles from "./styles";
 import CustomButton from "../../../src/components/CustomButton/CustomButton";
 import { connect } from "react-redux";
 import { addUser } from "../../../src/store/user/userActionCreator";
-import { nameRegex, validateRegex } from "../../../RegExp/regex";
-import Icon from "react-native-vector-icons/Ionicons";
-import AweIcon from "react-native-vector-icons/FontAwesome5";
-import { Input, Button } from "react-native-elements";
-import { Navigation } from "react-native-navigation";
 import {
-  COLOR_PRIMARY,
-  COLOR_PINK,
-  COLOR_BACKGROUND
-} from "../../../src/styles/const";
+  usernameRegex,
+  phoneRegex,
+  validateRegex
+} from "../../../RegExp/regex";
+import { COLOR_PRIMARY } from "../../../src/styles/const";
+import Icon from "react-native-vector-icons/Ionicons";
+import { Input } from "react-native-elements";
+import { Navigation } from "react-native-navigation";
 
 class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {
-        firstname: "",
-        surname: "",
-        gender: "u"
+        username: "",
+        phone: "",
       },
       colors: {
-        firstnameColor: COLOR_PRIMARY,
-        surnameColor: COLOR_PRIMARY,
-        iconColorMale: COLOR_PRIMARY,
-        backColorMale: COLOR_BACKGROUND,
-        iconColorFemale: COLOR_PINK,
-        backColorFemale: COLOR_BACKGROUND
+        usernameColor: COLOR_PRIMARY,
+        phoneColor: COLOR_PRIMARY
       }
     };
   }
 
-  InputHandler = (typeRegex, input, inputName, inputColor) => {
-    let { data, colors } = this.state;
+  InputHandlerUsernamePhone = async (
+    typeRegex,
+    input,
+    inputName,
+    inputColor
+  ) => {
+    let { colors, data } = this.state;
     let validate = validateRegex(typeRegex, input);
-    if (validate) {
-      this.setState({
-        data: { ...data, [inputName]: input },
-        colors: { ...colors, [inputColor]: "green" }
-      });
-    } else this.setState({ colors: { ...colors, [inputColor]: "red" } });
-  };
-  // true geldiğinde erkek false ise kadın
-  switchGender = genderType => {
-    let { data, colors } = this.state;
-    if (genderType == "m") {
-      this.setState({
-        data: { ...data, gender: "m" },
-        colors: {
-          ...colors,
-          backColorMale: COLOR_PRIMARY,
-          iconColorMale: COLOR_BACKGROUND,
-          backColorFemale: COLOR_BACKGROUND,
-          iconColorFemale: COLOR_PINK
-        }
-      });
-    } else {
-      this.setState({
-        data: { ...data, gender: "f" },
-        colors: {
-          ...colors,
-          backColorMale: COLOR_BACKGROUND,
-          iconColorMale: COLOR_PRIMARY,
-          backColorFemale: COLOR_PINK,
-          iconColorFemale: COLOR_BACKGROUND
-        }
-      });
+    try {
+      if (validate) {
+        let confirm = await Http.postWithoutToken(
+          `/signup/validate/${inputName}`,
+          input
+        );
+        if (!confirm.err) {
+          this.setState({
+            data: { ...data, [inputName]: input },
+            colors: { ...colors, [inputColor]: "green" }
+          });
+        } else throw new Error();
+      } else throw new Error();
+    } catch {
+      this.setState({ colors: { ...colors, [inputColor]: "red" } });
     }
   };
+
   continue = () => {
-    let user = { ...this.props.getUser, ...this.state.data };
+    let { data } = this.state;
+    let user = { ...this.props.getUser, ...data };
     this.props.addUser(user);
     Navigation.push(this.props.componentId, {
       component: {
@@ -94,78 +78,54 @@ class SignUpScreen extends Component {
   };
 
   render() {
-    let icon = Platform.OS === "android" ? "md-contact" : "ios-contact";
-    let { colors } = this.state;
-    let validate =
-      colors.firstnameColor === "green" && colors.surnameColor === "green";
+    let { colors, data } = this.state;
+    let iconUser = Platform.OS === "android" ? "md-contact" : "ios-contact";
+    let iconPhone = Platform.OS === "android" ? "md-phone" : "ios-phone";
+    let isClickable =
+      colors.usernameColor === "green" &&
+      colors.phoneColor === "green";
 
-    let isClickable = validate ? true : false;
-    let opacity = validate ? 1.0 : 0.2;
+    let opacity = isClickable ? 1.0 : 0.2;
     return (
       <View style={styles.containerLogin}>
-        <View style={styles.flex2}>
-          <MainText>
-            <HeadingText>Kayıt Ol</HeadingText>
-          </MainText>
-        </View>
-
         <View style={styles.SignUpform}>
           <Input
             inputContainerStyle={{
-              borderColor: colors.firstnameColor
+              borderColor: colors.usernameColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
-            leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
+            leftIcon={<Icon name={iconUser} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="İsim"
-            onChangeText={firstname =>
-              this.InputHandler(
-                nameRegex,
-                firstname,
-                "firstname",
-                "firstnameColor"
+            placeholder="Kullanıcı Adı"
+            onChangeText={username =>
+              this.InputHandlerUsernamePhone(
+                usernameRegex,
+                username,
+                "username",
+                "usernameColor"
               )
             }
           />
+          <MainText>* En az 8 karakter içeren bir değer giriniz.</MainText>
           <Input
             inputContainerStyle={{
-              borderColor: colors.surnameColor
+              borderColor: colors.phoneColor
             }}
             inputStyle={{ paddingLeft: 20, fontSize: 16 }}
-            leftIcon={<Icon name={icon} size={24} color={COLOR_PRIMARY} />}
+            leftIcon={<Icon name={iconPhone} size={24} color={COLOR_PRIMARY} />}
             underlineColorAndroid="transparent"
-            placeholder="Soyisim"
-            onChangeText={surname =>
-              this.InputHandler(nameRegex, surname, "surname", "surnameColor")
+            placeholder="+90 (555) 555 55 55"
+            onChangeText={phone =>
+              this.InputHandlerUsernamePhone(
+                phoneRegex,
+                phone,
+                "phone",
+                "phoneColor"
+              )
             }
           />
         </View>
-        <View style={styles.buttons}>
-          <Button
-            onPress={() => this.switchGender("m")}
-            buttonStyle={{
-              borderWidth: 1,
-              borderColor: colors.iconColorMale,
-              backgroundColor: colors.backColorMale
-            }}
-            icon={
-              <AweIcon name="mars" color={colors.iconColorMale} size={26} />
-            }
-          />
-
-          <Button
-            onPress={() => this.switchGender("f")}
-            buttonStyle={{
-              borderWidth: 1,
-              borderColor: colors.iconColorFemale,
-              backgroundColor: colors.backColorFemale
-            }}
-            icon={
-              <AweIcon name="venus" color={colors.iconColorFemale} size={27} />
-            }
-          />
-        </View>
-        <View style={styles.flex2}>
+        <View style={styles.flex1}>
           <CustomButton
             style={{ opacity }}
             disabled={!isClickable}

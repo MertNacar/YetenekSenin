@@ -1,7 +1,5 @@
 const sequelize = require("./index");
 const Sequelize = require("sequelize");
-const SubTalentModel = require("./SubTalent");
-const TalentModel = require("./Talent");
 const CityModel = require("./City");
 
 const UserModel = sequelize.define(
@@ -13,15 +11,9 @@ const UserModel = sequelize.define(
       autoIncrement: true
     },
 
-    firstname: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
+    firstname: Sequelize.STRING,
 
-    surname: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
+    surname: Sequelize.STRING,
 
     username: {
       type: Sequelize.STRING,
@@ -38,41 +30,36 @@ const UserModel = sequelize.define(
       defaultValue: "u"
     },
 
-    isMentor: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false
+    allStars: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
     },
 
-    phone: Sequelize.STRING,
+    allVotes: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    },
+
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
 
     aboutMe: Sequelize.STRING,
 
-    birthday: {
-      type: Sequelize.DATE,
-      allowNull: false
-    },
+    birthday: Sequelize.DATE,
+
 
     profilePhoto: Sequelize.STRING,
 
     socialMedia: Sequelize.STRING,
 
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false
-    }
+    email: Sequelize.STRING,
   },
   {
     freezeTableName: true
   }
 );
-
-SubTalentModel.hasMany(UserModel, {
-  foreignKey: "fSubTalentID"
-});
-
-UserModel.belongsTo(SubTalentModel, {
-  foreignKey: "fSubTalentID"
-});
 
 CityModel.hasMany(UserModel, {
   foreignKey: "fCity"
@@ -80,14 +67,6 @@ CityModel.hasMany(UserModel, {
 
 UserModel.belongsTo(CityModel, {
   foreignKey: "fCity"
-});
-
-TalentModel.hasMany(UserModel, {
-  foreignKey: "fTalentID"
-});
-
-UserModel.belongsTo(TalentModel, {
-  foreignKey: "fTalentID"
 });
 
 module.exports = UserModel;
