@@ -53,13 +53,15 @@ UserCompetitionModel.belongsTo(CompetitionModel, {
     allowNull: false
   },
 });
-VideoModel.hasOne(UserCompetitionModel, {
+
+
+VideoModel.hasMany(UserCompetitionModel, {
   foreignKey: "uploadVideoID"
 });
 
 UserCompetitionModel.belongsTo(VideoModel,{
 foreignKey: "uploadVideoID"
-})
+});
 
 VideoModel.hasMany(UserCompetitionModel, {
 foreignKey: "voteVideoID"

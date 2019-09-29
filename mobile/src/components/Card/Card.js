@@ -24,15 +24,15 @@ class Card extends PureComponent {
       token: this.props.getUser.token,
       item: {
         username: this.props.item.tblUser.username,
-        videoID: this.props.item.videoID,
-        videoTitle: this.props.item.videoTitle,
-        videoDescription: this.props.item.videoDescription,
-        videoPath: this.props.item.videoPath,
-        videoStarCount: this.props.item.videoStarCount,
-        videoWatchCount: this.props.item.videoWatchCount,
-        createdAt: this.props.item.createdAt,
-        isLike: this.props.item.tblStarVideos[0].isLike,
-        isFollow: this.props.item.tblUser.tblFollowers[0].isFollow
+        voteVideoID: this.props.item.voteVideoID,
+        videoID: this.props.item.tblVideo.videoID,
+        videoTitle: this.props.item.tblVideo.videoTitle,
+        videoDescription: this.props.item.tblVideo.videoDescription,
+        videoPath: this.props.item.tblVideo.videoPath,
+        videoStarCount: this.props.item.tblVideo.videoStarCount,
+        videoWatchCount: this.props.item.tblVideo.videoWatchCount,
+        createdAt: this.props.item.tblVideo.createdAt,
+        isLike: this.props.item.tblVideo.tblStarVideos[0].isLike
       },
       visible: false
     };

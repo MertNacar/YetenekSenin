@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import CardList from "../../../src/components/Card/CardList";
+import CompetitionCardList from "../../../src/components/CompetitionCard/CompetitionCardList";
 import { connect } from "react-redux";
 
 class HomeScreen extends Component {
   render() {
-    return <CardList />;
+    return <CompetitionCardList />;
   }
 }
 

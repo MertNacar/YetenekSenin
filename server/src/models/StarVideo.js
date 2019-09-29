@@ -37,6 +37,13 @@ UserModel.hasMany(StarVideoModel, {
   }
 });
 
+StarVideoModel.belongsTo(UserModel, {
+  foreignKey: {
+    name: "userID",
+    allowNull: false
+  }
+});
+
 VideoModel.hasMany(StarVideoModel, {
   foreignKey: {
     name: "videoID",
@@ -44,4 +51,10 @@ VideoModel.hasMany(StarVideoModel, {
   }
 });
 
+StarVideoModel.belongsTo(VideoModel, {
+  foreignKey: {
+    name: "videoID",
+    allowNull: false
+  }
+});
 module.exports = StarVideoModel;

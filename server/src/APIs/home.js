@@ -5,25 +5,31 @@ var router = express.Router();
 
 router.get("/competitions", async (req, res) => {
   try {
+    let userID = req.query.userID
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
     if (validate) {
       let competitions = await models.CompetitionModel.findAll({
-        attributes: ["competitionTitle", "competitionDescription", "competitionVoteCount", "competitionWatchCount", "competitionFinishDate"],
+        attributes: ["competitionTitle", "competitionDescription", "competitionFinishDate"],
         where: { competitionIsFinish: 0 },
         include: [
           {
             model: models.TalentModel,
             attributes: ["talentName"],
           },
+          {
+            model: models.UserCompetitionModel,
+            attributes: ["voteVideoID"],
+            where: { userID }
+          }
         ]
       });
       res.json({ err: false, competitions });
     } else {
       throw new Error();
     }
-  } catch {
-    res.json({ err: true });
+  } catch (err) {
+    res.json({ err: true, errreS: err.message });
   }
 });
 
@@ -33,12 +39,14 @@ router.get("/competitions/videos", async (req, res) => {
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
     if (validate) {
-      let competitions = await models.UserCompetitionModel.findAll({
+      let videos = await models.UserCompetitionModel.findAll({
         attributes: ["voteVideoID"],
         where: {
           competitionID: data.competitionID,
           uploadVideoID: { [Op.not]: null }
         },
+        offset: 2 * data.page,
+        limit: 2,
         include: [
           {
             required: true,
@@ -52,8 +60,6 @@ router.get("/competitions/videos", async (req, res) => {
               "videoStarCount",
               "createdAt"
             ],
-            offset: 3 * data.page,
-            limit: 3,
             include: [
               {
                 required: true,
@@ -62,22 +68,30 @@ router.get("/competitions/videos", async (req, res) => {
                 where: {
                   userID: data.userID
                 }
-              },            
+              },
             ]
           },
           {
             required: true,
             model: models.UserModel,
-            attributes: ["username"],        
+            attributes: ["username"],
+            include: [
+              {
+                required: true,
+                model: models.FollowerModel,
+                attributes: ["isFollow"],
+                as: "user"
+              }
+            ]
           }
         ]
       });
-      res.json({ err: false, competitions });
+      res.json({ err: false, videos });
     } else {
       throw new Error();
     }
-  } catch(err) {
-    res.json({ err: true,mes:err.message });
+  } catch (err) {
+    res.json({ err: true, mes: err.message });
   }
 });
 
@@ -125,18 +139,18 @@ router.post("/toggleStar", async (req, res) => {
 
 router.post("/deneme", async (req, res) => {
   try {
-    
-      let star = await models.FollowerModel.findAll({
-        include:[{
-     
-          model: models.UserModel
-        }
 
-        ]
-      });
-        res.json({sss: star})
-  } catch (err){
-    res.json({ err: true,mess:err.message });
+    let star = await models.UserCompetitionModel.findAll({
+      include: [{
+
+        model: models.VideoModel
+      }
+
+      ]
+    });
+    res.json({ sss: star })
+  } catch (err) {
+    res.json({ err: true, mess: err.message });
   }
 });
 
@@ -217,7 +231,7 @@ module.exports = router;
                   userID: data.userID
                 }
               },
-              
+
             ]
           },
           {
@@ -291,7 +305,7 @@ module.exports = router;
                 }
               }
             ]
-          }        
+          }
         ]
       });
       res.json({ err: false, gelen, gelenLen: gelen.length });
