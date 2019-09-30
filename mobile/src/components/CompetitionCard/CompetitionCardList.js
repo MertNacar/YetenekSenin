@@ -44,23 +44,22 @@ class CompetitionCardList extends Component {
     let { loading, items } = this.state;
     if (loading) {
       return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
         <Provider store={store}>
-          <View style={styles.container}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
+          <FlatList
+            data={items}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => <CompetitionCard item={item} />}
+            showsVerticalScrollIndicator={false}
+          />
         </Provider>
       );
     }
-    return (
-      <Provider store={store}>
-        <FlatList
-          data={items}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <CompetitionCard item={item} />}
-          showsVerticalScrollIndicator={false}
-        />
-      </Provider>
-    );
   }
 }
 

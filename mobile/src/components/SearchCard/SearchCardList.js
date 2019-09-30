@@ -5,38 +5,28 @@ import * as Http from "../../../utils/httpHelper";
 import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
 import { Navigation } from "react-native-navigation";
-import { viewUser } from "../../store/userView/userViewActionCreator";
 SearchCardList = props => {
-  goProfile = async userID => {
+  goProfile = userID => {
     let token = props.getUser.token;
-    console.log(userID)
-    try {
-      let data = await Http.get(`/profile/show?userID=${userID}`, token);
-      if (data.err) throw new Error();
-      else {
-        props.viewUser(data.user);
-        Navigation.push("SearchScreen", {
-          component: {
-            name: "yeteneksenin.screens.ViewProfileScreen",
-            options: {
-              bottomTab: {
-                visible: false
-              },
-              topBar: {
-                visible: false,
-                drawBehind: true
-              }
-            }
+    Navigation.push("SearchScreen", {
+      component: {
+        name: "yeteneksenin.screens.ViewProfileScreen",
+        passProps: {
+          userID,
+          token
+        },
+        options: {
+          bottomTab: {
+            visible: false
+          },
+          topBar: {
+            visible: false,
+            drawBehind: true
           }
-        });
+        }
       }
-    } catch (err) {
-      
-      console.log(err.message);
-      console.warn(err.message);
-    }
-  };
-
+    });
+  }
   return (
     <Provider store={store}>
       <FlatList
@@ -52,13 +42,6 @@ SearchCardList = props => {
     </Provider>
   );
 };
-
-mapDispatchToProps = dispatch => {
-  return {
-    viewUser: userView => dispatch(viewUser(userView))
-  };
-};
-
 mapStateToProps = state => {
   return {
     getUser: state.user

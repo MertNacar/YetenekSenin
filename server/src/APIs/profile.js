@@ -15,9 +15,9 @@ var router = express.Router();
 //talent kısmı bakkkkkkkkkk
 router.get("/videos", async (req, res) => {
   try {
-  let username = req.query.username;
-  let token = req.headers.authorization.split(" ")[1];
-  let validete = jwt.validateToken(token);
+    let username = req.query.username;
+    let token = req.headers.authorization.split(" ")[1];
+    let validete = jwt.validateToken(token);
     if (validete) {
       let videos = await models.VideoModel.findAll({
         attributes: [
@@ -33,69 +33,70 @@ router.get("/videos", async (req, res) => {
           {
             required: true,
             model: models.UserModel,
-            attributes: ["allStars","allVotes"],
+            attributes: ["allStars", "allVotes"],
             where: {
               username
             }
           },
-            {
-                required: true,
-                model: models.TalentModel,
-                attributes: ["talentName"]
-            }     
-          ]
+          {
+            required: true,
+            model: models.TalentModel,
+            attributes: ["talentName"]
+          }
+        ]
       });
       console.log(videos)
       res.json({ err: false, videos });
     } else {
       throw new Error();
     }
-  } catch (err){
-    res.json({ err: true,errrr:err.message });
+  } catch (err) {
+    res.json({ err: true, errrr: err.message });
   }
 });
 
 router.get("/show", async (req, res) => {
   try {
-  let userID = req.query.userID;
-  let token = req.headers.authorization.split(" ")[1];
-  let validete = jwt.validateToken(token);
+    let userID = req.query.userID;
+    let token = req.headers.authorization.split(" ")[1];
+    let validete = jwt.validateToken(token);
     if (validete) {
       console.log("heyy");
-      let user = await models.UserModel.findOne({
-        attributes: [
-          "firstname",
-          "surname",
-          "username",
-          "email",
-          "gender",
-          "phone",
-          "aboutMe",
-          "birthday",
-          "profilePhoto",
-          "socialMedia"
-        ],
-        where: {
-          userID
+      let user = await models.UserCompetitionModel.findOne({
+        attributes: ["userID"],
+        where: { userID },
+        include: [{
+          model: models.UserModel,
+          attributes: [
+            "firstname",
+            "surname",
+            "username",
+            "email",
+            "gender",
+            "phone",
+            "aboutMe",
+            "birthday",
+            "profilePhoto",
+            "socialMedia"],
+          include: [
+            {
+              model: models.CityModel,
+              attributes: ["city"]
+            }
+          ]
         },
-        include: [         
-          {
-            model: models.VideoModel,
-            attributes: [
-              "videoPath",
-              "videoDescription",
-              "videoTitle",
-              "videoWatchCount",
-              "videoStarCount",
-              "createdAt"
-            ]
-          },
-
-          {
-            model: models.CityModel,
-            attributes: ["city"]
-          }
-        ]
+        {
+          model: models.VideoModel,
+          attributes: [
+            "videoPath",
+            "videoDescription",
+            "videoTitle",
+            "videoWatchCount",
+            "videoStarCount",
+            "createdAt"
+          ]
+        },
+        ],
       });
       res.json({ err: false, user });
     } else {
@@ -148,7 +149,7 @@ router.put("/update/password", async (req, res) => {
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
     let user = await models.UserModel.findOne({
-      attributes: ["userID","password"],
+      attributes: ["userID", "password"],
       where: {
         userID: data.userID
       }
@@ -164,8 +165,8 @@ router.put("/update/password", async (req, res) => {
       });
       res.json({ err: false });
     } else throw new Error();
-  } catch(err) {
-    res.json({ err: true,mess:err.message });
+  } catch (err) {
+    res.json({ err: true, mess: err.message });
   }
 });
 
