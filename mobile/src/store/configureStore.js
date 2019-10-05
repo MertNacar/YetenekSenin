@@ -4,7 +4,8 @@ const rootReducer = combineReducers({
   videos: reducers.videoReducer,
   user: reducers.userReducer,
   userView: reducers.userViewReducer,
-  competitions: reducers.competitionReducer
+  competitions: reducers.competitionReducer,
+  competitionView: reducers.competitionViewReducer
 });
 
 let store = createStore(rootReducer);

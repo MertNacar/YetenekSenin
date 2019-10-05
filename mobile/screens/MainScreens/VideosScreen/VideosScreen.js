@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 class VideosScreen extends Component {
   render() {
-    return <CardList />
+    return <CardList/>
   }
 }
 

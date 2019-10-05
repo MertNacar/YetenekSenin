@@ -10,7 +10,7 @@ router.get("/competitions", async (req, res) => {
     let validate = jwt.validateToken(token);
     if (validate) {
       let competitions = await models.CompetitionModel.findAll({
-        attributes: ["competitionTitle", "competitionDescription", "competitionFinishDate"],
+        attributes: ["competitionID", "competitionTitle", "competitionDescription", "competitionFinishDate"],
         where: { competitionIsFinish: 0 },
         include: [
           {
@@ -74,7 +74,7 @@ router.get("/competitions/videos", async (req, res) => {
           {
             required: true,
             model: models.UserModel,
-            attributes: ["username"],          
+            attributes: ["username"],
           }
         ]
       });

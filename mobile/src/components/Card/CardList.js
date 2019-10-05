@@ -13,6 +13,7 @@ class CardList extends Component {
     super(props);
     this.state = {
       userID: this.props.getUser.userID,
+      competitionID: this.props.competitionView[this.props.competitionView.length - 1].competitionID,
       items: [],
       token: "",
       itemLength: 0,
@@ -24,6 +25,7 @@ class CardList extends Component {
   }
 
   async componentDidMount() {
+    
     let token = await getTokenStorage();
     this.setState(
       {
@@ -37,10 +39,8 @@ class CardList extends Component {
 
   getData = async () => {
     try {
-      let { items, page, token, userID } = this.state;
-
-      let data = await Http.get(`/home/competitions/videos?competitionID=1&page=${page}&userID=1`, token);
-
+      let { items, page, token, userID, competitionID } = this.state;
+      let data = await Http.get(`/home/competitions/videos?competitionID=${competitionID}&page=${page}&userID=${userID}`, token);
       if (data.err === true) throw new Error("Hata");
       else {
         this.setState({
@@ -75,6 +75,8 @@ class CardList extends Component {
   };
 
   render() {
+    console.log("h",this.props)
+    console.log("VV", this.props.competitionView[this.props.competitionView.length - 1].competitionID)
     let { loading, items, err, threshold } = this.state;
     if (items.length == 0 || loading || err) {
       return (
@@ -101,7 +103,8 @@ class CardList extends Component {
 
 mapStateToProps = state => {
   return {
-    getUser: state.user
+    getUser: state.user,
+    competitionView: state.competitionView
   };
 };
 

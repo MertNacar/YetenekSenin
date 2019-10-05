@@ -28,7 +28,7 @@ class CompetitionCardList extends Component {
   getData = async (token) => {
     try {
       let { userID } = this.state
-      let data = await Http.get(`/home/competitions?userID=1`, token);
+      let data = await Http.get(`/home/competitions?userID=${userID}`, token);
       if (data.err === true) throw new Error("Hata");
       else {
         this.setState({
@@ -43,6 +43,7 @@ class CompetitionCardList extends Component {
   };
 
   render() {
+    console.log("hey",this.props.getCompetitions)
     let { loading, competitions } = this.state;
     if (loading) {
       return (

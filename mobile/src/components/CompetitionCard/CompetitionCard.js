@@ -16,11 +16,11 @@ import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
 import * as Http from "../../../utils/httpHelper";
 import { Navigation } from "react-native-navigation";
+import {viewCompetition} from "../../store/competitionView/competitionViewActionCreator";
 class CompetitionCard extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      userID: this.props.getUser.userID,
       token: this.props.getUser.token,
       item: this.props.item,
       visible: false
@@ -28,6 +28,8 @@ class CompetitionCard extends PureComponent {
   }
 
   goCompetition = () => {
+    let { item } = this.state;
+    this.props.viewCompetition(item)
     Navigation.push("HomeScreen", {
       component: {
         name: "yeteneksenin.screens.VideosScreen",
@@ -44,7 +46,7 @@ class CompetitionCard extends PureComponent {
     });
   }
   render() {
-    let { item, userID } = this.state;
+    let { item } = this.state;
     let starIcon = item.tblUserCompetitions[0].voteVideoID !== null ? "md-star" : "md-star-outline";
     let time = moment(item.competitionFinishDate).fromNow();
     return (
@@ -85,7 +87,7 @@ mapStateToProps = state => {
 
 mapDispatchToProps = dispatch => {
   return {
-    addUser: user => dispatch(addUser(user))
+    viewCompetition: comp => dispatch(viewCompetition(comp))
   };
 };
 
