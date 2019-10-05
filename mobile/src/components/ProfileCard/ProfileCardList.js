@@ -4,7 +4,6 @@ import { FlatGrid } from "react-native-super-grid";
 import ProfileCard from "./ProfileCard";
 export default class ProfileCardList extends Component {
   render() {
-    console.log(this.props.items);
     return (
       <FlatGrid
         spacing={2}

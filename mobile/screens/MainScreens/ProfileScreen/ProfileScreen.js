@@ -17,7 +17,7 @@ class ProfileScreen extends Component {
       user: { ...this.props.getUser, allStars: 0 },
       videos: []
     };
-    Navigation.events().bindComponent(this);
+    Navigation.events().bindComponent(this,"ProfileScreen");
   }
   navigationButtonPressed(event) {
     Navigation.mergeOptions(event.componentId, {
@@ -36,11 +36,10 @@ class ProfileScreen extends Component {
         `/profile/videos?username=${user.username}`,
         user.token
       );
-      console.log("res", res);
       if (res.err) throw new Error();
       else {
         this.setState({
-          user: { ...user, allStars: res.videos[0].tblUser.allStars },
+          user: { ...user, allStars: res.videos[0].tblStarVideos[0].tblUser.allStars },
           videos: res.videos
         });
       }
@@ -49,17 +48,16 @@ class ProfileScreen extends Component {
 
   render() {
     let { user, videos } = this.state;
-    console.log("user profile", user);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Avatar
             rounded
+            title="YS"
+            size="large"
             source={{
               uri: user.profilePhoto
             }}
-            title="YS"
-            size="large"
           />
           <View style={styles.fullName}>
             <MainText>{user.firstname}</MainText>

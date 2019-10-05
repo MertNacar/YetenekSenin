@@ -123,12 +123,6 @@ Navigation.registerComponentWithRedux(
   store
 );
 Navigation.registerComponentWithRedux(
-  "yeteneksenin.screens.UpdateTalentScreen",
-  () => UpdateTalentScreen,
-  Provider,
-  store
-);
-Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.UpdatePasswordScreen",
   () => UpdatePasswordScreen,
   Provider,

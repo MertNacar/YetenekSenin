@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Text, Button, TouchableOpacity, Image } from "react-native";
+import { View, Text, Button, TouchableOpacity, Image, ImageBackground } from "react-native";
 import Video from "react-native-video";
 import moment from "moment";
 import styles from "./styles";
@@ -47,29 +47,30 @@ class CompetitionCard extends PureComponent {
     let { item, userID } = this.state;
     let starIcon = item.tblUserCompetitions[0].voteVideoID !== null ? "md-star" : "md-star-outline";
     let time = moment(item.competitionFinishDate).fromNow();
-    console.warn("data", item);
     return (
       <Provider store={store}>
         <TouchableOpacity onPress={() => this.goCompetition()} style={styles.container}>
-          <View style={styles.logo}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: 'https://facebook.github.io/react-native/img/tiny_logo.png' }}
-            />
-            <Text>
-              finale {time}
-            </Text>
-          </View>
-          <View style={styles.banner}>
-            <View style={styles.description}>
-              <Text>{item.competitionTitle}</Text>
-              <Icon name={starIcon} color="yellow" size={24} />
+          <ImageBackground style={{ flex: 1 }} source={require('../../assets/coca-cola-banner.jpg')}>
+            <View style={styles.logo}>
+              <Image
+                style={{ flex: 1, width: 50, height: 50 }}
+                source={require('../../assets/cola-logo.png')}
+              />
+              <MainText style={{color:"white"}}>
+                finale {time}
+              </MainText>
             </View>
-            <View style={styles.description}>
-              <Text>{item.competitionDescription}</Text>
-              <Icon name="md-football" color="black" size={24} />
+            <View style={styles.banner}>
+              <View style={styles.description}>
+                <Text>{item.competitionTitle}</Text>
+                <Icon name={starIcon} color="white" size={24} />
+              </View>
+              <View style={styles.description}>
+                <Text>{item.competitionDescription}</Text>
+                <Icon name="md-football" color="white" size={24} />
+              </View>
             </View>
-          </View>
+          </ImageBackground>
         </TouchableOpacity>
       </Provider>
     );

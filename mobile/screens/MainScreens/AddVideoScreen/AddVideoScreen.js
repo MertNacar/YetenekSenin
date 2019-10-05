@@ -16,35 +16,35 @@ class AddVideoScreen extends Component {
     super(props);
     this.state = {
       token: this.props.getUser.token,
-      talents: [],
-      subTalents: [],
-      pickerEnabled: false,
-      uri: null,
+      competitions: [],
       isNull: true,
       data: {
-        fUserID: this.props.getUser.userID,
         videoDescription: null,
         videoTitle: null,
-        fVTalentID: null,
-        fVSubTalentID: null,
+        videoPath: null
+      },
+      userCompetition: {
+        competitionID: 0,
+        userID: this.props.getUser.userID,
       },
       colors: {
         subTalentColor: COLOR_PRIMARY,
-        talentColor: COLOR_PRIMARY,
+        competitionColor: COLOR_PRIMARY,
         videoTitleColor: COLOR_PRIMARY,
         videoDescriptionColor: COLOR_PRIMARY
       }
     };
-    // Navigation.events().bindComponent(this);
+    Navigation.events().bindComponent(this);
   }
 
-  async componentDidMount() {
+  async componentDidAppear() {
     try {
-      let talents = await Http.getWithoutToken("/signup/talent");
-      if (talents.err) throw new Error();
+      let { token } = this.state
+      let data = await Http.get("/video/competitions?userID=1", token);
+      if (data.err) throw new Error();
       else {
         this.setState({
-          talents: [...talents.data]
+          competitions: [...data.competitions]
         });
       }
     } catch {
@@ -63,54 +63,31 @@ class AddVideoScreen extends Component {
     } else this.setState({ colors: { ...colors, [inputColor]: "red" } });
   };
 
-  pickerTalentHandler = async itemID => {
-    let { colors, data } = this.state;
+  pickerCompetitionHandler = async itemID => {
+    let { colors, userCompetition } = this.state;
     try {
       if (itemID !== 0) {
-        let subTalents = await Http.postWithoutToken(
-          "/signup/subTalent",
-          itemID
-        );
-        if (subTalents.err) throw new Error();
-        else {
-          this.setState({
-            colors: { ...colors, talentColor: "green" },
-            data: { ...data, fVTalentID: itemID },
-            subTalents: [...subTalents.data],
-            pickerEnabled: true
-          });
-        }
+        this.setState({
+          userCompetition: { ...userCompetition, competitionID: itemID },
+          colors: { ...colors, competitionColor: "green" },
+        });
       } else throw new Error();
     } catch {
       this.setState({
-        data: { ...data, fVTalentID: 0 },
-        colors: { ...colors, talentColor: COLOR_PRIMARY },
-        pickerEnabled: false
-      });
-    }
-  };
-
-  pickerSubTalentHandler = itemID => {
-    let { colors, data } = this.state;
-    if (itemID !== 0) {
-      this.setState({
-        data: { ...data, fVSubTalentID: itemID },
-        colors: { ...colors, subTalentColor: "green" }
-      });
-    } else {
-      this.setState({
-        data: { ...data, fVSubTalentID: 0 },
-        colors: { ...colors, subTalentColor: COLOR_PRIMARY }
+        userCompetition: { ...userCompetition, competitionID: 0 },
+        colors: { ...colors, competitionColor: COLOR_PRIMARY },
       });
     }
   };
 
   AddVideo = async () => {
-    let { data, uri, token } = this.state;
-    data.videoPath = uri;
     try {
-      let res = await Http.post("/video/add", data, token);
-      console.log("res",res)
+      let { data, userCompetition, token } = this.state;
+      let video = { data, userCompetition };
+      console.log("video.data", video.data)
+      console.log("video.userCompetition", video.userCompetition)
+      let res = await Http.post("/video/add", video, token);
+      console.log("res", res)
       if (res.err) throw new Error();
       //Navigation.pop()
       else console.log("başarılı");
@@ -120,6 +97,7 @@ class AddVideoScreen extends Component {
   };
 
   launchCamera = () => {
+    let { data } = this.state
     ImagePicker.launchCamera(options, response => {
       // Same code as in above section!
       console.warn("Response = ", response);
@@ -129,7 +107,7 @@ class AddVideoScreen extends Component {
         //console.warn("ImagePicker Error: ", response.error);
       } else {
         this.setState({
-          uri: response.uri,
+          data: { ...data, videoPath: response.uri },
           isNull: false
         });
       }
@@ -137,6 +115,7 @@ class AddVideoScreen extends Component {
   };
 
   openGallery = () => {
+    let { data } = this.state
     ImagePicker.launchImageLibrary(options, response => {
       console.warn("Response = ", response);
       if (response.didCancel) {
@@ -145,7 +124,7 @@ class AddVideoScreen extends Component {
         //console.warn("ImagePicker Error: ", response.error);
       } else {
         this.setState({
-          uri: response.uri,
+          data: { ...data, videoPath: response.uri },
           isNull: false
         });
       }
@@ -155,39 +134,27 @@ class AddVideoScreen extends Component {
   render() {
     let {
       isNull,
-      uri,
       colors,
       data,
-      talents,
-      subTalents,
-      pickerEnabled
+      competitions,
+      userCompetition
     } = this.state;
     let display = isNull === true ? "none" : "flex";
-    let videoBorderColor = uri !== null ? "green" : "red";
-    let talentItems = talents.map((item, index) => {
+    let videoBorderColor = data.videoPath !== null ? "green" : "red";
+    let competitionItems = competitions.map((item, index) => {
       return (
         <Picker.Item
           key={index}
-          label={item.talentName}
-          value={item.talentID}
-        />
-      );
-    });
-    let subTalentItems = subTalents.map((item, index) => {
-      return (
-        <Picker.Item
-          key={index}
-          label={item.subTalentName}
-          value={item.subTalentID}
+          label={item.competitionTitle}
+          value={item.competitionID}
         />
       );
     });
     let validate =
       videoBorderColor === "green" &&
-      colors.videoTitleColor === "green" &&
-      colors.videoDescriptionColor === "green" &&
-      colors.talentColor === "green" &&
-      colors.subTalentColor === "green"
+        colors.videoTitleColor === "green" &&
+        colors.videoDescriptionColor === "green" &&
+        colors.competitionColor === "green"
         ? true
         : false;
     /*console.warn(uri);
@@ -245,44 +212,23 @@ class AddVideoScreen extends Component {
               flex: 2,
               width: "75%",
               justifyContent: "center",
-
               borderBottomWidth: 2,
-              borderColor: colors.talentColor
+              borderColor: colors.competitionColor
             }}
           >
             <Picker
               style={{ flex: 1 }}
-              selectedValue={data.fVTalentID}
-              onValueChange={itemID => this.pickerTalentHandler(itemID)}
+              selectedValue={userCompetition.competitionID}
+              onValueChange={itemID => this.pickerCompetitionHandler(itemID)}
             >
-              <Picker.Item label="Branş Seçiniz" value={0} />
-              {talentItems}
-            </Picker>
-          </View>
-
-          <View
-            style={{
-              flex: 2,
-              width: "75%",
-              justifyContent: "center",
-
-              borderBottomWidth: 2,
-              borderColor: colors.subTalentColor
-            }}
-          >
-            <Picker
-              enabled={pickerEnabled}
-              selectedValue={data.fVSubTalentID}
-              onValueChange={itemID => this.pickerSubTalentHandler(itemID)}
-            >
-              <Picker.Item label="Alt Branş Seçiniz" value={0} />
-              {subTalentItems}
+              <Picker.Item label="Yarışma Seçiniz" value={0} />
+              {competitionItems}
             </Picker>
           </View>
         </View>
 
         <Video
-          source={{ uri }}
+          source={{ uri: data.videoPath }}
           repeat={true}
           style={[styles.video, { borderColor: videoBorderColor }]}
           resizeMode="cover"

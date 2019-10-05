@@ -28,24 +28,24 @@ router.get("/videos", async (req, res) => {
           "videoStarCount",
           "createdAt"
         ],
-
         include: [
           {
             required: true,
-            model: models.UserModel,
-            attributes: ["allStars", "allVotes"],
-            where: {
-              username
-            }
-          },
-          {
-            required: true,
-            model: models.TalentModel,
-            attributes: ["talentName"]
+            model: models.StarVideoModel,
+            attributes: ["isLike"],
+            include: [
+              {
+                required: true,
+                model: models.UserModel,
+                attributes: ["allStars", "allVotes"],
+                where: {
+                  username
+                }
+              }
+            ]
           }
-        ]
-      });
-      console.log(videos)
+        ],
+      })
       res.json({ err: false, videos });
     } else {
       throw new Error();

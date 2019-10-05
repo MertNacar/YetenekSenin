@@ -7,15 +7,16 @@ import { getTokenStorage } from "../../AsyncStorage";
 import { connect, Provider } from "react-redux";
 import { addUser } from "../../store/user/userActionCreator";
 import store from "../../store/configureStore";
+import { addCompetition } from "../../store/competition/competitionActionCreator";
 
 class CompetitionCardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
       loading: true,
       userID: this.props.getUser.userID,
-      token: this.props.getUser.token
+      token: this.props.getUser.token,
+      competitions: this.props.getCompetitions
     };
   }
 
@@ -31,9 +32,10 @@ class CompetitionCardList extends Component {
       if (data.err === true) throw new Error("Hata");
       else {
         this.setState({
-          items: data.competitions,
+          competitions: data.competitions,
           loading: false,
         });
+        this.props.addCompetition(data.competitions)
       }
     } catch {
       this.setState({ loading: true });
@@ -41,18 +43,18 @@ class CompetitionCardList extends Component {
   };
 
   render() {
-    let { loading, items } = this.state;
+    let { loading, competitions } = this.state;
     if (loading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator animating size="large" color="#0000ff" />
         </View>
       );
     } else {
       return (
         <Provider store={store}>
           <FlatList
-            data={items}
+            data={competitions}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => <CompetitionCard item={item} />}
             showsVerticalScrollIndicator={false}
@@ -65,13 +67,15 @@ class CompetitionCardList extends Component {
 
 mapStateToProps = state => {
   return {
-    getUser: state.user
+    getUser: state.user,
+    getCompetitions: state.competitions
   };
 };
 
 mapDispatchToProps = dispatch => {
   return {
-    addUser: user => dispatch(addUser(user))
+    addUser: user => dispatch(addUser(user)),
+    addCompetition: comp => dispatch(addCompetition(comp))
   };
 };
 

@@ -302,15 +302,6 @@ class UpdateInformationScreen extends Component {
 
               <View style={styles.button}>
                 <Button
-                  onPress={() => this.goUpdatePage("UpdateTalentScreen")}
-                  icon={<Icon name="futbol" size={15} color="white" />}
-                  titleStyle={{ marginLeft: 7 }}
-                  title="Yeteneğini Değiştir"
-                />
-              </View>
-
-              <View style={styles.button}>
-                <Button
                   onPress={() => this.goUpdatePage("UpdateAboutMeScreen")}
                   icon={<Icon name="address-card" size={15} color="white" />}
                   titleStyle={{ marginLeft: 7 }}
