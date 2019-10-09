@@ -40,7 +40,7 @@ router.get("/competitions/videos", async (req, res) => {
     let validate = jwt.validateToken(token);
     if (validate) {
       let videos = await models.UserCompetitionModel.findAll({
-        attributes: ["voteVideoID"],
+        attributes: ["uploadVideoID","voteVideoID"],
         where: {
           competitionID: data.competitionID,
           uploadVideoID: { [Op.not]: null }
@@ -50,6 +50,7 @@ router.get("/competitions/videos", async (req, res) => {
         include: [
           {
             required: true,
+            as:"upload",
             model: models.VideoModel,
             attributes: [
               "videoID",
@@ -60,16 +61,6 @@ router.get("/competitions/videos", async (req, res) => {
               "videoStarCount",
               "createdAt"
             ],
-            include: [
-              {
-                required: true,
-                model: models.StarVideoModel,
-                attributes: ["isLike"],
-                where: {
-                  userID: data.userID
-                }
-              },
-            ]
           },
           {
             required: true,
@@ -159,14 +150,6 @@ router.get("/getComments", async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
 
 //TODOOOOOOOOO
 // takıp edilenler

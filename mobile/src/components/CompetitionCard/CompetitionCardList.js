@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, FlatList } from "react-native";
+import { View, ActivityIndicator, FlatList, RefreshControl } from "react-native";
 import CompetitionCard from "./CompetitionCard";
 import styles from "./styles";
 import * as Http from "../../../utils/httpHelper";
@@ -16,35 +16,42 @@ class CompetitionCardList extends Component {
       loading: true,
       userID: this.props.getUser.userID,
       token: this.props.getUser.token,
-      competitions: this.props.getCompetitions
+      competitions: [],
+      refreshing: false
     };
   }
 
   async componentDidMount() {
-    let { token } = this.state
-    this.getData(token);
+    this.getData();
   }
 
-  getData = async (token) => {
+  getData = async () => {
     try {
-      let { userID } = this.state
+      let { userID, token } = this.state
       let data = await Http.get(`/home/competitions?userID=${userID}`, token);
       if (data.err === true) throw new Error("Hata");
       else {
         this.setState({
           competitions: data.competitions,
           loading: false,
+          refreshing: false
         });
         this.props.addCompetition(data.competitions)
       }
     } catch {
-      this.setState({ loading: true });
+      this.setState({ loading: true, refreshing: false });
     }
   };
 
+  onRefresh = () => {
+    this.setState({ competitions: [], loading: true, refreshing: true }, () => {
+      this.getData();
+    });
+  };
+
   render() {
-    console.log("hey",this.props.getCompetitions)
-    let { loading, competitions } = this.state;
+    console.log("hey", this.props.getCompetitions)
+    let { loading, competitions, refreshing } = this.state;
     if (loading) {
       return (
         <View style={styles.container}>
@@ -59,6 +66,11 @@ class CompetitionCardList extends Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => <CompetitionCard item={item} />}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={this.onRefresh}
+              />}
           />
         </Provider>
       );

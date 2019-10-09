@@ -17,7 +17,6 @@ class AddVideoScreen extends Component {
     this.state = {
       token: this.props.getUser.token,
       competitions: [],
-      isNull: true,
       data: {
         videoDescription: null,
         videoTitle: null,
@@ -39,8 +38,8 @@ class AddVideoScreen extends Component {
 
   async componentDidAppear() {
     try {
-      let { token } = this.state
-      let data = await Http.get("/video/competitions?userID=1", token);
+      let { token, userCompetition } = this.state
+      let data = await Http.get(`/video/competitions?userID=${userCompetition.userID}`, token);
       if (data.err) throw new Error();
       else {
         this.setState({
@@ -84,13 +83,23 @@ class AddVideoScreen extends Component {
     try {
       let { data, userCompetition, token } = this.state;
       let video = { data, userCompetition };
-      console.log("video.data", video.data)
-      console.log("video.userCompetition", video.userCompetition)
       let res = await Http.post("/video/add", video, token);
-      console.log("res", res)
       if (res.err) throw new Error();
-      //Navigation.pop()
-      else console.log("başarılı");
+      else {
+        this.setState({
+          competitions: [],
+          userCompetition: {
+            competitionID: 0,
+            userID: this.props.getUser.userID,
+          },
+          colors: {
+            subTalentColor: COLOR_PRIMARY,
+            competitionColor: COLOR_PRIMARY,
+            videoTitleColor: COLOR_PRIMARY,
+            videoDescriptionColor: COLOR_PRIMARY
+          }
+        })
+      }
     } catch (err) {
       console.log("başarısız", err.message);
     }
@@ -108,7 +117,6 @@ class AddVideoScreen extends Component {
       } else {
         this.setState({
           data: { ...data, videoPath: response.uri },
-          isNull: false
         });
       }
     });
@@ -125,7 +133,6 @@ class AddVideoScreen extends Component {
       } else {
         this.setState({
           data: { ...data, videoPath: response.uri },
-          isNull: false
         });
       }
     });
@@ -133,13 +140,11 @@ class AddVideoScreen extends Component {
 
   render() {
     let {
-      isNull,
       colors,
       data,
       competitions,
       userCompetition
     } = this.state;
-    let display = isNull === true ? "none" : "flex";
     let videoBorderColor = data.videoPath !== null ? "green" : "red";
     let competitionItems = competitions.map((item, index) => {
       return (
@@ -157,8 +162,6 @@ class AddVideoScreen extends Component {
         colors.competitionColor === "green"
         ? true
         : false;
-    /*console.warn(uri);
-    console.warn("null", isNull);*/
     return (
       <View style={styles.container}>
         <View style={styles.buttons}>

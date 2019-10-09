@@ -25,14 +25,14 @@ class Card extends PureComponent {
       item: {
         username: this.props.item.tblUser.username,
         voteVideoID: this.props.item.voteVideoID,
-        videoID: this.props.item.tblVideo.videoID,
-        videoTitle: this.props.item.tblVideo.videoTitle,
-        videoDescription: this.props.item.tblVideo.videoDescription,
-        videoPath: this.props.item.tblVideo.videoPath,
-        videoStarCount: this.props.item.tblVideo.videoStarCount,
-        videoWatchCount: this.props.item.tblVideo.videoWatchCount,
-        createdAt: this.props.item.tblVideo.createdAt,
-        isLike: this.props.item.tblVideo.tblStarVideos[0].isLike
+        videoID: this.props.item.upload.videoID,
+        videoTitle: this.props.item.upload.videoTitle,
+        videoDescription: this.props.item.upload.videoDescription,
+        videoPath: this.props.item.upload.videoPath,
+        videoStarCount: this.props.item.upload.videoStarCount,
+        videoWatchCount: this.props.item.upload.videoWatchCount,
+        createdAt: this.props.item.upload.createdAt,
+        //isLike: this.props.item.upload.tblStarVideos[0].isLike
       },
       visible: false
     };
@@ -44,7 +44,7 @@ class Card extends PureComponent {
     });
   };
 
-  toggleStar = async (videoID, isLike) => {
+  /*toggleStar = async (videoID, isLike) => {
     let { token, userID, item } = this.state;
     let body = { userID, videoID, isLike };
     try {
@@ -56,7 +56,7 @@ class Card extends PureComponent {
     } catch (err) {
       console.log("hata", err.message);
     }
-  };
+  };*/
 
   toggleCommentArea = () => {};
 
@@ -77,7 +77,7 @@ class Card extends PureComponent {
 
   render() {
     let { item, userID } = this.state;
-    let starIcon = item.isLike ? "md-star" : "md-star-outline";
+    let starIcon = /*item.isLike ? "md-star" :*/ "md-star-outline";
     let followIcon = item.isFollow ? "md-checkmark" : "md-add";
     let time = moment(item.createdAt).fromNow();
     console.log("data", item);

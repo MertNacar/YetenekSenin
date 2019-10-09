@@ -59,6 +59,7 @@ VideoModel.hasMany(UserCompetitionModel, {
 });
 
 UserCompetitionModel.belongsTo(VideoModel,{
+as:"upload",
 foreignKey: "uploadVideoID"
 });
 
@@ -67,6 +68,7 @@ foreignKey: "voteVideoID"
 });
 
 UserCompetitionModel.belongsTo(VideoModel, {
+  as:"vote",  
 foreignKey: "voteVideoID"
 });
 

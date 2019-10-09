@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, FlatList } from "react-native";
+import { View, ActivityIndicator, FlatList, RefreshControl } from "react-native";
 import Card from "./Card";
 import styles from "./styles";
 import * as Http from "../../../utils/httpHelper";
@@ -7,6 +7,7 @@ import { getTokenStorage } from "../../AsyncStorage";
 import { connect, Provider } from "react-redux";
 import { addUser } from "../../store/user/userActionCreator";
 import store from "../../store/configureStore";
+import MainText from "../MainText/MainText";
 
 class CardList extends Component {
   constructor(props) {
@@ -20,12 +21,13 @@ class CardList extends Component {
       err: false,
       loading: true,
       page: 0,
-      threshold: 0.5
+      threshold: 0.5,
+      refreshing: false
     };
   }
 
   async componentDidMount() {
-    
+
     let token = await getTokenStorage();
     this.setState(
       {
@@ -46,11 +48,12 @@ class CardList extends Component {
         this.setState({
           items: [...items, ...data.videos],
           loading: false,
-          itemLength: data.videosLen
+          itemLength: data.videosLen,
+          refreshing: false
         });
       }
     } catch {
-      this.setState({ err: true, loading: false });
+      this.setState({ err: true, loading: false, refreshing: false });
     }
   };
 
@@ -65,6 +68,12 @@ class CardList extends Component {
     }
   };
 
+  onRefresh = () => {
+    this.setState({ items: [], page: 0, threshold: 0.5, loading: true, itemLength: 0, refreshing: true }, () => {
+      this.getData();
+    });
+  };
+
   renderFooter = () => {
     let { loading } = this.state;
     return loading ? (
@@ -75,17 +84,20 @@ class CardList extends Component {
   };
 
   render() {
-    console.log("h",this.props)
-    console.log("VV", this.props.competitionView[this.props.competitionView.length - 1].competitionID)
-    let { loading, items, err, threshold } = this.state;
-    if (items.length == 0 || loading || err) {
+    let { loading, items, err, threshold, refreshing } = this.state;
+    if (items.length == 0 || loading) {
       return (
-        <Provider store={store}>
-          <View style={styles.container}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        </Provider>
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
       );
+    }
+    else if (err) {
+      <View style={styles.container}>
+        <MainText>
+          Bir Hatayla Karşılaştık, üzgünüz...
+        </MainText>
+      </View>
     }
     return (
       <FlatList
@@ -96,6 +108,11 @@ class CardList extends Component {
         onEndReachedThreshold={threshold}
         ListFooterComponent={this.renderFooter}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={this.onRefresh}
+          />}
       />
     );
   }

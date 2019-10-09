@@ -77,23 +77,13 @@ router.get("/show", async (req, res) => {
             "aboutMe",
             "birthday",
             "profilePhoto",
-            "socialMedia"],
+            "socialMedia"
+          ],
           include: [
             {
               model: models.CityModel,
               attributes: ["city"]
             }
-          ]
-        },
-        {
-          model: models.VideoModel,
-          attributes: [
-            "videoPath",
-            "videoDescription",
-            "videoTitle",
-            "videoWatchCount",
-            "videoStarCount",
-            "createdAt"
           ]
         },
         ],
