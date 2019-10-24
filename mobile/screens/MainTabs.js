@@ -57,6 +57,7 @@ const MainTabs = () => {
                     ],
                     options: {
                       bottomTab: {
+                        id: 'buttonOne',
                         animate: false,
                         selectedIconColor: "red",
                         icon: sources[0]

@@ -15,15 +15,41 @@ class SearchScreen extends Component {
       value: null,
       loading: null,
       err: false,
-      users: null
+      users: null,
+      token: this.props.getUser.token
     };
+    Navigation.events().bindComponent(this, "SearchScreen");
+  }
+
+  componentDidAppear() {
+    this.searchImmediately();
+  }
+
+  searchImmediately = async () => {
+    try {
+      let { token } = this.state
+      this.setState({ loading: true });
+      let data = await Http.get(`/search/user/recommendation`, token);
+      if (data.err) throw new Error();
+      else {
+        this.setState({
+          users: [...data.users],
+          loading: false,
+        });
+      }
+    } catch {
+      this.setState({
+        loading: false
+      });
+    }
+
   }
 
   search = async value => {
-    this.setState({ loading: true, value });
-    let token = this.props.getUser.token;
     try {
-      let data = await Http.post("/search/user", value, token);
+      this.setState({ loading: true, value })
+      let { token } = this.state
+      let data = await Http.get(`/search/user?username=${value}`, token);
       if (data.err) throw new Error();
       else {
         this.setState({
@@ -38,6 +64,7 @@ class SearchScreen extends Component {
         loading: false
       });
     }
+
   };
 
   render() {
@@ -45,18 +72,18 @@ class SearchScreen extends Component {
     let display = err ? (
       <MainText>Aradığınız kişiyi bulamadık.</MainText>
     ) : (
-      <SearchCardList data={users} />
-    );
+        <SearchCardList data={users} />
+      );
     return (
       <View style={{ flex: 1 }}>
-          <SearchBar
-            placeholder="Yetenekli Bul"
-            containerStyle={styles.containerSearch}
-            inputContainerStyle={styles.inputContainerSearch}
-            onChangeText={value => this.search(value)}
-            value={value}
-            lightTheme={true}
-          />
+        <SearchBar
+          placeholder="Yetenekli Bul"
+          containerStyle={styles.containerSearch}
+          inputContainerStyle={styles.inputContainerSearch}
+          onChangeText={value => this.search(value)}
+          value={value}
+          lightTheme={true}
+        />
         <View style={{ flex: 24 }}>{display}</View>
       </View>
     );

@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const UserModel = require("./User");
 
 const FollowerModel = sequelize.define(
-  "tblFollower",
+  "tblFollowers",
   {
     followID: {
       type: Sequelize.INTEGER,
@@ -34,6 +34,7 @@ const FollowerModel = sequelize.define(
 );
 
 UserModel.hasMany(FollowerModel, {
+  as:"user",
   foreignKey: {
     name: "userID",
     allowNull: false
@@ -48,6 +49,7 @@ FollowerModel.belongsTo(UserModel, {
 });
 
 UserModel.hasMany(FollowerModel, {
+  as:"follower",
   foreignKey: {
     name: "followerID",
     allowNull: false

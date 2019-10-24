@@ -50,7 +50,6 @@ class CompetitionCardList extends Component {
   };
 
   render() {
-    console.log("hey", this.props.getCompetitions)
     let { loading, competitions, refreshing } = this.state;
     if (loading) {
       return (

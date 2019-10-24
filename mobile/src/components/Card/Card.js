@@ -23,6 +23,7 @@ class Card extends PureComponent {
       userID: this.props.getUser.userID,
       token: this.props.getUser.token,
       item: {
+        followerID: this.props.item.tblUser.userID,
         username: this.props.item.tblUser.username,
         voteVideoID: this.props.item.voteVideoID,
         videoID: this.props.item.upload.videoID,
@@ -60,7 +61,7 @@ class Card extends PureComponent {
 
   toggleCommentArea = () => {};
 
-  toggleFollow = async (followerID, isFollow) => {
+  /*toggleFollow = async (followerID, isFollow) => {
     let { token, userID, item } = this.state;
     let body = { userID, followerID, isFollow };
     try {
@@ -73,7 +74,7 @@ class Card extends PureComponent {
     } catch (err) {
       console.log("hata", err.message);
     }
-  };
+  };*/
 
   render() {
     let { item, userID } = this.state;
@@ -89,7 +90,7 @@ class Card extends PureComponent {
               <View style={styles.positionLeft}>
                 <Icon name="md-contact" size={22} color="black" />
               </View>
-              <TouchableOpacity onPress={() => this.toggleFollow()}>
+              <TouchableOpacity onPress={() => this.toggleFollow(item.followerID,)}>
                 <MainText style={styles.positionLeft}>{item.username}</MainText>
               </TouchableOpacity>
               <View style={styles.positionLeft}>

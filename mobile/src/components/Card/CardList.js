@@ -27,7 +27,6 @@ class CardList extends Component {
   }
 
   async componentDidMount() {
-
     let token = await getTokenStorage();
     this.setState(
       {
@@ -68,6 +67,10 @@ class CardList extends Component {
     }
   };
 
+  goTopList = () => {
+    this.listRef.scrollToOffset({ x: 0, y: 0})
+  }
+
   onRefresh = () => {
     this.setState({ items: [], page: 0, threshold: 0.5, loading: true, itemLength: 0, refreshing: true }, () => {
       this.getData();
@@ -101,6 +104,7 @@ class CardList extends Component {
     }
     return (
       <FlatList
+        ref={(ref) => { this.listRef = ref; }}
         data={items}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <Card item={item} />}

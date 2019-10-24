@@ -32,6 +32,7 @@ class CompetitionCard extends PureComponent {
     this.props.viewCompetition(item)
     Navigation.push("HomeScreen", {
       component: {
+        id: "VideosScreen",
         name: "yeteneksenin.screens.VideosScreen",
         options: {
           bottomTab: {
