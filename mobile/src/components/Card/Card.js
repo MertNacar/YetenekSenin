@@ -15,12 +15,15 @@ import MainText from "../MainText/MainText";
 import { Provider, connect } from "react-redux";
 import store from "../../store/configureStore";
 import * as Http from "../../../utils/httpHelper";
+import { Navigation } from 'react-native-navigation'
 
 class Card extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      visiblePopup: false,
       userID: this.props.getUser.userID,
+      competitionID: this.props.competitionID,
       token: this.props.getUser.token,
       item: {
         followerID: this.props.item.tblUser.userID,
@@ -33,7 +36,6 @@ class Card extends PureComponent {
         videoStarCount: this.props.item.upload.videoStarCount,
         videoWatchCount: this.props.item.upload.videoWatchCount,
         createdAt: this.props.item.upload.createdAt,
-        //isLike: this.props.item.upload.tblStarVideos[0].isLike
       },
       visible: false
     };
@@ -45,21 +47,81 @@ class Card extends PureComponent {
     });
   };
 
-  /*toggleStar = async (videoID, isLike) => {
-    let { token, userID, item } = this.state;
-    let body = { userID, videoID, isLike };
+  toggleVote = async () => {
     try {
-      let star = await Http.post("/home/toggleStar", body, token);
-      if (star.err) throw new Error();
+      let { token, userID, competitionID, item } = this.state;
+      let body = { userID, videoID: item.videoID, competitionID };
+      let vote = await Http.post("/home/toggleVote", body, token);
+      if (vote.err) throw new Error();
+      else if (vote.callback) this.setState({ visiblePopup: true })
       else {
-        this.setState({ item: { ...item, isLike: !isLike } });
+        this.setState({ item: { ...item, voteVideoID: vote.voteVideoID } });
       }
-    } catch (err) {
-      console.log("hata", err.message);
+    } catch{
+      alert("Bir hatayla karşılaştık");
     }
-  };*/
+  };
 
-  toggleCommentArea = () => {};
+  forceVote = async () => {
+    try {
+      let { token, userID, competitionID, item } = this.state;
+      let body = { userID, videoID: item.videoID, competitionID };
+      let vote = await Http.post("/home/forceVote", body, token);
+      if (vote.err) throw new Error();
+      else {
+        this.setState({ visiblePopup: false, item: { ...item, voteVideoID: vote.voteVideoID } });
+      }
+    } catch {
+      this.setState({ visiblePopup: false }, () => {
+        alert("Bir hatayla karşılaştık");
+      })
+    }
+  }
+
+  toggleCommentArea = () => { };
+
+  goProfile = () => {
+    let { item, token } = this.state
+    Navigation.push("HomeScreen", {
+      component: {
+        name: "yeteneksenin.screens.ViewProfileScreen",
+        passProps: {
+          userID: item.followerID,
+          token
+        },
+        options: {
+          bottomTab: {
+            visible: false
+          },
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        }
+      }
+    })
+  }
+
+  goComment = () => {
+    Navigation.push("HomeScreen", {
+      component: {
+        name: "yeteneksenin.screens.CommentScreen",
+        /*passProps: {
+          userID,
+          token
+        },*/
+        options: {
+          bottomTab: {
+            visible: false
+          },
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        }
+      }
+    })
+  }
 
   /*toggleFollow = async (followerID, isFollow) => {
     let { token, userID, item } = this.state;
@@ -77,30 +139,22 @@ class Card extends PureComponent {
   };*/
 
   render() {
-    let { item, userID } = this.state;
-    let starIcon = /*item.isLike ? "md-star" :*/ "md-star-outline";
-    let followIcon = item.isFollow ? "md-checkmark" : "md-add";
+    let { item } = this.state;
+    let voteIcon = item.voteVideoID !== null ? "md-star" : "md-star-outline";
     let time = moment(item.createdAt).fromNow();
-    console.log("data", item);
     return (
       <Provider store={store}>
         <View style={styles.containerCard}>
           <View style={styles.rowCardHeader}>
             <View style={styles.UserBar}>
-              <View style={styles.positionLeft}>
-                <Icon name="md-contact" size={22} color="black" />
-              </View>
-              <TouchableOpacity onPress={() => this.toggleFollow(item.followerID,)}>
+              <TouchableOpacity style={styles.UserBar} onPress={() => this.goProfile()}>
+                <View style={styles.positionLeft}>
+                  <Icon name="md-contact" size={22} color="black" />
+                </View>
                 <MainText style={styles.positionLeft}>{item.username}</MainText>
               </TouchableOpacity>
-              <View style={styles.positionLeft}>
-                <Icon name={followIcon} size={22} color="black" />
-              </View>
             </View>
             <View style={styles.subTalent}>
-              <View style={styles.positionRight}>
-                <Icon name="md-football" size={25} color="black" />
-              </View>
               <View style={styles.positionRight}>
                 <TouchableOpacity onPress={() => this.openComplaintMenu()}>
                   <Icon name="md-alert" size={25} color="black" />
@@ -120,11 +174,6 @@ class Card extends PureComponent {
                     visible={this.state.visible}
                     footer={
                       <ModalFooter>
-                        <ModalButton
-                          text="Takibi Bırak"
-                          //onPress={() => { }}
-                          style={styles.modalButton}
-                        />
                         <ModalButton
                           text="Şikayet et"
                           //onPress={() => { }}
@@ -167,22 +216,46 @@ class Card extends PureComponent {
             ref={ref => this.player = ref}
             onBuffer={this._onBuffer}
             resizeMode="stretch"
-            //poster="URL" yğklenirken bekleme ekranı
-            //posterResizeMode kullan
+          //poster="URL" yğklenirken bekleme ekranı
+          //posterResizeMode kullan
           />
 
           <View style={styles.rowCardFooter}>
             <View style={styles.cardIcons}>
               <TouchableOpacity
-                onPress={() => this.toggleStar(item.videoID, item.isLike)}
+                onPress={() => this.toggleVote()}
               >
-                <Icon name={starIcon} size={26} color="black" />
+                <Icon name={voteIcon} size={26} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.toggleCommentArea()}>
+
+              <TouchableOpacity onPress={() => this.goComment()}>
                 <Icon name="ios-text" size={26} color="black" />
               </TouchableOpacity>
+              <View style={styles.container}>
+                <Modal
+                  visible={this.state.visiblePopup}
+                  footer={
+                    <ModalFooter>
+                      <ModalButton
+                        text="Hayır"
+                        onPress={() => {
+                          this.setState({ visiblePopup: false });
+                        }}
+                      />
+                      <ModalButton
+                        text="Evet"
+                        onPress={() => this.forceVote()}
+                      />
+                    </ModalFooter>
+                  }
+                >
+                  <ModalContent>
+                    <Text>Zaten bir videoyaya oy kullandınız.</Text>
+                    <Text>Oyunuzu bu video için değiştirmek mi istiyorsunuz ?</Text>
+                  </ModalContent>
+                </Modal>
+              </View>
             </View>
-
             <View style={styles.watching}>
               <View style={styles.positionRight}>
                 <Icon name="md-eye" size={22} color="black" />
@@ -221,7 +294,7 @@ export default connect(
 
 /*
 <TouchableOpacity
-                onPress={() => this.toggleFollow(userID, item.isFollow)}
-              >
-                <Icon name={followIcon} size={26} color="black" />
-              </TouchableOpacity>*/
+      onPress={() => this.toggleFollow(userID, item.isFollow)}
+    >
+      <Icon name={followIcon} size={26} color="black" />
+    </TouchableOpacity>*/

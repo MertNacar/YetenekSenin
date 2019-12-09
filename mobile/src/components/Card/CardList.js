@@ -21,7 +21,7 @@ class CardList extends Component {
       err: false,
       loading: true,
       page: 0,
-      threshold: 0.5,
+      threshold: 0.25,
       refreshing: false
     };
   }
@@ -68,11 +68,11 @@ class CardList extends Component {
   };
 
   goTopList = () => {
-    this.listRef.scrollToOffset({ x: 0, y: 0})
+    this.listRef.scrollToOffset({ x: 0, y: 0 })
   }
 
   onRefresh = () => {
-    this.setState({ items: [], page: 0, threshold: 0.5, loading: true, itemLength: 0, refreshing: true }, () => {
+    this.setState({ items: [], page: 0, threshold: 0.25, loading: true, itemLength: 0, refreshing: true }, () => {
       this.getData();
     });
   };
@@ -87,7 +87,8 @@ class CardList extends Component {
   };
 
   render() {
-    let { loading, items, err, threshold, refreshing } = this.state;
+    let { loading, items, err, threshold, refreshing, competitionID } = this.state;
+    console.log("items",items)
     if (items.length == 0 || loading) {
       return (
         <View style={styles.container}>
@@ -107,7 +108,7 @@ class CardList extends Component {
         ref={(ref) => { this.listRef = ref; }}
         data={items}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Card item={item} />}
+        renderItem={({ item }) => <Card item={item} isVote={item.voteVideoID} competitionID={competitionID} />}
         onEndReached={this.handleLoadMore}
         onEndReachedThreshold={threshold}
         ListFooterComponent={this.renderFooter}

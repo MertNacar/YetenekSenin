@@ -14,7 +14,8 @@ import UpdateOtherScreen from "./SettingsScreens/UpdateInformationScreen/UpdateO
 import UpdateGenderScreen from "./SettingsScreens/UpdateInformationScreen/UpdateGenderScreen/UpdateGenderScreen";
 import UpdatePasswordScreen from "./SettingsScreens/UpdatePasswordScreen/UpdatePasswordScreen";
 import UpdateSettingsScreen from "./SettingsScreens/UpdateSettingsScreen/UpdateSettingsScreen";
-import VideosScreen from "./MainScreens/VideosScreen/VideosScreen";
+import VideosScreen from "./MainScreens/HomeScreen/VideosScreen/VideosScreen";
+import CommentScreen from "./MainScreens/HomeScreen/CommentScreen/CommentScreen";
 
 export {
   HomeScreen,
@@ -33,5 +34,6 @@ export {
   UpdateAboutMeScreen,
   UpdateOtherScreen,
   UpdateGenderScreen,
-  VideosScreen
+  VideosScreen,
+  CommentScreen
 };

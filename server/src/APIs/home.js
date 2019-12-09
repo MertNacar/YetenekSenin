@@ -99,23 +99,51 @@ router.post("/toggleFollow", async (req, res) => {
   }
 });
 
-// kendini videosunu begenmeme kontrolu saglanmalı {userID videoID ve isLike} yollanacak
-router.post("/toggleStar", async (req, res) => {
+// kendini videosunu begenmeme kontrolu saglanmalı {userID videoID ve competitionID} yollanacak
+router.post("/toggleVote", async (req, res) => {
   try {
     let data = req.body.data;
     let token = req.headers.authorization.split(" ")[1];
     let validate = jwt.validateToken(token);
     if (validate) {
-      let star = await models.StarVideoModel.findOrBuild({
-        where: { userID: data.userID, videoID: data.videoID }
+      let vote = await models.UserCompetitionModel.findOrBuild({
+        where: { competitionID: data.competitionID, userID: data.userID }
       });
-      star[0].isLike = data.isLike;
-      star[0].save();
-      res.json({ err: false });
+      if (vote[0].voteVideoID === null || vote[0]._options.isNewRecord) {
+        vote[0].voteVideoID = data.videoID
+      } else if (vote[0].voteVideoID === data.videoID) {
+        vote[0].voteVideoID = null
+      }
+      else {
+        return res.json({ callback: true })
+      }
+      console.log(vote[0].voteVideoID)
+      vote[0].save();
+      res.json({ err: false, callback: false, voteVideoID: vote[0].voteVideoID });
     } else {
       throw new Error();
     }
   } catch {
+    res.json({ err: true, callback: false });
+  }
+});
+
+router.post("/forceVote", async (req, res) => {
+  try {
+    let data = req.body.data;
+    let token = req.headers.authorization.split(" ")[1];
+    let validate = jwt.validateToken(token);
+    if (validate) {
+      let vote = await models.UserCompetitionModel.findOrBuild({
+        where: { competitionID: data.competitionID, userID: data.userID }
+      });
+      vote[0].voteVideoID = data.videoID
+      vote[0].save();
+      res.json({ err: false, voteVideoID: vote[0].voteVideoID });
+    } else {
+      throw new Error();
+    }
+  } catch (err) {
     res.json({ err: true });
   }
 });

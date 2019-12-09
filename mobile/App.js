@@ -14,7 +14,7 @@ import {
   UpdateSettingsScreen,
   UpdateAboutMeScreen,
   UpdateOtherScreen,
-  UpdateTalentScreen,
+  CommentScreen,
   UpdateGenderScreen,
   VideosScreen
 } from "./screens/AllScreens";
@@ -83,6 +83,12 @@ Navigation.registerComponentWithRedux(
 Navigation.registerComponentWithRedux(
   "yeteneksenin.screens.VideosScreen",
   () => VideosScreen,
+  Provider,
+  store
+);
+Navigation.registerComponentWithRedux(
+  "yeteneksenin.screens.CommentScreen",
+  () => CommentScreen,
   Provider,
   store
 );

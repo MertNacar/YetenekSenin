@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CardList from "../../../src/components/Card/CardList";
+import CardList from "../../../../src/components/Card/CardList";
 import { connect } from "react-redux";
 
 class VideosScreen extends Component {
